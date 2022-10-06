@@ -6,7 +6,7 @@
 		<Platforms>AnyCPU</Platforms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-    	<!-- Generate embedded file manifest when using the Photino.NET StaticFileServer -->
+		<!-- Generate embedded file manifest when using the Photino.NET StaticFileServer -->
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<!--
 		Embed the the wwwroot files from the Resource folder into the executable
@@ -24,7 +24,7 @@
 
 	<PropertyGroup>
 		<UiRoot>UserInterface\</UiRoot>
-    <UiBuildOutput>build\</UiBuildOutput>
+		<UiBuildOutput>build\</UiBuildOutput>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' != 'true' ">wwwroot\</WwwRoot>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' == 'true' ">Resources\wwwroot\</WwwRoot>
 	</PropertyGroup>
@@ -52,24 +52,17 @@
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
 		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
 		<Exec WorkingDirectory="$(UiRoot)" Command="npm install" />
-		<!-- <Exec WorkingDirectory="$(UiRoot)" Command="npm run build" /> -->
-		
+		<Exec WorkingDirectory="$(UiRoot)" Command="npm run build" Condition="'$(Configuration)' == 'Release'" />
+
 		<ItemGroup>
 			<UiBuildOutputFiles Include="$(UiRoot)$(UiBuildOutput)**\*.*" />
 		</ItemGroup>
-		
-		<Copy
-			SourceFiles="@(UiBuildOutputFiles)"
-			DestinationFiles="@(UiBuildOutputFiles->'$(WwwRoot)%(RecursiveDir)%(Filename)%(Extension)')" />
 
-		<MakeDir
-      Directories="$(TargetDir)\$(WwwRoot)"
-      Condition=" '$(EmbedWwwRoot)' != 'true' And !Exists('$(TargetDir\$(WwwRoot)') " />
+		<Copy SourceFiles="@(UiBuildOutputFiles)" DestinationFiles="@(UiBuildOutputFiles->'$(WwwRoot)%(RecursiveDir)%(Filename)%(Extension)')" />
 
-		<Copy
-			SourceFiles="@(UiBuildOutputFiles)"
-			DestinationFiles="@(UiBuildOutputFiles->'$(TargetDir)\$(WwwRoot)%(RecursiveDir)%(Filename)%(Extension)')"
-      Condition=" '$(EmbedWwwRoot)' != 'true' " />
+		<MakeDir Directories="$(TargetDir)\$(WwwRoot)" Condition=" '$(EmbedWwwRoot)' != 'true' And !Exists('$(TargetDir\$(WwwRoot)') " />
+
+		<Copy SourceFiles="@(UiBuildOutputFiles)" DestinationFiles="@(UiBuildOutputFiles->'$(TargetDir)\$(WwwRoot)%(RecursiveDir)%(Filename)%(Extension)')" Condition=" '$(EmbedWwwRoot)' != 'true' " />
 
 		<RemoveDir Directories="$(UiRoot)$(UiBuildOutput)" />
 	</Target>

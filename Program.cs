@@ -72,10 +72,9 @@ class Program
     [STAThread]
     static void Main(string[] args)
     {
-
-        Console.WriteLine("Start");
-        string baseUrl = IsDebugMode ? StartDebugServer(args).Result : StartReleaseServer(args);
-        Console.WriteLine($"Base Url: {baseUrl}");
+#if RELEASE
+        IsDebugMode = false;
+#endif
 
         // Window title declared here for visibility
         string windowTitle = "Photino.React Demo App";
@@ -117,7 +116,13 @@ class Program
                 // "window.external.receiveMessage(callback: Function)"
                 window?.SendWebMessage(response);
             })
-            .Load($"{baseUrl}/index.html"); // Can be used with relative path strings or "new URI()" instance to load a website.
+            .LoadRawString(Loading.Html);
+
+        Task.Run(() =>
+        {
+            string baseUrl = IsDebugMode ? StartDebugServer(args).Result : StartReleaseServer(args);
+            window.Load(baseUrl);
+        });
 
         window.WaitForClose(); // Starts the application event loop
     }
