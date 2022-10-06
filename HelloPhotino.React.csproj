@@ -14,7 +14,7 @@
 		This will change the output directory of the React build output from
 		the `./wwwroot` folder to `./Resources/wwwroot`.
 		-->
-		<EmbedWwwRoot>false</EmbedWwwRoot>
+		<EmbedWwwRoot>true</EmbedWwwRoot>
 	</PropertyGroup>
 
 	<ItemGroup>
