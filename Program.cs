@@ -5,12 +5,77 @@ namespace Photino.HelloPhotino.React;
 
 class Program
 {
-    [STAThread]
-    static void Main(string[] args)
+    public static bool IsDebugMode = true;
+
+    static string StartReleaseServer(string[] args)
     {
         PhotinoServer
             .CreateStaticFileServer(args, out string baseUrl)
             .RunAsync();
+
+        return baseUrl;
+    }
+
+    static Task<string> StartDebugServer(string[] args)
+    {
+        var completion = new TaskCompletionSource<string>();
+        var process = new System.Diagnostics.Process();
+        string baseUrl = "http://localhost:3000";
+        Uri baseUri = new Uri(baseUrl);
+        process.StartInfo.FileName = "cmd";
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardInput = true;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.CreateNoWindow = true;
+        process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+        process.StartInfo.EnvironmentVariables.Add("BROWSER", "none");
+        process.StartInfo.WorkingDirectory = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "./UserInterface");
+
+        process.OutputDataReceived += (object sender, System.Diagnostics.DataReceivedEventArgs args) =>
+        {
+            string line = (args.Data ?? String.Empty);
+            Console.WriteLine("received output: {0}", line);
+            if (line.Contains("webpack compiled") && line.Contains("successfully"))
+            {
+                Console.WriteLine($"Task Complete: {baseUrl}");
+                if (!completion.Task.IsCompleted)
+                {
+                    completion.SetResult(baseUrl);
+                }
+            }
+            else if (line.Contains("Local:"))
+            {
+                baseUrl = line.Replace("Local:", "").Trim();
+                baseUri = new Uri(baseUrl);
+                Console.WriteLine($"URL: {baseUrl}");
+            }
+            else if (line.Contains("Something is already running on port"))
+            {
+                Console.WriteLine($"Something is already running on port {baseUri.Port}");
+            }
+        };
+        process.Start();
+        process.StandardInput.WriteLine($"npx kill-port {baseUri.Port}");
+        process.StandardInput.WriteLine($"npm start");
+        process.BeginOutputReadLine();
+
+        Console.CancelKeyPress += (_, e) =>
+        {
+            e.Cancel = true;
+            process.Kill();
+            Console.WriteLine("Cancel KeyPress fired");
+        };
+
+        return completion.Task;
+    }
+
+    [STAThread]
+    static void Main(string[] args)
+    {
+
+        Console.WriteLine("Start");
+        string baseUrl = IsDebugMode ? StartDebugServer(args).Result : StartReleaseServer(args);
+        Console.WriteLine($"Base Url: {baseUrl}");
 
         // Window title declared here for visibility
         string windowTitle = "Photino.React Demo App";

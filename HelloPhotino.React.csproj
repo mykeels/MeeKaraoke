@@ -52,7 +52,7 @@
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
 		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
 		<Exec WorkingDirectory="$(UiRoot)" Command="npm install" />
-		<Exec WorkingDirectory="$(UiRoot)" Command="npm run build" />
+		<!-- <Exec WorkingDirectory="$(UiRoot)" Command="npm run build" /> -->
 		
 		<ItemGroup>
 			<UiBuildOutputFiles Include="$(UiRoot)$(UiBuildOutput)**\*.*" />

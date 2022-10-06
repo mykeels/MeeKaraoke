@@ -3,3 +3,4 @@ obj
 wwwroot
 Resources/wwwroot
 node_modules
+.vscode
