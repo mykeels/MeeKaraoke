@@ -6,11 +6,11 @@ class CommitCards extends React.Component {
             <li key={"commit-" + index}>
                 <div className="commit-head">
                     <span className="author">
-                        <a href={commit.author.html_url} target="_blank">
+                        <a href={commit.author.html_url} target="_blank" rel="noreferrer">
                             {commit.commit.author.name}
                         </a>
                         &nbsp;–&nbsp;
-                        <a href={commit.html_url} target="_blank">
+                        <a href={commit.html_url} target="_blank" rel="noreferrer">
                             {commit.sha.slice(0, 7)}
                         </a>
                     </span>

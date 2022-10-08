@@ -5,3 +5,6 @@ Resources/wwwroot
 node_modules
 .vscode
 /package-lock.json
+.env
+dist
+build

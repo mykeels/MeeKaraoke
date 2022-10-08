@@ -1,0 +1,8 @@
+!.eslintrc.js
+documentation/
+build/
+dist/
+node_modules/
+scripts/
+typings/**/*.d.ts
+storybook-static
