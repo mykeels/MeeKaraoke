@@ -1,10 +1,18 @@
-# Photino.React Hello World Sample
+# PhotinoReactStarter Template
 
-To build UI and run Photino in one command execute the following in a terminal.
+Build desktop apps with Photino and React.
+
+## Setup
+
+Run
 
 ```sh
-# From inside root folder execute:
-# `npm run build` will update the
-# wwwroot folder after build is complete. 
-cd UserInterface && npm run build && cd .. && dotnet run
+dotnet restore
+npm install
 ```
+
+Create `.env` files as siblings of both [.env.sample](./.env.sample) and [App/.env.sample](./App/.env.sample) and be sure to add the appropriate values.
+
+## Run Locally
+
+Run `npm start` and `dotnet run` in separate terminals.
