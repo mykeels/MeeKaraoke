@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using PhotinoNET;
+using Mykeels.Processes;
 
 namespace Photino.HelloPhotino.React;
 
@@ -29,7 +30,7 @@ class Program
         process.StartInfo.CreateNoWindow = true;
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
         process.StartInfo.EnvironmentVariables.Add("BROWSER", "none");
-        process.StartInfo.WorkingDirectory = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "./UserInterface");
+        process.StartInfo.WorkingDirectory = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "./App");
 
         process.OutputDataReceived += (object sender, System.Diagnostics.DataReceivedEventArgs args) =>
         {
@@ -56,6 +57,7 @@ class Program
         };
         process.Start();
         process.StandardInput.WriteLine($"npx kill-port {baseUri.Port}");
+        // Sherlock.KillProcessAtPort(baseUri.Port).Wait();
         process.StandardInput.WriteLine($"npm start");
         process.BeginOutputReadLine();
 
@@ -88,7 +90,10 @@ class Program
             .Center()
             // Users can resize windows by default.
             // Let's make this one fixed instead.
-            .SetResizable(true)
+            .SetDevToolsEnabled(false)
+            .SetContextMenuEnabled(false)
+            .SetUseOsDefaultSize(false)
+            .SetSize(800, 800)
             .RegisterCustomSchemeHandler("app", (object sender, string scheme, string url, out string contentType) =>
             {
                 contentType = "text/javascript";
@@ -107,6 +112,8 @@ class Program
             .RegisterWebMessageReceivedHandler((object? sender, string message) =>
             {
                 var window = (PhotinoWindow?)sender;
+
+                window?.SetHeight(1024);
 
                 // The message argument is coming in from sendMessage.
                 // "window.external.sendMessage(message: string)"

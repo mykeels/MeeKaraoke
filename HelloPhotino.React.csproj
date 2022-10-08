@@ -19,11 +19,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.9" Condition=" '$(GenerateEmbeddedFilesManifest)' == 'true' " />
+		<PackageReference Include="Mykeels.Processes" Version="0.0.2" />
 		<PackageReference Include="Photino.NET" Version="2.2.2" />
 	</ItemGroup>
 
 	<PropertyGroup>
-		<UiRoot>UserInterface\</UiRoot>
+		<UiRoot>App\</UiRoot>
 		<UiBuildOutput>build\</UiBuildOutput>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' != 'true' ">wwwroot\</WwwRoot>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' == 'true' ">Resources\wwwroot\</WwwRoot>
@@ -40,7 +41,7 @@
 		<EmbeddedResource Include="Resources\**" Condition=" '$(GenerateEmbeddedFilesManifest)' == 'true' " />
 	</ItemGroup>
 
-	<Target Name="EnsureNodeEnv" BeforeTargets="BuildUserInterface" Condition=" !Exists('$(UiRoot)node_modules') ">
+	<Target Name="EnsureNodeEnv" BeforeTargets="BuildApp" Condition=" !Exists('$(UiRoot)node_modules') ">
 		<!-- Ensure Node.js is installed -->
 		<Exec Command="node --version" ContinueOnError="true">
 			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
@@ -48,7 +49,7 @@
 		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
 	</Target>
 
-	<Target Name="BuildUserInterface" BeforeTargets="BeforeBuild">
+	<Target Name="BuildApp" BeforeTargets="BeforeBuild">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
 		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
 		<Exec WorkingDirectory="$(UiRoot)" Command="npm install" />
