@@ -1,0 +1,16 @@
+{
+    "scripts": {
+        "install": "cd App && npm i",
+        "start": "cd App && npm start",
+        "build": "cd App && npm run build",
+        "test": "cd App && npm test",
+        "eject": "cd App && npm run eject",
+        "lint": "cd App && npm run lint",
+        "lint:fix": "cd App && npm run lint:fix",
+        "watch:tsc": "cd App && npm run watch:tsc",
+        "build:tsc": "cd App && npm run build:tsc",
+        "storybook": "cd App && npm run storybook",
+        "build-storybook": "cd App && npm ",
+        "analyze": "cd App && npm run analyze"
+    }
+}

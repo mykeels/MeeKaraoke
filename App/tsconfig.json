@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist",
+    "lib": ["ES6", "ES2019", "ES2020", "DOM"],
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "compileOnSave": false,
+  "include": ["typings/**/*.d.ts", "src/**/*.js"],
+  "exclude": [
+    "node_modules/",
+    "**/*.test.js",
+    "**/*.spec.js",
+    "**/*.stories.js",
+    "dist"
+  ],
+  "typeRoots": ["./node_modules/@types", "./typings"]
+}
