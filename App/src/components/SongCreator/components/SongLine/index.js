@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { DateTime } from "luxon";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 /**
  * @param {object} props
@@ -9,9 +9,18 @@ import React from "react";
  * @returns {JSX.Element}
  */
 export const SongLine = ({ isActive, line, ...props }) => {
+  /** @type {import("react").MutableRefObject<HTMLDivElement>} */
+  const ref = useRef();
+  useEffect(() => {
+    if (isActive) {
+      ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [isActive]);
+
   return (
     <div
       {...props}
+      ref={ref}
       className={classNames(
         "p-2 block w-full border-b border-gray-100 text-xs cursor-pointer",
         {
