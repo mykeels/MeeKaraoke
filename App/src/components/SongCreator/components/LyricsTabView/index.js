@@ -11,9 +11,10 @@ import { SongLine } from "../SongLine";
  * @param {number} [props.cursor]
  * @param {Song} [props.song]
  * @param {(lines: Song) => any} [props.onSongChanged]
+ * @param {(line: LyricLine) => any} [props.onLineClick]
  * @returns {JSX.Element}
  */
-export const LyricsTabView = ({ cursor, defaults, song, onSongChanged }) => {
+export const LyricsTabView = ({ cursor, defaults, song, onSongChanged, onLineClick }) => {
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
   const starts = (durations) => {
@@ -98,6 +99,8 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged }) => {
                 key={`${line}-${i}`}
                 isActive={cursor === i}
                 line={line}
+                // @ts-ignore
+                onClick={() => onLineClick(line)}
               ></SongLine>
             ))}
           </div>
@@ -118,5 +121,6 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged }) => {
 
 LyricsTabView.defaultProps = {
   cursor: 0,
-  onSongChanged: () => {}
+  onSongChanged: () => {},
+  onLineClick: () => {}
 };

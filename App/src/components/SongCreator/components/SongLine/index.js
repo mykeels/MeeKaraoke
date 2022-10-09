@@ -5,7 +5,7 @@ import React from "react";
 /**
  * @param {object} props
  * @param {boolean} props.isActive
- * @param {{ text: string, duration: number, from: number }} props.line
+ * @param {LyricLine} props.line
  * @returns {JSX.Element}
  */
 export const SongLine = ({ isActive, line, ...props }) => {
@@ -13,7 +13,7 @@ export const SongLine = ({ isActive, line, ...props }) => {
     <div
       {...props}
       className={classNames(
-        "p-2 block w-full border-b border-gray-100 text-xs",
+        "p-2 block w-full border-b border-gray-100 text-xs cursor-pointer",
         {
           "bg-blue-100": isActive
         }

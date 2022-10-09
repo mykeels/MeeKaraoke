@@ -6,13 +6,20 @@ import React, { useEffect, useRef, useState } from "react";
 
 /**
  * @param {object} props
+ * @param {number} [props.value]
  * @param {() => any} props.onStart
  * @param {() => any} props.onStop
  * @param {(seconds: number) => any} props.onTick
  * @param {(interval: number) => any} props.onRecordTick
  * @returns {JSX.Element}
  */
-export const TimeKeeper = ({ onStart, onStop, onTick, onRecordTick }) => {
+export const TimeKeeper = ({
+  value,
+  onStart,
+  onStop,
+  onTick,
+  onRecordTick
+}) => {
   const [clock, setClock] = useState(false);
   const [ms, setMs] = useState(0);
   const [recordMs, setRecordMs] = useState(null);
@@ -50,6 +57,9 @@ export const TimeKeeper = ({ onStart, onStop, onTick, onRecordTick }) => {
       typeof onTick === "function" && onTick(ms / 1000);
     }
   }, [ms]);
+  useEffect(() => {
+    setMs(value);
+  }, [value]);
   return (
     <div className="flex w-full text-center items-center justify-center">
       <button
@@ -106,6 +116,7 @@ export const TimeKeeper = ({ onStart, onStop, onTick, onRecordTick }) => {
 };
 
 TimeKeeper.defaultProps = {
+  value: 0,
   onStart: () => {},
   onStop: () => {},
   onTick: () => {},

@@ -46,6 +46,21 @@ const getCurrentLineIndex = (song, timeInSeconds) => {
   );
 };
 
+/**
+ * @param {Song} song
+ * @param {LyricLine} currentLine
+ */
+const getLineTime = (song, currentLine) => {
+  let sum = 1;
+  for (let line of song) {
+    if (line === currentLine) {
+      return sum;
+    }
+    sum += line.duration;
+  }
+  return sum;
+};
+
 /** @param {Song} lines */
 const transformSongLines = (lines) => {
   const starts = (durations) => {
@@ -84,6 +99,8 @@ export const SongCreator = ({ text }) => {
   const [recordCursor, setRecordCursor] = useState(0);
   const currentLine = song[Math.max(cursor, recordCursor)];
 
+  const [timeReset, setTimeReset] = useState(0);
+
   useEffect(() => {
     fetchImages(song).then(setImages);
   }, [song]);
@@ -100,11 +117,16 @@ export const SongCreator = ({ text }) => {
                 type="audio/mpeg"
               />
             </audio>
-            <ImageGallery cursor={cursor} images={images} line={currentLine} />
+            <ImageGallery
+              cursor={Math.max(recordCursor, cursor)}
+              images={images}
+              line={currentLine}
+            />
             <div>
               <TimeKeeper
+                value={timeReset}
                 onTick={(seconds) => {
-                  setCursor(getCurrentLineIndex(song, seconds));
+                  setCursor(getCurrentLineIndex(song, seconds + timeReset));
                 }}
                 onRecordTick={(duration) => {
                   setSong((lines) =>
@@ -135,9 +157,15 @@ export const SongCreator = ({ text }) => {
               text,
               active: "text"
             }}
-            cursor={recordCursor || cursor}
+            cursor={Math.max(recordCursor, cursor)}
             song={song}
             onSongChanged={setSong}
+            onLineClick={(line) => {
+              const seconds = getLineTime(song, line);
+              setTimeReset(seconds);
+              audioRef.current.currentTime = seconds;
+              setRecordCursor(getCurrentLineIndex(song, seconds));
+            }}
           ></LyricsTabView>
         </div>
       </div>

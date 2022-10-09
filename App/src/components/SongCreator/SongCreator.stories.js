@@ -17,7 +17,6 @@ Hercules and his gifts
 Spiderman's control
 And Batman with his fists
 And clearly I don't see myself upon that list
-
 But she said, where d'you wanna go?
 How much you wanna risk?
 I'm not looking for somebody
@@ -26,7 +25,6 @@ Some superhero
 Some fairytale bliss
 Just something I can turn to
 Somebody I can kiss
-
 I want something just like this
 Doo-doo-doo, doo-doo-doo
 Doo-doo-doo, doo-doo
