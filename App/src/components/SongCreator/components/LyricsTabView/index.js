@@ -9,14 +9,13 @@ import { SongLine } from "../SongLine";
  * @param {object} props
  * @param {{ text: string, active: string }} [props.defaults]
  * @param {number} [props.cursor]
+ * @param {Song} [props.song]
  * @param {(lines: Song) => any} [props.onSongChanged]
  * @returns {JSX.Element}
  */
-export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
+export const LyricsTabView = ({ cursor, defaults, song, onSongChanged }) => {
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
-  /** @type {[Song, React.Dispatch<React.SetStateAction<Song>>]} */
-  const [songLines, setSongLines] = useState([]);
   const starts = (durations) => {
     let sum = 0;
     const arr = [];
@@ -33,7 +32,6 @@ export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
       ...line,
       from: startTimes[i]
     }));
-    setSongLines(linesWithFrom);
     onSongChanged(linesWithFrom);
   };
   /** @param {string} text */
@@ -95,7 +93,7 @@ export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
       <div className="tab-content py-2">
         {active === "pretty" ? (
           <div>
-            {songLines.map((line, i) => (
+            {song.map((line, i) => (
               <SongLine
                 key={`${line}-${i}`}
                 cursor={cursor}

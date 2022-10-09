@@ -1,6 +1,6 @@
 import "./SongCreator.css";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LyricsTabView } from "./components/LyricsTabView";
 import axios from "axios";
 import rake from "rake-js";
@@ -36,16 +36,40 @@ const fetchImages = async (lines, intervals = 5) => {
 };
 
 /**
+ * @param {Song} song
+ * @param {number} cursor
+ */
+const getCurrentLine = (song, cursor) => {
+  return song.find(
+    (line) => cursor > line.from && cursor <= line.from + line.duration
+  );
+};
+
+/**
  *
  * @param {object} props
  * @param {string} props.text
  * @returns {JSX.Element}
  */
 export const SongCreator = ({ text }) => {
+  /** @type {ReactState<Song>} */
+  const [song, setSong] = useState([]);
+  /** @type {ReactState<string[]>} */
   const [images, setImages] = useState([]);
+  /** @type {ReactState<number>} */
   const [cursor, setCursor] = useState(0);
   /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
   const audioRef = useRef();
+  const currentLine = getCurrentLine(song, cursor) || {
+    text: "I've been reading books of old, The legends and the myths, Achilles and his Gold",
+    duration: 0,
+    from: 0,
+    imageURL: ""
+  };
+
+  useEffect(() => {
+    fetchImages(song).then(setImages);
+  }, [song]);
 
   return (
     <div className="bg-white p-4 block w-full">
@@ -59,9 +83,7 @@ export const SongCreator = ({ text }) => {
                 type="audio/mpeg"
               />
             </audio>
-            <div className="inline-block bg-gray-100 preview">
-              <ImageGallery cursor={cursor} images={images} />
-            </div>
+            <ImageGallery cursor={cursor} images={images} line={currentLine} />
             <div>
               <TimeKeeper
                 onTick={setCursor}
@@ -81,7 +103,8 @@ export const SongCreator = ({ text }) => {
               active: "text"
             }}
             cursor={cursor}
-            onSongChanged={(lines) => fetchImages(lines).then(setImages)}
+            song={song}
+            onSongChanged={setSong}
           ></LyricsTabView>
         </div>
       </div>

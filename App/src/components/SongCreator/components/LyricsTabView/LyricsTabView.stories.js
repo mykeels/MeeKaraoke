@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { LyricsTabView } from "./";
 
@@ -8,16 +8,30 @@ export default {
   decorators: []
 };
 
-export const Index = () => (
-  <LyricsTabView defaults={{ text: somethingJustLikeThisLyrics }} />
-);
+export const Index = () => {
+  const [song, setSong] = useState([]);
 
-export const Cursor5 = () => (
-  <LyricsTabView
-    defaults={{ text: somethingJustLikeThisLyrics, active: "pretty" }}
-    cursor={5}
-  />
-);
+  return (
+    <LyricsTabView
+      defaults={{ text: somethingJustLikeThisLyrics }}
+      song={song}
+      onSongChanged={setSong}
+    />
+  );
+};
+
+export const Cursor5 = () => {
+  const [song, setSong] = useState([]);
+
+  return (
+    <LyricsTabView
+      defaults={{ text: somethingJustLikeThisLyrics, active: "pretty" }}
+      song={song}
+      onSongChanged={setSong}
+      cursor={5}
+    />
+  );
+};
 
 var somethingJustLikeThisLyrics = `I've been reading books of old
 The legends and the myths
