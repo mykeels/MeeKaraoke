@@ -12,9 +12,17 @@ import { SongLine } from "../SongLine";
  * @param {Song} [props.song]
  * @param {(lines: Song) => any} [props.onSongChanged]
  * @param {(line: LyricLine) => any} [props.onLineClick]
+ * @param {() => any} [props.onSave]
  * @returns {JSX.Element}
  */
-export const LyricsTabView = ({ cursor, defaults, song, onSongChanged, onLineClick }) => {
+export const LyricsTabView = ({
+  cursor,
+  defaults,
+  song,
+  onSongChanged,
+  onLineClick,
+  onSave
+}) => {
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
   const starts = (durations) => {
@@ -60,6 +68,19 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged, onLineCli
         className="nav nav-tabs flex flex-row flex-wrap list-none border-b-0 pl-0 justify-end"
         role="tablist"
       >
+        {text ? (
+          <li className="nav-item" role="presentation">
+            <button
+              className={classNames(
+                "w-full block text-xs leading-tight uppercase px-6 py-2"
+              )}
+              onClick={onSave}
+              role="tab"
+            >
+              💾
+            </button>
+          </li>
+        ) : null}
         <li className="nav-item" role="presentation">
           <button
             className={classNames(
@@ -70,7 +91,7 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged, onLineCli
             )}
             onClick={() => setActive("pretty")}
             role="tab"
-            aria-selected="true"
+            aria-selected={active === "pretty" ? "true" : "false"}
           >
             Pretty
           </button>
@@ -85,7 +106,7 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged, onLineCli
             )}
             onClick={() => setActive("text")}
             role="tab"
-            aria-selected="false"
+            aria-selected={active === "text" ? "true" : "false"}
           >
             Text
           </button>
@@ -94,15 +115,19 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged, onLineCli
       <div className="tab-content py-2">
         {active === "pretty" ? (
           <div>
-            {song.map((line, i) => (
-              <SongLine
-                key={`${line}-${i}`}
-                isActive={cursor === i}
-                line={line}
-                // @ts-ignore
-                onClick={() => onLineClick(line)}
-              ></SongLine>
-            ))}
+            {text ? (
+              song.map((line, i) => (
+                <SongLine
+                  key={`${line}-${i}`}
+                  isActive={cursor === i}
+                  line={line}
+                  // @ts-ignore
+                  onClick={() => onLineClick(line)}
+                ></SongLine>
+              ))
+            ) : (
+              <div className="text-center w-full">No lyrics found</div>
+            )}
           </div>
         ) : (
           <div>

@@ -33,6 +33,19 @@ export const Cursor5 = () => {
   );
 };
 
+export const Empty = () => {
+  const [song, setSong] = useState([]);
+
+  return (
+    <LyricsTabView
+      defaults={{ text: "" }}
+      song={song}
+      onSongChanged={setSong}
+      cursor={5}
+    />
+  );
+};
+
 var somethingJustLikeThisLyrics = `I've been reading books of old
 The legends and the myths
 Achilles and his gold

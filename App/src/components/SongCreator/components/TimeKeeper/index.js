@@ -58,21 +58,22 @@ export const TimeKeeper = ({
     }
   }, [ms]);
   useEffect(() => {
-    setMs(value);
+    setMs(value * 1000);
   }, [value]);
   return (
-    <div className="flex w-full text-center items-center justify-center">
-      <button
-        className={classNames("text-2xl mx-4 record", {
-          "hover:animate-pulse": recordMs === null
-        })}
-        onClick={() => record()}
-      >
-        {recordMs !== null ? "🔴" : "⏺️"}
+    <div className="flex w-full text-center items-center justify-center py-2">
+      <button className={classNames("mx-4 record")} onClick={() => record()}>
+        {recordMs !== null ? (
+          <span className="inline-block bg-red-500 text-center text-white px-4 py-2 text-xs rounded shadow">
+            Tap!
+          </span>
+        ) : (
+          <span className="text-2xl">⏺️</span>
+        )}
       </button>
       {!clock ? (
         <button
-          className="text-4xl mx-4 hover:animate-pulse"
+          className="text-4xl mx-4 play"
           onClick={() => start()}
         >
           <svg
@@ -92,14 +93,14 @@ export const TimeKeeper = ({
         </button>
       ) : null}
       {clock ? (
-        <button className="text-4xl mx-4" onClick={() => stop()}>
+        <button className="text-4xl mx-4 stop" onClick={() => stop()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            fill="#000"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-8 h-8"
+            className="w-10 h-10"
           >
             <path
               strokeLinecap="round"

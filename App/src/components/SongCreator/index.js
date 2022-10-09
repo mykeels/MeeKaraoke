@@ -51,7 +51,7 @@ const getCurrentLineIndex = (song, timeInSeconds) => {
  * @param {LyricLine} currentLine
  */
 const getLineTime = (song, currentLine) => {
-  let sum = 1;
+  let sum = 0.01;
   for (let line of song) {
     if (line === currentLine) {
       return sum;
@@ -126,7 +126,7 @@ export const SongCreator = ({ text }) => {
               <TimeKeeper
                 value={timeReset}
                 onTick={(seconds) => {
-                  setCursor(getCurrentLineIndex(song, seconds + timeReset));
+                  setCursor(getCurrentLineIndex(song, seconds));
                 }}
                 onRecordTick={(duration) => {
                   setSong((lines) =>
