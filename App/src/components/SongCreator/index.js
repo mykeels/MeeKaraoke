@@ -6,6 +6,7 @@ import axios from "axios";
 import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
+import { DateTime } from "luxon";
 
 /** @param {Song} lines */
 const fetchImages = async (lines, intervals = 5) => {
@@ -165,6 +166,24 @@ export const SongCreator = ({ text }) => {
               setTimeReset(seconds);
               audioRef.current.currentTime = seconds;
               setRecordCursor(getCurrentLineIndex(song, seconds));
+            }}
+            onSave={() => {
+              const data = {
+                lines: song,
+                images,
+                duration: song.reduce((sum, line) => sum + line.duration, 0)
+              };
+              const blob = new Blob([JSON.stringify(data, null, 2)]);
+              const url = URL.createObjectURL(blob);
+              const downloadElem = document.createElement("a");
+              downloadElem.setAttribute("href", url);
+              downloadElem.setAttribute(
+                "download",
+                `karaoke-${DateTime.local().toFormat(
+                  "yyyy-MM-dd-hh-mm-ss"
+                )}.mee.json`
+              );
+              downloadElem.click();
             }}
           ></LyricsTabView>
         </div>

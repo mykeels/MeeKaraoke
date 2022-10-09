@@ -17,8 +17,7 @@ export const Index = () => (
     line={{
       text: "I've been reading books of old, The legends and the myths, Achilles and his Gold",
       duration: 0,
-      from: 0,
-      imageURL: ""
+      from: 0
     }}
   />
 );

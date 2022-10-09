@@ -51,7 +51,6 @@ export const LyricsTabView = ({
       .map((line) => line.trim())
       .map((text) => ({
         text,
-        imageURL: "",
         duration: 1,
         from: 0
       }));
@@ -147,5 +146,6 @@ export const LyricsTabView = ({
 LyricsTabView.defaultProps = {
   cursor: 0,
   onSongChanged: () => {},
-  onLineClick: () => {}
+  onLineClick: () => {},
+  onSave: () => {}
 };
