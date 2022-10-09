@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { LyricsTabView } from "./components/LyricsTabView";
 import axios from "axios";
 import rake from "rake-js";
+import { TimeKeeper } from "./components/TimeKeeper";
 
 /** @param {Song} lines */
 const fetchImages = async (lines, intervals = 5) => {
@@ -41,6 +42,7 @@ const fetchImages = async (lines, intervals = 5) => {
  */
 export const SongCreator = ({ lyrics }) => {
   const [images, setImages] = useState([]);
+  const [cursor, setCursor] = useState(0);
 
   console.log(images);
 
@@ -51,6 +53,9 @@ export const SongCreator = ({ lyrics }) => {
         <div className="inline-block w-full md:w-5/12">
           <div className="p-4 sticky top-10">
             <div className="inline-block bg-gray-100 preview"></div>
+            <div>
+              <TimeKeeper onTick={setCursor} />
+            </div>
           </div>
         </div>
         <div className="inline-block w-full md:w-7/12 p-4">
@@ -59,6 +64,7 @@ export const SongCreator = ({ lyrics }) => {
               lyrics,
               active: "text"
             }}
+            cursor={cursor}
             onSongChanged={(lines) => fetchImages(lines).then(setImages)}
           ></LyricsTabView>
         </div>

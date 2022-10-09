@@ -6,8 +6,6 @@ import React from "react";
  * @param {object} props
  * @param {number} props.cursor
  * @param {{ text: string, duration: number, from: number }} props.line
- * @param {(text: string) => Promise<string>} [props.getImageURL]
- * @param {(imageURL: string) => any} [props.onImageChange]
  * @returns {JSX.Element}
  */
 export const SongLine = ({ cursor, line, ...props }) => {
