@@ -1,6 +1,6 @@
 import "./SongCreator.css";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { LyricsTabView } from "./components/LyricsTabView";
 import axios from "axios";
 import rake from "rake-js";
@@ -38,12 +38,14 @@ const fetchImages = async (lines, intervals = 5) => {
 /**
  *
  * @param {object} props
- * @param {string} props.lyrics
+ * @param {string} props.text
  * @returns {JSX.Element}
  */
-export const SongCreator = ({ lyrics }) => {
+export const SongCreator = ({ text }) => {
   const [images, setImages] = useState([]);
   const [cursor, setCursor] = useState(0);
+  /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
+  const audioRef = useRef();
 
   return (
     <div className="bg-white p-4 block w-full">
@@ -51,18 +53,31 @@ export const SongCreator = ({ lyrics }) => {
       <div className="flex w-full">
         <div className="inline-block w-full md:w-5/12">
           <div className="p-4 sticky top-10">
+            <audio ref={audioRef}>
+              <source
+                src="./sounds/something-just-like-this.mp3"
+                type="audio/mpeg"
+              />
+            </audio>
             <div className="inline-block bg-gray-100 preview">
               <ImageGallery cursor={cursor} images={images} />
             </div>
             <div>
-              <TimeKeeper onTick={setCursor} />
+              <TimeKeeper
+                onTick={setCursor}
+                onStart={() => audioRef.current.play()}
+                onStop={() => {
+                  audioRef.current.pause();
+                  audioRef.current.currentTime = 0;
+                }}
+              />
             </div>
           </div>
         </div>
         <div className="inline-block w-full md:w-7/12 p-4">
           <LyricsTabView
             defaults={{
-              lyrics,
+              text,
               active: "text"
             }}
             cursor={cursor}

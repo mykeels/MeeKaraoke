@@ -7,14 +7,14 @@ import { SongLine } from "../SongLine";
 
 /**
  * @param {object} props
- * @param {{ lyrics: string, active: string }} [props.defaults]
+ * @param {{ text: string, active: string }} [props.defaults]
  * @param {number} [props.cursor]
  * @param {(lines: Song) => any} [props.onSongChanged]
  * @returns {JSX.Element}
  */
 export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
   const [active, setActive] = useState(defaults?.active || "text");
-  const [lyrics, setLyrics] = useState(defaults?.lyrics || "");
+  const [text, setText] = useState(defaults?.text || "");
   /** @type {[Song, React.Dispatch<React.SetStateAction<Song>>]} */
   const [songLines, setSongLines] = useState([]);
   const starts = (durations) => {
@@ -36,9 +36,9 @@ export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
     setSongLines(linesWithFrom);
     onSongChanged(linesWithFrom);
   };
-  /** @param {string} lyrics */
-  const updateSongLyrics = (lyrics) => {
-    const lines = lyrics
+  /** @param {string} text */
+  const updateSongLyrics = (text) => {
+    const lines = text
       .replace(/\n\n+/g, "\n\n")
       .split("\n")
       .map((line) => line.trim())
@@ -52,8 +52,8 @@ export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
   };
 
   useEffect(() => {
-    updateSongLyrics(lyrics);
-  }, [lyrics]);
+    updateSongLyrics(text);
+  }, [text]);
 
   return (
     <div className="w-full">
@@ -108,8 +108,8 @@ export const LyricsTabView = ({ cursor, defaults, onSongChanged }) => {
             <textarea
               className="h-64 w-full p-2 focus:outline-none bg-gray-100 custom-scroller text-xs"
               placeholder="Paste Song Lyrics here"
-              value={lyrics}
-              onChange={(e) => setLyrics(e.target.value)}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
             ></textarea>
           </div>
         )}

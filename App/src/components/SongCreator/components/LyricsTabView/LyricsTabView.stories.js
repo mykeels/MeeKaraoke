@@ -9,12 +9,12 @@ export default {
 };
 
 export const Index = () => (
-  <LyricsTabView defaults={{ lyrics: somethingJustLikeThisLyrics }} />
+  <LyricsTabView defaults={{ text: somethingJustLikeThisLyrics }} />
 );
 
 export const Cursor5 = () => (
   <LyricsTabView
-    defaults={{ lyrics: somethingJustLikeThisLyrics, active: "pretty" }}
+    defaults={{ text: somethingJustLikeThisLyrics, active: "pretty" }}
     cursor={5}
   />
 );

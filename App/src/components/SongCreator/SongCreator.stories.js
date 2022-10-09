@@ -7,7 +7,7 @@ export default {
   component: SongCreator
 };
 
-export const Index = () => <SongCreator lyrics={somethingJustLikeThisLyrics} />;
+export const Index = () => <SongCreator text={somethingJustLikeThisLyrics} />;
 
 var somethingJustLikeThisLyrics = `I've been reading books of old
 The legends and the myths

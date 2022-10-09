@@ -31,6 +31,9 @@ export const TimeKeeper = ({ onStart, onStop, onTick }) => {
   }, [ms]);
   return (
     <div className="flex w-full text-center items-center justify-center">
+        <button className="text-4xl mx-4">
+          ⏺️
+        </button>
       {!clock ? (
         <button className="text-4xl mx-4" onClick={() => start()}>
           ▶️
