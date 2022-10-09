@@ -8,4 +8,4 @@ export default {
   decorators: []
 };
 
-export const Index = () => <TimeKeeper />;
+export const Index = () => <TimeKeeper onRecordTick={console.log} />;

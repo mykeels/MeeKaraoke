@@ -4,19 +4,18 @@ import React from "react";
 
 /**
  * @param {object} props
- * @param {number} props.cursor
+ * @param {boolean} props.isActive
  * @param {{ text: string, duration: number, from: number }} props.line
  * @returns {JSX.Element}
  */
-export const SongLine = ({ cursor, line, ...props }) => {
+export const SongLine = ({ isActive, line, ...props }) => {
   return (
     <div
       {...props}
       className={classNames(
         "p-2 block w-full border-b border-gray-100 text-xs",
         {
-          "bg-blue-100":
-            cursor > line.from && cursor <= line.from + line.duration
+          "bg-blue-100": isActive
         }
       )}
     >

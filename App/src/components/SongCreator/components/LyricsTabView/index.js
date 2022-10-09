@@ -96,7 +96,7 @@ export const LyricsTabView = ({ cursor, defaults, song, onSongChanged }) => {
             {song.map((line, i) => (
               <SongLine
                 key={`${line}-${i}`}
-                cursor={cursor}
+                isActive={cursor === i}
                 line={line}
               ></SongLine>
             ))}

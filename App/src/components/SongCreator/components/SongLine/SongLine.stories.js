@@ -10,7 +10,7 @@ export default {
 
 export const Index = () => (
   <SongLine
-    cursor={1}
+    isActive={true}
     line={{
       duration: 1,
       from: 0,
@@ -21,7 +21,7 @@ export const Index = () => (
 
 export const Inactive = () => (
   <SongLine
-    cursor={5}
+    isActive={false}
     line={{
       duration: 1,
       from: 0,

@@ -37,12 +37,31 @@ const fetchImages = async (lines, intervals = 5) => {
 
 /**
  * @param {Song} song
- * @param {number} cursor
+ * @param {number} timeInSeconds
  */
-const getCurrentLine = (song, cursor) => {
-  return song.find(
-    (line) => cursor > line.from && cursor <= line.from + line.duration
+const getCurrentLineIndex = (song, timeInSeconds) => {
+  return song.findIndex(
+    (line) =>
+      timeInSeconds > line.from && timeInSeconds <= line.from + line.duration
   );
+};
+
+/** @param {Song} lines */
+const transformSongLines = (lines) => {
+  const starts = (durations) => {
+    let sum = 0;
+    const arr = [];
+    for (let i = 0; i < durations.length; i++) {
+      sum += durations[i - 1] || 0;
+      arr.push(sum);
+    }
+    return arr;
+  };
+  const startTimes = starts(lines.map((l) => l.duration));
+  return lines.map((line, i) => ({
+    ...line,
+    from: startTimes[i]
+  }));
 };
 
 /**
@@ -60,12 +79,10 @@ export const SongCreator = ({ text }) => {
   const [cursor, setCursor] = useState(0);
   /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
   const audioRef = useRef();
-  const currentLine = getCurrentLine(song, cursor) || {
-    text: "I've been reading books of old, The legends and the myths, Achilles and his Gold",
-    duration: 0,
-    from: 0,
-    imageURL: ""
-  };
+
+  /** @type {ReactState<number>} */
+  const [recordCursor, setRecordCursor] = useState(0);
+  const currentLine = song[Math.max(cursor, recordCursor)];
 
   useEffect(() => {
     fetchImages(song).then(setImages);
@@ -86,11 +103,27 @@ export const SongCreator = ({ text }) => {
             <ImageGallery cursor={cursor} images={images} line={currentLine} />
             <div>
               <TimeKeeper
-                onTick={setCursor}
-                onStart={() => audioRef.current.play()}
+                onTick={(seconds) => {
+                  setCursor(getCurrentLineIndex(song, seconds));
+                }}
+                onRecordTick={(duration) => {
+                  setSong((lines) =>
+                    transformSongLines(
+                      lines.map((line) =>
+                        line === currentLine ? { ...line, duration } : line
+                      )
+                    )
+                  );
+                  setRecordCursor(recordCursor + 1);
+                }}
+                onStart={() => {
+                  audioRef.current.play();
+                }}
                 onStop={() => {
                   audioRef.current.pause();
                   audioRef.current.currentTime = 0;
+                  setCursor(0);
+                  setRecordCursor(0);
                 }}
               />
             </div>
@@ -102,7 +135,7 @@ export const SongCreator = ({ text }) => {
               text,
               active: "text"
             }}
-            cursor={cursor}
+            cursor={recordCursor || cursor}
             song={song}
             onSongChanged={setSong}
           ></LyricsTabView>
