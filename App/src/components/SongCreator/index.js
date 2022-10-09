@@ -28,7 +28,7 @@ const fetchImages = async (lines, intervals = 5) => {
   return Promise.all(
     keywords.map((keyword) =>
       axios
-        .get(`https://source.unsplash.com/random/640x480/?${keyword}`, {
+        .get(`https://source.unsplash.com/random/1280x720/?${keyword}`, {
           maxRedirects: 0
         })
         .then((res) => res.request.responseURL)
@@ -104,7 +104,7 @@ export const SongCreator = ({ text }) => {
 
   useEffect(() => {
     fetchImages(song).then(setImages);
-  }, [song]);
+  }, [song.length]);
 
   return (
     <div className="bg-white p-4 block w-full">
@@ -166,6 +166,7 @@ export const SongCreator = ({ text }) => {
               setTimeReset(seconds);
               audioRef.current.currentTime = seconds;
               setRecordCursor(getCurrentLineIndex(song, seconds));
+              setCursor(getCurrentLineIndex(song, seconds));
             }}
             onSave={() => {
               const data = {
@@ -184,6 +185,12 @@ export const SongCreator = ({ text }) => {
                 )}.mee.json`
               );
               downloadElem.click();
+            }}
+            onClear={() => {
+              setSong([]);
+              setCursor(0);
+              setRecordCursor(0);
+              setTimeReset(0);
             }}
           ></LyricsTabView>
         </div>

@@ -1,7 +1,7 @@
 import "./LyricsTabView.css";
 
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { SongLine } from "../SongLine";
 
@@ -13,6 +13,8 @@ import { SongLine } from "../SongLine";
  * @param {(lines: Song) => any} [props.onSongChanged]
  * @param {(line: LyricLine) => any} [props.onLineClick]
  * @param {() => any} [props.onSave]
+ * @param {() => any} [props.onClear]
+ * @param {() => any} [props.onOpen]
  * @returns {JSX.Element}
  */
 export const LyricsTabView = ({
@@ -21,8 +23,12 @@ export const LyricsTabView = ({
   song,
   onSongChanged,
   onLineClick,
-  onSave
+  onSave,
+  onClear,
+  onOpen
 }) => {
+  /** @type {import("react").MutableRefObject<HTMLInputElement>} */
+  const fileRef = useRef();
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
   const starts = (durations) => {
@@ -68,18 +74,49 @@ export const LyricsTabView = ({
         role="tablist"
       >
         {text ? (
-          <li className="nav-item" role="presentation">
-            <button
-              className={classNames(
-                "w-full block text-xs leading-tight uppercase px-6 py-2"
-              )}
-              onClick={onSave}
-              role="tab"
-            >
-              💾
-            </button>
-          </li>
-        ) : null}
+          <>
+            <li className="nav-item" role="presentation">
+              <button
+                className={classNames(
+                  "w-full block text-xs leading-tight uppercase px-6 py-2"
+                )}
+                role="tab"
+                onClick={() => {
+                  setText("");
+                  onClear();
+                }}
+              >
+                ❌
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button
+                className={classNames(
+                  "w-full block text-xs leading-tight uppercase px-6 py-2"
+                )}
+                onClick={onSave}
+                role="tab"
+              >
+                💾
+              </button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li className="nav-item" role="presentation">
+              <button
+                className={classNames(
+                  "w-full block text-xs leading-tight uppercase px-6 py-2"
+                )}
+                role="tab"
+                onClick={onOpen}
+              >
+                📂
+              </button>
+              <input type="file" ref={fileRef} />
+            </li>
+          </>
+        )}
         <li className="nav-item" role="presentation">
           <button
             className={classNames(
@@ -147,5 +184,7 @@ LyricsTabView.defaultProps = {
   cursor: 0,
   onSongChanged: () => {},
   onLineClick: () => {},
-  onSave: () => {}
+  onSave: () => {},
+  onClear: () => {},
+  onOpen: () => {}
 };

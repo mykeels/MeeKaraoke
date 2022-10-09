@@ -44,7 +44,7 @@ export const TimeKeeper = ({
   };
   const record = () => {
     if (!clock) {
-      setRecordMs(0);
+      setRecordMs(ms);
       start();
     } else {
       onRecordTick((ms - recordMs) / 1000);
