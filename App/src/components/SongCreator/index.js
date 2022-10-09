@@ -5,6 +5,7 @@ import { LyricsTabView } from "./components/LyricsTabView";
 import axios from "axios";
 import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
+import { ImageGallery } from "./components/ImageGallery";
 
 /** @param {Song} lines */
 const fetchImages = async (lines, intervals = 5) => {
@@ -44,15 +45,15 @@ export const SongCreator = ({ lyrics }) => {
   const [images, setImages] = useState([]);
   const [cursor, setCursor] = useState(0);
 
-  console.log(images);
-
   return (
     <div className="bg-white p-4 block w-full">
       <div className="block w-full text-right"></div>
       <div className="flex w-full">
         <div className="inline-block w-full md:w-5/12">
           <div className="p-4 sticky top-10">
-            <div className="inline-block bg-gray-100 preview"></div>
+            <div className="inline-block bg-gray-100 preview">
+              <ImageGallery cursor={cursor} images={images} />
+            </div>
             <div>
               <TimeKeeper onTick={setCursor} />
             </div>
