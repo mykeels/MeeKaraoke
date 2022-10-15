@@ -26,7 +26,7 @@ class Program
         dotenv.net.DotEnv.Load();
 
         // Window title declared here for visibility
-        string windowTitle = "Photino.React Demo App";
+        string windowTitle = "MeeKaraoke - The Ultimate Karaoke Creator";
         string baseUrl = IsDebugMode ? Environment.GetEnvironmentVariable("APP_URL") ?? "http://localhost:3000" : StartReleaseServer(args);
 
         // Creating a new PhotinoWindow instance with the fluent API
@@ -42,7 +42,7 @@ class Program
             .SetDevToolsEnabled(false)
             .SetContextMenuEnabled(false)
             .SetUseOsDefaultSize(false)
-            .SetSize(800, 800)
+            .SetSize(1280, 800)
             .RegisterCustomSchemeHandler("app", (object sender, string scheme, string url, out string contentType) =>
             {
                 contentType = "text/javascript";
