@@ -1,0 +1,16 @@
+.image-slider {
+  scrollbar-color: #521f49 transparent;
+  scrollbar-width: thin;
+}
+
+.image-slider-wrapper::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+.image-slider-wrapper::-webkit-scrollbar-thumb {
+  border-top: 4px solid #521f49;
+}
+.image-slider-wrapper::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
