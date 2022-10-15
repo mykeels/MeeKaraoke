@@ -92,7 +92,7 @@ export const LyricsTabView = ({
             <li className="nav-item" role="presentation">
               <button
                 className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2"
+                  "w-full block text-xs leading-tight uppercase px-6 py-2  hover:bg-purple-100 hover:text-white"
                 )}
                 onClick={onSave}
                 role="tab"
@@ -106,7 +106,7 @@ export const LyricsTabView = ({
             <li className="nav-item" role="presentation">
               <button
                 className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2"
+                  "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
                 )}
                 role="tab"
                 onClick={onOpen}
@@ -120,9 +120,10 @@ export const LyricsTabView = ({
         <li className="nav-item" role="presentation">
           <button
             className={classNames(
-              "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-gray-100",
+              "w-full block text-xs leading-tight uppercase px-6 py-2",
               {
-                "bg-gray-100": active === "pretty"
+                "bg-purple-200 text-white": active === "pretty",
+                "hover:bg-purple-100": active !== "pretty"
               }
             )}
             onClick={() => setActive("pretty")}
@@ -135,9 +136,10 @@ export const LyricsTabView = ({
         <li className="nav-item" role="presentation">
           <button
             className={classNames(
-              "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-gray-100",
+              "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100",
               {
-                "bg-gray-100": active === "text"
+                "bg-purple-200 text-white": active === "text",
+                "hover:bg-purple-100": active !== "text"
               }
             )}
             onClick={() => setActive("text")}
@@ -168,7 +170,7 @@ export const LyricsTabView = ({
         ) : (
           <div>
             <textarea
-              className="h-64 w-full p-2 focus:outline-none bg-gray-100 custom-scroller text-xs"
+              className="h-75vh w-full p-2 bg-pink text-purple-200 custom-scroller"
               placeholder="Paste Song Lyrics here"
               value={text}
               onChange={(e) => setText(e.target.value)}

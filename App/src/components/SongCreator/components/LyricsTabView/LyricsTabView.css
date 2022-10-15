@@ -9,5 +9,9 @@
 
 .custom-scroller::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #8b8b8b;
+  background-color: #521f49;
+}
+
+.h-75vh {
+  height: 75vh;
 }
