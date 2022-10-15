@@ -11,12 +11,10 @@ export const App = () => {
   const [state, setState] = useState(null);
   /** @type {ReactState<boolean | "open">} */
   const [isFileUploadActive, setIsFileUploadActive] = useState(false);
-  console.log(state);
   return (
     <div
       className="block overflow-auto custom-scroller h-screen"
       onDragEnter={(e) => {
-        console.log(e.type);
         e.preventDefault();
         e.stopPropagation();
         if (e.type === "dragenter" || e.type === "dragover") {
@@ -29,14 +27,14 @@ export const App = () => {
     >
       {isFileUploadActive ? (
         <SavedFileUploader
+          className="fixed top-0 left-0 z-10"
           open={isFileUploadActive}
           onKaraokeFileReceived={(karaoke) => {
-            console.log(karaoke);
             setIsFileUploadActive(false);
             setState({
               ...karaoke,
               audioUrl: null,
-              title: "Uploaded File",
+              title: karaoke.title || "karaoke",
               lyrics: karaoke.song.map((l) => l.text).join("\n")
             });
             setStage(1);
@@ -65,6 +63,7 @@ export const App = () => {
         />
       ) : (
         <SongCreator
+          title={state.title}
           url={state.audioUrl}
           onReset={() => {
             setState(null);

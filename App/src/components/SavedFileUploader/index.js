@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 /**
  * @typedef {object} SongUploaderProps
- * @property {(karaoke: { song: Song, images: string[] }) => any} onKaraokeFileReceived
+ * @property {(karaoke: { title: string, song: Song, images: string[] }) => any} onKaraokeFileReceived
  * @property {any} [className]
  * @property {boolean | "open"} [open] immediately opens the File Dialog when set to "open"
  */
@@ -79,11 +79,10 @@ export const SavedFileUploader = ({
         accept=".mee.json"
         className="file-upload fixed top-0 left-0 h-screen w-screen cursor-pointer"
         onChange={(e) => {
-          console.log(e);
           /** @type {HTMLInputElement} */
           const input = e.target;
           grabFileURL(input).then((text) => {
-            /** @type {{ lines: Song, images: string[] }} */
+            /** @type {{ title: string, lines: Song, images: string[] }} */
             const karaoke = JSON.parse(text);
             onKaraokeFileReceived({ ...karaoke, song: karaoke.lines });
           });

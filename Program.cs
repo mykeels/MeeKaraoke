@@ -31,6 +31,7 @@ class Program
 
         // Creating a new PhotinoWindow instance with the fluent API
         var window = new PhotinoWindow()
+            .SetGrantBrowserPermissions(true)
             .SetTitle(windowTitle)
             // Resize to a percentage of the main monitor work area
             //.Resize(50, 50, "%")

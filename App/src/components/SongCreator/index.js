@@ -56,6 +56,7 @@ const transformSongLines = (lines) => {
 /**
  * @typedef {object} SongCreatorProps
  * @property {string} [className]
+ * @property {string} [title]
  * @property {string} url
  * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
@@ -67,6 +68,7 @@ const transformSongLines = (lines) => {
  * @type {React.FC<SongCreatorProps>}
  */
 export const SongCreator = ({
+  title,
   url,
   className,
   getImages,
@@ -90,7 +92,6 @@ export const SongCreator = ({
   const [timeReset, setTimeReset] = useState(0);
 
   useEffect(() => {
-    console.log("setting defaults");
     if (defaults?.song?.length) {
       setSong(defaults?.song || []);
     }
@@ -155,7 +156,6 @@ export const SongCreator = ({
             song={song}
             onSongChanged={(lines) => {
               setSong(lines);
-              console.log(lines);
               if (lines.length !== song.length) {
                 getImages(lines).then(setImages);
               }
@@ -169,6 +169,7 @@ export const SongCreator = ({
             }}
             onSave={() => {
               const data = {
+                title,
                 lines: song,
                 images,
                 duration: song.reduce((sum, line) => sum + line.duration, 0)
@@ -179,7 +180,7 @@ export const SongCreator = ({
               downloadElem.setAttribute("href", url);
               downloadElem.setAttribute(
                 "download",
-                `karaoke-${DateTime.local().toFormat(
+                `${title || "karaoke"}-${DateTime.local().toFormat(
                   "yyyy-MM-dd-hh-mm-ss"
                 )}.mee.json`
               );
@@ -200,6 +201,7 @@ export const SongCreator = ({
 };
 
 SongCreator.defaultProps = {
+  title: "karaoke",
   getImages,
   LyricsTabView,
   onReset: () => {},
