@@ -85,14 +85,14 @@ export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
   return (
     <div
       className={classNames(
-        "block h-screen w-screen px-16 py-8 song-creator overflow-auto",
+        "block h-screen w-screen px-4 lg:px-16 py-8 song-creator overflow-auto",
         className
       )}
     >
       <div className="block w-full text-right"></div>
-      <div className="flex w-full">
-        <div className="inline-block w-full md:w-5/12">
-          <div className="px-4 sticky top-0">
+      <div className="block lg:flex w-full">
+        <div className="inline-block w-full lg:w-5/12">
+          <div className="lg:px-4 sticky top-0">
             <audio ref={audioRef}>
               <source
                 src={url}
@@ -134,7 +134,8 @@ export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
             />
           </div>
         </div>
-        <div className="inline-block w-full md:w-7/12 p-4 bg-pink rounded border-2 border-purple-100">
+        <div className="py-2 block lg:hidden"></div>
+        <div className="inline-block w-full lg:w-7/12 p-4 bg-pink rounded border-2 border-purple-100">
           <LyricsTabView
             cursor={Math.max(recordCursor, cursor)}
             song={song}

@@ -150,7 +150,7 @@ export const LyricsTabView = ({
           </button>
         </li>
       </ul>
-      <div className="tab-content py-2">
+      <div className="tab-content py-2 custom-scroller overflow-y-auto">
         {active === "pretty" ? (
           <div>
             {text ? (

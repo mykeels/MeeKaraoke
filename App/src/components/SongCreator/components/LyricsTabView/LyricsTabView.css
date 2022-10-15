@@ -15,3 +15,13 @@
 .h-75vh {
   height: 75vh;
 }
+
+.tab-content {
+  max-height: 50vh;
+}
+
+@screen lg {
+  .tab-content {
+    max-height: unset;
+  }
+}

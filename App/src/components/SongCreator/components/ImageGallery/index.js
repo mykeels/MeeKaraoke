@@ -2,6 +2,7 @@ import "./ImageGallery.css";
 
 import classNames from "classnames";
 import React, { useEffect } from "react";
+import { useMedia } from "../../../../hooks";
 
 /**
  * @param {object} props
@@ -32,9 +33,11 @@ export const ImageGallery = ({ cursor, images, line }) => {
     }
   }, [cursor, index]);
 
+  const isLgScreen = useMedia(["(min-width: 1024px)"], [true], false);
+
   return (
-    <div>
-      <div className="flex bg-pink preview relative">
+    <div className="flex lg:block w-full bg-pink border-2 border-purple-100 p-2 justify-center items-center">
+      <div className="inline-block lg:flex bg-pink preview relative w-5/12 lg:w-full">
         <img
           src={current}
           className={classNames("block w-full h-full rounded border-2", {
@@ -45,26 +48,26 @@ export const ImageGallery = ({ cursor, images, line }) => {
         {line?.text ? (
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
             <div className="h-24 relative w-full text-center flex items-center justify-center">
-              <div className="h-24 bg-gray-500 w-full z-0 opacity-50 rounded absolute top-0 left-0" />
-              <div className="z-10 relative text-white text-sm font-bold p-4">
+              <div className="h-24 bg-purple-200 w-full z-0 opacity-50 rounded absolute top-0 left-0" />
+              <div className="z-10 relative text-white text-xs lg:text-lg xl:text-xl font-bold p-4">
                 {line.text}
               </div>
             </div>
           </div>
         ) : null}
       </div>
-      <div className="py-2"></div>
-      <div className="block rounded overflow-auto image-slider-wrapper">
+      <div className="px-2 lg:py-2 inline-block"></div>
+      <div className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0">
         <div
           className="block image-slider"
-          style={{ width: `${images.length * 176}px` }}
+          style={{ width: isLgScreen ? `${images.length * 176}px` : `${images.length * 80}px` }}
         >
           <ul className="list-none">
             {images.map((image, i) => (
               <li key={`${image}-${i}`} className="inline-block py-1 px-1">
                 <img
                   className={classNames(
-                    "h-24 shadow rouded border-2",
+                    "shadow rouded border-2",
                     `gallery-image-${i}`,
                     {
                       "border-purple-100": i !== index,

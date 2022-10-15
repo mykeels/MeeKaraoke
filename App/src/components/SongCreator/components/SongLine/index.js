@@ -22,7 +22,7 @@ export const SongLine = ({ isActive, line, ...props }) => {
       {...props}
       ref={ref}
       className={classNames(
-        "p-2 block w-full border-b border-gray-100 text-xs cursor-pointer",
+        "p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer",
         {
           "bg-lavender-100": isActive
         }
