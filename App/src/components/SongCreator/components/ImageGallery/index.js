@@ -15,11 +15,12 @@ export const ImageGallery = ({ cursor, images, line }) => {
   );
   const current = images[index];
   return (
-    <div className="flex bg-gray-100 preview relative">
+    <div className="flex bg-pink preview relative">
       <img
         src={current}
-        className={classNames("block w-full h-full", {
-          "border-2 rounded border-yellow-200": cursor > 0
+        className={classNames("block w-full h-full rounded border-2", {
+          "border-purple-100": !cursor,
+          "border-purple-200": cursor > 0
         })}
       />
       {line?.text ? (

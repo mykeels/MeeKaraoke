@@ -21,3 +21,19 @@ export const Index = () => (
     }}
   />
 );
+
+export const Blank = () => (
+  <ImageGallery
+    cursor={0}
+    images={[]}
+    line={null}
+  />
+);
+
+export const ActiveBlank = () => (
+  <ImageGallery
+    cursor={1}
+    images={[]}
+    line={null}
+  />
+);

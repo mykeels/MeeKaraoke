@@ -24,7 +24,7 @@ export const SongLine = ({ isActive, line, ...props }) => {
       className={classNames(
         "p-2 block w-full border-b border-gray-100 text-xs cursor-pointer",
         {
-          "bg-blue-100": isActive
+          "bg-lavender-100": isActive
         }
       )}
     >

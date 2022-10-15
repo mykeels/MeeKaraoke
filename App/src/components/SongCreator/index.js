@@ -7,34 +7,7 @@ import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
 import { DateTime } from "luxon";
-
-/** @param {Song} lines */
-const fetchImages = async (lines, intervals = 5) => {
-  let cursor = intervals;
-  let texts = [];
-  const keywords = [];
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const isWithinBounds =
-      cursor - intervals <= line.from && cursor >= line.from + line.duration;
-    if (isWithinBounds) {
-      texts.push(line.text);
-    } else {
-      cursor += intervals;
-      keywords.push(rake(texts.join("\n"), { language: "english" }).join(" "));
-      texts = [line.text];
-    }
-  }
-  return Promise.all(
-    keywords.map((keyword) =>
-      axios
-        .get(`https://source.unsplash.com/random/1280x720/?${keyword}`, {
-          maxRedirects: 0
-        })
-        .then((res) => res.request.responseURL)
-    )
-  );
-};
+import classNames from "classnames";
 
 /**
  * @param {Song} song
@@ -84,9 +57,11 @@ const transformSongLines = (lines) => {
  *
  * @param {object} props
  * @param {string} props.text
+ * @param {string} props.className
+ * @param {(lines: Song, interval?: number) => Promise<string[]>} props.getImages
  * @returns {JSX.Element}
  */
-export const SongCreator = ({ text }) => {
+export const SongCreator = ({ text, className, getImages }) => {
   /** @type {ReactState<Song>} */
   const [song, setSong] = useState([]);
   /** @type {ReactState<string[]>} */
@@ -103,27 +78,27 @@ export const SongCreator = ({ text }) => {
   const [timeReset, setTimeReset] = useState(0);
 
   useEffect(() => {
-    fetchImages(song).then(setImages);
+    getImages(song).then(setImages);
   }, [song.length]);
 
   return (
-    <div className="bg-white p-4 block w-full">
+    <div
+      className={classNames(
+        "block h-screen w-screen px-16 py-8 song-creator overflow-auto",
+        className
+      )}
+    >
       <div className="block w-full text-right"></div>
       <div className="flex w-full">
         <div className="inline-block w-full md:w-5/12">
-          <div className="p-4 sticky top-10">
+          <div className="px-4 sticky top-0">
             <audio ref={audioRef}>
               <source
                 src="./sounds/something-just-like-this.mp3"
                 type="audio/mpeg"
               />
             </audio>
-            <ImageGallery
-              cursor={Math.max(recordCursor, cursor)}
-              images={images}
-              line={currentLine}
-            />
-            <div>
+            <div className="block w-full bg-pink rounded border-2 border-purple-100">
               <TimeKeeper
                 value={timeReset}
                 onTick={(seconds) => {
@@ -150,9 +125,15 @@ export const SongCreator = ({ text }) => {
                 }}
               />
             </div>
+            <div className="block py-2"></div>
+            <ImageGallery
+              cursor={Math.max(recordCursor, cursor)}
+              images={images}
+              line={currentLine}
+            />
           </div>
         </div>
-        <div className="inline-block w-full md:w-7/12 p-4">
+        <div className="inline-block w-full md:w-7/12 p-4 bg-pink rounded border-2 border-purple-100">
           <LyricsTabView
             defaults={{
               text,
@@ -198,3 +179,35 @@ export const SongCreator = ({ text }) => {
     </div>
   );
 };
+
+SongCreator.defaultProps = {
+  getImages
+};
+
+/** @param {Song} lines */
+async function getImages(lines, intervals = 5) {
+  let cursor = intervals;
+  let texts = [];
+  const keywords = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const isWithinBounds =
+      cursor - intervals <= line.from && cursor >= line.from + line.duration;
+    if (isWithinBounds) {
+      texts.push(line.text);
+    } else {
+      cursor += intervals;
+      keywords.push(rake(texts.join("\n"), { language: "english" }).join(" "));
+      texts = [line.text];
+    }
+  }
+  return Promise.all(
+    keywords.map((keyword) =>
+      axios
+        .get(`https://source.unsplash.com/random/1280x720/?${keyword}`, {
+          maxRedirects: 0
+        })
+        .then((res) => res.request.responseURL)
+    )
+  );
+}
