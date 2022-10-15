@@ -34,18 +34,18 @@ function useDebounce(value, delay = 500) {
  * @param {object} props
  * @param {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
  * @param {(url: string) => Promise<string>} props.getLyrics
- * @param {(lyrics: string) => any} props.onLyricsChanged
+ * @param {(data: { title: string, lyrics: string }) => any} props.onTitleChanged
  * @returns {JSX.Element}
  */
 export const TitleCreator = ({
   getLyricsOptions,
   getLyrics,
-  onLyricsChanged
+  onTitleChanged
 }) => {
   /** @type {ReactState<string>} */
   const [text, setText] = useState("");
-  /** @type {ReactState<string>} */
-  const [url, setURL] = useState("");
+  /** @type {ReactState<{ url: string, title: string, id: string }>} */
+  const [selected, setSelected] = useState(null);
   const debouncedText = useDebounce(text, 500);
   const { data: lyricsOptions = [], isLoading } = useQuery(
     ["lyric-options", debouncedText],
@@ -53,9 +53,17 @@ export const TitleCreator = ({
   );
 
   const { mutate: _getLyrics, isLoading: isLyricsLoading } = useMutation(
-    getLyrics,
+    /** @param {{ url: string, title: string, id: string }} props */
+    ({ url }) => getLyrics(url),
     {
-      onSettled: (data) => onLyricsChanged(data)
+      onSettled: (lyrics, error, props) => {
+        if (!error) {
+          onTitleChanged({
+            title: props?.title,
+            lyrics
+          });
+        }
+      }
     }
   );
 
@@ -92,12 +100,12 @@ export const TitleCreator = ({
                     key={option.id}
                     className="block w-full bg-purple-100 bg-opacity-75 p-2 my-1 text-xs"
                     onClick={() => {
-                      setURL(option.url);
-                      _getLyrics(option.url);
+                      setSelected(option);
+                      _getLyrics(option);
                     }}
                   >
                     {i + 1}. {option.title}
-                    {isLyricsLoading && url === option.url ? (
+                    {isLyricsLoading && selected?.url === option.url ? (
                       <Spinner size={12} />
                     ) : null}
                   </button>
@@ -117,7 +125,7 @@ export const TitleCreator = ({
 };
 
 TitleCreator.defaultProps = {
-  onLyricsChanged: console.log,
+  onTitleChanged: console.log,
   getLyricsOptions: async (title) => {
     if (!title) {
       return [];
