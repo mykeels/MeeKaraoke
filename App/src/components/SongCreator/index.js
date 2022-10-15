@@ -85,7 +85,7 @@ export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
   return (
     <div
       className={classNames(
-        "block h-screen w-screen px-4 lg:px-16 py-8 song-creator overflow-auto",
+        "block h-screen w-screen px-4 lg:px-16 py-8 song-creator overflow-y-auto custom-scroller",
         className
       )}
     >

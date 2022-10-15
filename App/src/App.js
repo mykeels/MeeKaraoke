@@ -9,7 +9,7 @@ export const App = () => {
   /** @type {ReactState<{ title: string, lyrics: string, audioUrl: string }>} */
   const [state, setState] = useState(null);
   return (
-    <div className="block overflow-auto custom-scroller">
+    <div className="block overflow-auto custom-scroller h-screen">
       {stage === 0 ? (
         <TitleCreator
           onSkip={() => setStage(stage + 1)}
