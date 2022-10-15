@@ -54,26 +54,30 @@ const transformSongLines = (lines) => {
 };
 
 /**
- *
- * @param {object} props
- * @param {string} [props.className]
- * @param {string} props.url
- * @param {(lines: Song, interval?: number) => Promise<string[]>} props.getImages
- * @param {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} props.LyricsTabView
- * @param {() => any} [props.onReset]
- * @returns {JSX.Element}
+ * @typedef {object} SongCreatorProps
+ * @property {string} [className]
+ * @property {string} url
+ * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
+ * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
+ * @property {() => any} [onReset]
+ * @property {{ song: Song, images: string[] }} [defaults]
+ */
+
+/**
+ * @type {React.FC<SongCreatorProps>}
  */
 export const SongCreator = ({
   url,
   className,
   getImages,
   LyricsTabView,
-  onReset
+  onReset,
+  defaults
 }) => {
   /** @type {ReactState<Song>} */
-  const [song, setSong] = useState([]);
+  const [song, setSong] = useState(defaults?.song || []);
   /** @type {ReactState<string[]>} */
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(defaults?.images || []);
   /** @type {ReactState<number>} */
   const [cursor, setCursor] = useState(0);
   /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
@@ -86,8 +90,14 @@ export const SongCreator = ({
   const [timeReset, setTimeReset] = useState(0);
 
   useEffect(() => {
-    getImages(song).then(setImages);
-  }, [song.length]);
+    console.log("setting defaults");
+    if (defaults?.song?.length) {
+      setSong(defaults?.song || []);
+    }
+    if (defaults?.images?.length) {
+      setImages(defaults?.images || []);
+    }
+  }, [defaults?.song, defaults?.images]);
 
   return (
     <div
@@ -143,7 +153,13 @@ export const SongCreator = ({
           <LyricsTabView
             cursor={Math.max(recordCursor, cursor)}
             song={song}
-            onSongChanged={setSong}
+            onSongChanged={(lines) => {
+              setSong(lines);
+              console.log(lines);
+              if (lines.length !== song.length) {
+                getImages(lines).then(setImages);
+              }
+            }}
             onLineClick={(line) => {
               const seconds = getLineTime(song, line);
               setTimeReset(seconds);
@@ -186,7 +202,11 @@ export const SongCreator = ({
 SongCreator.defaultProps = {
   getImages,
   LyricsTabView,
-  onReset: () => {}
+  onReset: () => {},
+  defaults: {
+    images: [],
+    song: []
+  }
 };
 
 /** @param {Song} lines */

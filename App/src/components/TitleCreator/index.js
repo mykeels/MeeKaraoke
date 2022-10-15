@@ -36,12 +36,14 @@ function useDebounce(value, delay = 500) {
  * @param {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
  * @param {(url: string) => Promise<string>} props.getLyrics
  * @param {(data: { title: string, lyrics: string }) => any} [props.onTitleChanged]
+ * @param {() => any} [props.onFileUploadIntent]
  * @returns {JSX.Element}
  */
 export const TitleCreator = ({
   getLyricsOptions,
   getLyrics,
-  onTitleChanged
+  onTitleChanged,
+  onFileUploadIntent
 }) => {
   const [manual, setManual] = useState(false);
   /** @type {ReactState<string>} */
@@ -81,7 +83,7 @@ export const TitleCreator = ({
           <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-200 opacity-75">
             <div className="block w-full text-white">
               <div className="text-2xl py-8 text-center">
-                What do you want to Sing?
+                Step 1: What do you want to Sing?
               </div>
               <div
                 className={classNames("overflow-y-auto custom-scroller", {
@@ -122,13 +124,23 @@ export const TitleCreator = ({
                   )}
                 </div>
               </div>
-              <div className="text-right py-8">
-                <button
-                  className="bg-purple-100 px-8 py-4 text-xl"
-                  onClick={() => setManual(true)}
-                >
-                  Skip and Enter Lyrics Manually
-                </button>
+              <div className="block w-full py-8">
+                <div className="inline-block w-1/2">
+                  <button
+                    className="bg-purple-100 px-8 py-4 text-xl"
+                    onClick={() => onFileUploadIntent()}
+                  >
+                    Upload a File
+                  </button>
+                </div>
+                <div className="inline-block w-1/2 text-right">
+                  <button
+                    className="bg-purple-100 px-8 py-4 text-xl"
+                    onClick={() => setManual(true)}
+                  >
+                    Skip and Enter Lyrics Manually
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -141,6 +153,7 @@ export const TitleCreator = ({
 TitleCreator.defaultProps = {
   onSkip: () => {},
   onTitleChanged: () => {},
+  onFileUploadIntent: () => {},
   getLyricsOptions: async (title) => {
     if (!title) {
       return [];

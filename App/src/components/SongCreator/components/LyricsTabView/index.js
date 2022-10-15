@@ -67,6 +67,8 @@ export const LyricsTabView = ({
     updateSongLyrics(text);
   }, [text]);
 
+  console.log({ song });
+
   return (
     <div className="w-full">
       <ul

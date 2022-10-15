@@ -47,7 +47,7 @@ export const ManualTitleCreator = ({ onSubmit, onCancel }) => {
       <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-200 opacity-75">
         <div className="block w-full text-white">
           <div className="text-2xl py-8 text-center">
-            What do you want to Sing?
+            Step 1: What do you want to Sing?
           </div>
           <form
             name="login"
