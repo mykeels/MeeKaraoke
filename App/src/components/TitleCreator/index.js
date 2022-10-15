@@ -34,13 +34,15 @@ function useDebounce(value, delay = 500) {
  * @param {object} props
  * @param {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
  * @param {(url: string) => Promise<string>} props.getLyrics
- * @param {(data: { title: string, lyrics: string }) => any} props.onTitleChanged
+ * @param {(data: { title: string, lyrics: string }) => any} [props.onTitleChanged]
+ * @param {() => any} [props.onSkip]
  * @returns {JSX.Element}
  */
 export const TitleCreator = ({
   getLyricsOptions,
   getLyrics,
-  onTitleChanged
+  onTitleChanged,
+  onSkip
 }) => {
   /** @type {ReactState<string>} */
   const [text, setText] = useState("");
@@ -114,7 +116,10 @@ export const TitleCreator = ({
             </div>
           </div>
           <div className="text-right py-8">
-            <button className="bg-purple-100 px-8 py-4 text-xl">
+            <button
+              className="bg-purple-100 px-8 py-4 text-xl"
+              onClick={() => onSkip()}
+            >
               Skip and Enter Lyrics Manually
             </button>
           </div>
@@ -125,7 +130,8 @@ export const TitleCreator = ({
 };
 
 TitleCreator.defaultProps = {
-  onTitleChanged: console.log,
+  onSkip: () => {},
+  onTitleChanged: () => {},
   getLyricsOptions: async (title) => {
     if (!title) {
       return [];
