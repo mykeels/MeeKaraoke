@@ -1,26 +1,64 @@
 import "./TitleCreator.css";
 
 import classNames from "classnames";
-import React, { useState, useCallback } from "react";
-import { useQuery } from "react-query";
-import { debounce, uniqBy } from "lodash";
+import React, { useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { uniqBy } from "lodash";
+import * as cheerio from "cheerio";
+import { Spinner } from "../../common";
+
+/**
+ * @template TValue
+ * @param {TValue} value
+ * @param {number} [delay]
+ * @returns {TValue}
+ */
+function useDebounce(value, delay = 500) {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    // Cancel the timeout if value changes (also on delay change or unmount)
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
 
 /**
  * @param {object} props
  * @param {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
+ * @param {(url: string) => Promise<string>} props.getLyrics
+ * @param {(lyrics: string) => any} props.onLyricsChanged
  * @returns {JSX.Element}
  */
-export const TitleCreator = ({ getLyricsOptions }) => {
+export const TitleCreator = ({
+  getLyricsOptions,
+  getLyrics,
+  onLyricsChanged
+}) => {
+  /** @type {ReactState<string>} */
   const [text, setText] = useState("");
-  const debouncedGetLyricsOptions = useCallback(
-    debounce((text) => {
-      return getLyricsOptions(text);
-    }, 500),
-    []
+  /** @type {ReactState<string>} */
+  const [url, setURL] = useState("");
+  const debouncedText = useDebounce(text, 500);
+  const { data: lyricsOptions = [], isLoading } = useQuery(
+    ["lyric-options", debouncedText],
+    () => getLyricsOptions(debouncedText)
   );
-  const { data: lyricsOptions = [] } = useQuery(["lyrics", text], () =>
-    debouncedGetLyricsOptions(text)
+
+  const { mutate: _getLyrics, isLoading: isLyricsLoading } = useMutation(
+    getLyrics,
+    {
+      onSettled: (data) => onLyricsChanged(data)
+    }
   );
+
   return (
     <div className="block h-screen w-screen title-creator px-16 py-8">
       <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-200 opacity-75">
@@ -44,17 +82,27 @@ export const TitleCreator = ({ getLyricsOptions }) => {
               />
             </div>
             <div className="w-full">
-              {lyricsOptions?.map((option, i) => (
-                <a
-                  key={option.id}
-                  className="block w-full bg-purple-100 bg-opacity-75 p-2 my-1 text-xs"
-                  href={option.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {i + 1}. {option.title}
-                </a>
-              ))}
+              {isLoading ? (
+                <div className="w-full text-center">
+                  <Spinner size={15} />
+                </div>
+              ) : (
+                lyricsOptions?.map((option, i) => (
+                  <button
+                    key={option.id}
+                    className="block w-full bg-purple-100 bg-opacity-75 p-2 my-1 text-xs"
+                    onClick={() => {
+                      setURL(option.url);
+                      _getLyrics(option.url);
+                    }}
+                  >
+                    {i + 1}. {option.title}
+                    {isLyricsLoading && url === option.url ? (
+                      <Spinner size={12} />
+                    ) : null}
+                  </button>
+                ))
+              )}
             </div>
           </div>
           <div className="text-right py-8">
@@ -69,30 +117,43 @@ export const TitleCreator = ({ getLyricsOptions }) => {
 };
 
 TitleCreator.defaultProps = {
+  onLyricsChanged: console.log,
   getLyricsOptions: async (title) => {
-    return title
-      ? fetch(
-          `https://genius.com/api/search/multi?per_page=5&q=${encodeURIComponent(
-            title
-          )}`
+    if (!title) {
+      return [];
+    }
+    return fetch(
+      `https://genius.com/api/search/multi?per_page=5&q=${encodeURIComponent(
+        title
+      )}`
+    )
+      .then((res) => res.json())
+      .then((data) =>
+        uniqBy(
+          data?.response?.sections
+            ?.map((s) => s?.hits)
+            ?.reduce((arr, hit) => arr.concat(hit), [])
+            ?.map((hit) => hit?.result)
+            ?.filter(Boolean)
+            ?.map((song) => ({
+              id: song.id,
+              title: song.full_title,
+              url: song.url
+            }))
+            ?.filter((song) => song.title),
+          (item) => item.title
         )
-          .then((res) => res.json())
-          .then((data) =>
-            uniqBy(
-              data?.response?.sections
-                ?.map((s) => s?.hits)
-                ?.reduce((arr, hit) => arr.concat(hit), [])
-                ?.map((hit) => hit?.result)
-                ?.filter(Boolean)
-                ?.map((song) => ({
-                  id: song.id,
-                  title: song.full_title,
-                  url: song.url
-                }))
-                ?.filter((song) => song.title),
-              (item) => item.title
-            )
-          )
-      : Promise.resolve([]);
+      );
+  },
+  getLyrics: async (url) => {
+    return fetch(url)
+      .then((res) => res.text())
+      .then((html) => {
+        const $ = cheerio.load(html);
+        const lyrics = $('[data-lyrics-container="true"]')
+          .html()
+          .replace(/<br>/g, "\n");
+        return cheerio.load(lyrics).root().text();
+      });
   }
 };

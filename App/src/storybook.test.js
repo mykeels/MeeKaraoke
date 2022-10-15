@@ -26,7 +26,7 @@ afterAll(() => {
 });
 
 initStoryshots({
-  suite: "@mykeels/sticky-notes",
+  suite: "@mykeels/mee-karaoke",
   test: multiSnapshotWithOptions({}),
   storyKindRegex: /^((?!.*?App).)*$/
 });
@@ -37,6 +37,9 @@ const optionsOrCallOptions = (opts, story) =>
 
 function snapshotWithOptions(options = {}) {
   return ({ story, context, renderTree, snapshotFileName }) => {
+    console.log({
+      renderTree, story, context, options
+    });
     const result = renderTree(
       story,
       context,
