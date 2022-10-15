@@ -46,6 +46,9 @@ export const ManualTitleCreator = ({ onSubmit, onCancel }) => {
     <div className="block h-screen w-screen title-creator px-16 py-8">
       <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-200 opacity-75">
         <div className="block w-full text-white">
+          <div className="text-2xl py-8 text-center">
+            What do you want to Sing?
+          </div>
           <form
             name="login"
             onSubmit={handleSubmit(onFormSubmit)}
@@ -107,7 +110,7 @@ export const ManualTitleCreator = ({ onSubmit, onCancel }) => {
                 </button>
               </div>
               <div className="inline-block w-1/2 text-right">
-                <button className="bg-purple-100 px-8 py-4 text-xl">
+                <button className="bg-purple-100 px-8 py-4 text-xl hover:bg-lavender-200">
                   {isLoading ? <Spinner size={16} /> : "Continue"}
                 </button>
               </div>

@@ -12,7 +12,6 @@ export const App = () => {
     <div className="block overflow-auto custom-scroller h-screen">
       {stage === 0 ? (
         <TitleCreator
-          onSkip={() => setStage(stage + 1)}
           onTitleChanged={(data) => {
             setState((state) => ({ ...state, ...data }));
             setStage(stage + 1);

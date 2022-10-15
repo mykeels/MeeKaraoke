@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "react-query";
 import { uniqBy } from "lodash";
 import * as cheerio from "cheerio";
 import { Spinner } from "../../common";
+import { ManualTitleCreator } from "./components";
 
 /**
  * @template TValue
@@ -35,15 +36,14 @@ function useDebounce(value, delay = 500) {
  * @param {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
  * @param {(url: string) => Promise<string>} props.getLyrics
  * @param {(data: { title: string, lyrics: string }) => any} [props.onTitleChanged]
- * @param {() => any} [props.onSkip]
  * @returns {JSX.Element}
  */
 export const TitleCreator = ({
   getLyricsOptions,
   getLyrics,
-  onTitleChanged,
-  onSkip
+  onTitleChanged
 }) => {
+  const [manual, setManual] = useState(false);
   /** @type {ReactState<string>} */
   const [text, setText] = useState("");
   /** @type {ReactState<{ url: string, title: string, id: string }>} */
@@ -70,62 +70,71 @@ export const TitleCreator = ({
   );
 
   return (
-    <div className="block h-screen w-screen title-creator px-16 py-8">
-      <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-200 opacity-75">
-        <div className="block w-full text-white">
-          <div className="text-2xl py-8 text-center">
-            What do you want to Sing?
-          </div>
-          <div
-            className={classNames("overflow-y-auto custom-scroller", {
-              "h-40vh": lyricsOptions?.length,
-              "h-24vh": !lyricsOptions?.length
-            })}
-          >
-            <div className="w-full py-4">
-              <input
-                type="text"
-                placeholder="Enter a Song Title or Author"
-                className="w-full text-xl px-4 py-2 text-purple-200"
-                value={text}
-                onChange={(e) => setText(e?.target?.value)}
-              />
-            </div>
-            <div className="w-full">
-              {isLoading ? (
-                <div className="w-full text-center">
-                  <Spinner size={15} />
+    <>
+      {manual ? (
+        <ManualTitleCreator
+          onCancel={() => setManual(false)}
+          onSubmit={onTitleChanged}
+        />
+      ) : (
+        <div className="block h-screen w-screen title-creator px-16 py-8">
+          <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-200 opacity-75">
+            <div className="block w-full text-white">
+              <div className="text-2xl py-8 text-center">
+                What do you want to Sing?
+              </div>
+              <div
+                className={classNames("overflow-y-auto custom-scroller", {
+                  "h-40vh": lyricsOptions?.length,
+                  "h-24vh": !lyricsOptions?.length
+                })}
+              >
+                <div className="w-full py-4">
+                  <input
+                    type="text"
+                    placeholder="Enter a Song Title or Author"
+                    className="w-full text-xl px-4 py-2 text-purple-200"
+                    value={text}
+                    onChange={(e) => setText(e?.target?.value)}
+                  />
                 </div>
-              ) : (
-                lyricsOptions?.map((option, i) => (
-                  <button
-                    key={option.id}
-                    className="block w-full bg-purple-100 bg-opacity-75 p-2 my-1 text-xs"
-                    onClick={() => {
-                      setSelected(option);
-                      _getLyrics(option);
-                    }}
-                  >
-                    {i + 1}. {option.title}
-                    {isLyricsLoading && selected?.url === option.url ? (
-                      <Spinner size={12} />
-                    ) : null}
-                  </button>
-                ))
-              )}
+                <div className="w-full">
+                  {isLoading ? (
+                    <div className="w-full text-center">
+                      <Spinner size={15} />
+                    </div>
+                  ) : (
+                    lyricsOptions?.map((option, i) => (
+                      <button
+                        key={option.id}
+                        className="block w-full bg-purple-100 bg-opacity-75 p-2 my-1 text-xs"
+                        onClick={() => {
+                          setSelected(option);
+                          _getLyrics(option);
+                        }}
+                      >
+                        {i + 1}. {option.title}
+                        {isLyricsLoading && selected?.url === option.url ? (
+                          <Spinner size={12} />
+                        ) : null}
+                      </button>
+                    ))
+                  )}
+                </div>
+              </div>
+              <div className="text-right py-8">
+                <button
+                  className="bg-purple-100 px-8 py-4 text-xl"
+                  onClick={() => setManual(true)}
+                >
+                  Skip and Enter Lyrics Manually
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="text-right py-8">
-            <button
-              className="bg-purple-100 px-8 py-4 text-xl"
-              onClick={() => onSkip()}
-            >
-              Skip and Enter Lyrics Manually
-            </button>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
