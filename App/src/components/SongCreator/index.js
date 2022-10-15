@@ -60,9 +60,16 @@ const transformSongLines = (lines) => {
  * @param {string} props.url
  * @param {(lines: Song, interval?: number) => Promise<string[]>} props.getImages
  * @param {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} props.LyricsTabView
+ * @param {() => any} [props.onReset]
  * @returns {JSX.Element}
  */
-export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
+export const SongCreator = ({
+  url,
+  className,
+  getImages,
+  LyricsTabView,
+  onReset
+}) => {
   /** @type {ReactState<Song>} */
   const [song, setSong] = useState([]);
   /** @type {ReactState<string[]>} */
@@ -94,10 +101,7 @@ export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
         <div className="inline-block w-full lg:w-5/12">
           <div className="lg:px-4 sticky top-0">
             <audio ref={audioRef}>
-              <source
-                src={url}
-                type="audio/mpeg"
-              />
+              <source src={url} type="audio/mpeg" />
             </audio>
             <div className="block w-full bg-pink rounded border-2 border-purple-100">
               <TimeKeeper
@@ -170,6 +174,7 @@ export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
               setCursor(0);
               setRecordCursor(0);
               setTimeReset(0);
+              onReset();
             }}
           ></LyricsTabView>
         </div>
@@ -180,7 +185,8 @@ export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
 
 SongCreator.defaultProps = {
   getImages,
-  LyricsTabView
+  LyricsTabView,
+  onReset: () => {}
 };
 
 /** @param {Song} lines */

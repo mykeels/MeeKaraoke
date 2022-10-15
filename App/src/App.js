@@ -28,6 +28,10 @@ export const App = () => {
       ) : (
         <SongCreator
           url={state.audioUrl}
+          onReset={() => {
+            setState(null);
+            setStage(0);
+          }}
           LyricsTabView={(props) => (
             <LyricsTabView
               {...props}
