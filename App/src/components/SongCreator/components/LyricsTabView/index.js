@@ -78,7 +78,7 @@ export const LyricsTabView = ({
             <li className="nav-item" role="presentation">
               <button
                 className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2"
+                  "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
                 )}
                 role="tab"
                 onClick={() => {
@@ -92,7 +92,7 @@ export const LyricsTabView = ({
             <li className="nav-item" role="presentation">
               <button
                 className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2  hover:bg-purple-100 hover:text-white"
+                  "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
                 )}
                 onClick={onSave}
                 role="tab"
