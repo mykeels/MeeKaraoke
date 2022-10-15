@@ -56,12 +56,13 @@ const transformSongLines = (lines) => {
 /**
  *
  * @param {object} props
- * @param {string} props.text
- * @param {string} props.className
+ * @param {string} [props.className]
+ * @param {string} props.url
  * @param {(lines: Song, interval?: number) => Promise<string[]>} props.getImages
+ * @param {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} props.LyricsTabView
  * @returns {JSX.Element}
  */
-export const SongCreator = ({ text, className, getImages }) => {
+export const SongCreator = ({ url, className, getImages, LyricsTabView }) => {
   /** @type {ReactState<Song>} */
   const [song, setSong] = useState([]);
   /** @type {ReactState<string[]>} */
@@ -94,7 +95,7 @@ export const SongCreator = ({ text, className, getImages }) => {
           <div className="px-4 sticky top-0">
             <audio ref={audioRef}>
               <source
-                src="./sounds/something-just-like-this.mp3"
+                src={url}
                 type="audio/mpeg"
               />
             </audio>
@@ -135,10 +136,6 @@ export const SongCreator = ({ text, className, getImages }) => {
         </div>
         <div className="inline-block w-full md:w-7/12 p-4 bg-pink rounded border-2 border-purple-100">
           <LyricsTabView
-            defaults={{
-              text,
-              active: "text"
-            }}
             cursor={Math.max(recordCursor, cursor)}
             song={song}
             onSongChanged={setSong}
@@ -181,7 +178,8 @@ export const SongCreator = ({ text, className, getImages }) => {
 };
 
 SongCreator.defaultProps = {
-  getImages
+  getImages,
+  LyricsTabView
 };
 
 /** @param {Song} lines */

@@ -1,13 +1,27 @@
 import React from "react";
 
 import { SongCreator } from "./";
+import { LyricsTabView } from "./components/LyricsTabView";
 
 export default {
   title: "components/SongCreator",
   component: SongCreator
 };
 
-export const Index = () => <SongCreator text={somethingJustLikeThisLyrics} />;
+export const Index = () => (
+  <SongCreator
+    url={"./sounds/something-just-like-this.mp3"}
+    LyricsTabView={(props) => (
+      <LyricsTabView
+        {...props}
+        defaults={{
+          text: somethingJustLikeThisLyrics,
+          active: "pretty"
+        }}
+      />
+    )}
+  />
+);
 
 var somethingJustLikeThisLyrics = `
 I've been reading books of old
