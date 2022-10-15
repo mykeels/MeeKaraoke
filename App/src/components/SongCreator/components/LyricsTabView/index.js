@@ -55,10 +55,10 @@ export const LyricsTabView = ({
       .replace(/\n\n+/g, "\n\n")
       .split("\n")
       .map((line) => line.trim())
-      .map((text) => ({
+      .map((text, i) => ({
         text,
-        duration: 1,
-        from: 0
+        duration: song[i]?.duration || 1,
+        from: song[i]?.duration || 0
       }));
     updateSongLines(lines);
   };
