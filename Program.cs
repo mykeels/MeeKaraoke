@@ -43,7 +43,7 @@ class Program
             .SetDevToolsEnabled(false)
             .SetContextMenuEnabled(false)
             .SetUseOsDefaultSize(false)
-            .SetSize(1366, 900)
+            .SetSize(1366, 880)
             .RegisterWindowCreatedHandler((object? sender, EventArgs e) =>
             {
                 Console.WriteLine("Window created");
