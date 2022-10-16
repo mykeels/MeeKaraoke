@@ -1,4 +1,4 @@
-namespace Photino.HelloPhotino.React;
+namespace MeeKaraoke;
 
 class Loading
 {

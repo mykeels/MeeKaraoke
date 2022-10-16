@@ -2,7 +2,7 @@
 using PhotinoNET;
 using Mykeels.Processes;
 
-namespace Photino.HelloPhotino.React;
+namespace MeeKaraoke;
 
 class Program
 {
