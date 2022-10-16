@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.FileProviders;
 
 public class WebApp
 {
@@ -33,6 +34,14 @@ public class WebApp
         app.UseAuthorization();
 
         app.MapControllers();
+        var repo = new SongRepository();
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                repo.AppDirectory
+            ),
+            RequestPath = "/Static"
+        });
 
         app.Run();
 
