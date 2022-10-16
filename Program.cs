@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using PhotinoNET;
-using Mykeels.Processes;
+using System;
+using System.IO;
 
 namespace MeeKaraoke;
 
@@ -43,6 +44,14 @@ class Program
             .SetContextMenuEnabled(false)
             .SetUseOsDefaultSize(false)
             .SetSize(1280, 800)
+            .RegisterWindowCreatedHandler((object? sender, EventArgs e) =>
+            {
+                Console.WriteLine("Window created");
+                Console.WriteLine("Starting Server");
+                System.Threading.Tasks.Task.Run(() => {
+                    WebApp.Start(args);
+                });
+            })
             .RegisterCustomSchemeHandler("app", (object sender, string scheme, string url, out string contentType) =>
             {
                 contentType = "text/javascript";
