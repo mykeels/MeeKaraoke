@@ -2,15 +2,42 @@ import React, { useState } from "react";
 import { SongCreator, SongUploader, TitleCreator } from "./components";
 import { SavedFileUploader } from "./components/SavedFileUploader";
 import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView";
+import { SongPicker } from "./components/SongPicker";
+
+/** @param {SongRecord} record */
+async function getSongFileContents(record) {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  /** @type {SongFileContent} */
+  const song = await fetch(record.songFilePath.replace("~", apiRoot)).then(
+    (res) => res.json()
+  );
+  song["song"] = song["lines"] || song["song"];
+  song.audioUrl = await getAudioUrl(record);
+  song.lyrics = song.song.map((l) => l.text).join("\n");
+  return song;
+}
+
+/** @param {SongRecord} record */
+async function getAudioUrl(record) {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  return fetch(record.audioFilePath.replace("~", apiRoot))
+    .then((res) => res.blob())
+    .then((blob) => URL.createObjectURL(blob));
+}
 
 /** @type {React.FC<{}>} */
 export const App = () => {
   /** @type {ReactState<number>} */
   const [stage, setStage] = useState(0);
-  /** @type {ReactState<{ title: string, lyrics: string, audioUrl: string, images: string[], song: Song }>} */
+  /** @type {ReactState<SongFileContent>} */
   const [state, setState] = useState(null);
   /** @type {ReactState<boolean | "open">} */
   const [isFileUploadActive, setIsFileUploadActive] = useState(false);
+  const selectSong = async (record) => {
+    const song = await getSongFileContents(record);
+    setState(song);
+    setStage(3);
+  };
   return (
     <div
       className="block overflow-auto custom-scroller h-screen"
@@ -32,12 +59,13 @@ export const App = () => {
           onKaraokeFileReceived={(karaoke) => {
             setIsFileUploadActive(false);
             setState({
+              ...state,
               ...karaoke,
               audioUrl: null,
               title: karaoke.title || "karaoke",
               lyrics: karaoke.song.map((l) => l.text).join("\n")
             });
-            setStage(1);
+            setStage(2);
           }}
           onDragLeave={(e) => {
             e.preventDefault();
@@ -47,6 +75,11 @@ export const App = () => {
         />
       ) : null}
       {stage === 0 ? (
+        <SongPicker
+          onNewSong={() => setStage(stage + 1)}
+          onSelectSong={selectSong}
+        />
+      ) : stage === 1 ? (
         <TitleCreator
           onFileUploadIntent={() => setIsFileUploadActive("open")}
           onTitleChanged={(data) => {
@@ -54,7 +87,7 @@ export const App = () => {
             setStage(stage + 1);
           }}
         />
-      ) : stage === 1 ? (
+      ) : stage === 2 ? (
         <SongUploader
           onAudioFileReceived={(audioUrl) => {
             setState((state) => ({ ...state, audioUrl }));
@@ -69,14 +102,10 @@ export const App = () => {
             setState(null);
             setStage(0);
           }}
-          {...(state.song && state.images
-            ? {
-                defaults: {
-                  song: state.song,
-                  images: state.images
-                }
-              }
-            : {})}
+          defaults={{
+            song: state?.song,
+            images: state?.images
+          }}
           LyricsTabView={(props) => (
             <LyricsTabView
               {...props}

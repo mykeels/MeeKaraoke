@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 .custom-scroller::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-  
-  .custom-scroller::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  .custom-scroller::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #521f49;
-  }
+  border-radius: 10px;
+}
+
+.custom-scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scroller::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #521f49;
+}
