@@ -7,7 +7,7 @@ namespace MeeKaraoke.Controllers;
 [Route("[controller]")]
 public class SongsController : ControllerBase
 {
-    
+
 
     private readonly ILogger<SongsController> _logger;
 
@@ -34,43 +34,51 @@ public class SongsController : ControllerBase
 
     [HttpGet]
     [Route("~/[controller]/")]
-    public List<SongModel> GetSongs()
+    public ActionResult<List<SongModel>> GetSongs()
     {
         var repo = new SongRepository();
-        return repo.GetSongs();
+        return repo.GetSongs().Select(song => song.TransformPaths(repo.AppDirectory)).ToList();
     }
 
     [HttpGet]
     [Route("~/[controller]/{id}")]
-    public SongModel? GetSongById([FromRoute] Guid id)
+    public ActionResult<SongModel?> GetSongById([FromRoute] Guid id)
     {
         var repo = new SongRepository();
-        return repo.GetSongById(id);
+        var song = repo.GetSongById(id);
+        if (song == null)
+        {
+            return NotFound(new
+            {
+                Message = $"Song with Id {id} not found"
+            });
+        }
+        return song.TransformPaths(repo.AppDirectory);
     }
 
     [HttpPost]
     [Route("~/[controller]/")]
-    public SongModel? CreateSong([FromBody] SongModel song)
+    public ActionResult<SongModel?> CreateSong([FromBody] SongModel song)
     {
         var repo = new SongRepository();
-        return repo.CreateSong(song);
+        return repo.CreateSong(song.TransformPaths(repo.AppDirectory));
     }
 
     [HttpPatch]
     [Route("~/[controller]/{id}")]
-    public SongModel? UpdateSong([FromRoute] Guid id, [FromBody] SongModel song)
+    public ActionResult<SongModel?> UpdateSong([FromRoute] Guid id, [FromBody] SongModel song)
     {
         var repo = new SongRepository();
         song.Id = id;
-        return repo.Update(song);
+        return repo.Update(song.TransformPaths(repo.AppDirectory));
     }
 
     [HttpDelete]
     [Route("~/[controller]/{id}")]
-    public string DeleteSong([FromRoute] Guid id)
+    public ActionResult DeleteSong([FromRoute] Guid id)
     {
         var repo = new SongRepository();
         repo.DeleteSong(id);
-        return "DELETED";
+        return NoContent();
     }
 }

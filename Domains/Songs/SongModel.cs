@@ -11,8 +11,9 @@ public class SongModel
     public string? SongFilePath { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public SongModel() {}
-    public SongModel(SongModel s) {
+    public SongModel() { }
+    public SongModel(SongModel s)
+    {
         this.Id = s.Id;
         this.Title = s.Title;
         this.AudioFilePath = s.AudioFilePath;
@@ -20,10 +21,19 @@ public class SongModel
         this.CreatedAt = s.CreatedAt;
         this.UpdatedAt = s.UpdatedAt;
     }
-    public SongModel Copy(SongModel s) {
+
+    public SongModel Copy(SongModel s)
+    {
         this.Title = s.Title ?? this.Title;
         this.AudioFilePath = s.AudioFilePath ?? this.Title;
         this.SongFilePath = s.SongFilePath ?? this.SongFilePath;
+        return this;
+    }
+
+    public SongModel TransformPaths(string appDirectory)
+    {
+        this.AudioFilePath = this.AudioFilePath?.Replace(appDirectory, "~/Static")?.Replace("\\", "/");
+        this.SongFilePath = this.SongFilePath?.Replace(appDirectory, "~/Static")?.Replace("\\", "/");
         return this;
     }
 }
