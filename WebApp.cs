@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 public class WebApp
 {
@@ -32,6 +29,7 @@ public class WebApp
             app.UseSwaggerUI();
         }
 
+        app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod());
         app.UseAuthorization();
 
         app.MapControllers();

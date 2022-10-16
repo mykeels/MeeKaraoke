@@ -159,7 +159,7 @@ TitleCreator.defaultProps = {
       return [];
     }
     return fetch(
-      `https://genius.com/api/search/multi?per_page=5&q=${encodeURIComponent(
+      `http://localhost:5000/lyrics/options?per_page=5&q=${encodeURIComponent(
         title
       )}`
     )
@@ -182,7 +182,7 @@ TitleCreator.defaultProps = {
       );
   },
   getLyrics: async (url) => {
-    return fetch(url)
+    return fetch(url.replace("https://genius.com", "http://localhost:5000/lyrics"))
       .then((res) => res.text())
       .then((html) => {
         const $ = cheerio.load(html);
