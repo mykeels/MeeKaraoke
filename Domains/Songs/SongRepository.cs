@@ -91,10 +91,7 @@ public class SongRepository
         song.UpdatedAt = DateTime.Now;
         this.Dictionary = new SongDictionaryModel()
         {
-            Songs = this.Dictionary.Songs.Select(s => s.Id == song.Id ? new SongModel(s)
-            {
-                Title = song.Title
-            } : s).ToList()
+            Songs = this.Dictionary.Songs.Select(s => s.Id == song.Id ? new SongModel(s).Copy(song) : s).ToList()
         };
         return this.GetSongById(song.Id) ?? song;
     }
