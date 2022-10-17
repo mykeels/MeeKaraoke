@@ -14,6 +14,7 @@ async function getSongFileContents(record) {
   song["song"] = song["lines"] || song["song"];
   song.audioUrl = await getAudioUrl(record);
   song.lyrics = song.song.map((l) => l.text).join("\n");
+  song.id = record.id;
   return song;
 }
 
@@ -23,6 +24,76 @@ async function getAudioUrl(record) {
   return fetch(record.audioFilePath.replace("~", apiRoot))
     .then((res) => res.blob())
     .then((blob) => URL.createObjectURL(blob));
+}
+
+/** @param {SongFileContent} content */
+async function saveSongFileContents(content) {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  if (content.id) {
+    // existing record
+    /** @type {SongRecord} */
+    await fetch(`${apiRoot}/Songs/${content.id}`, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        Title: content.title,
+        Id: content.id
+      })
+    }).then((res) => res.json());
+  } else {
+    // new record
+    /** @type {SongRecord} */
+    const record = await fetch(`${apiRoot}/Songs`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        Title: content.title
+      })
+    }).then((res) => res.json());
+    content.id = record.id;
+
+    // upload audio
+    await uploadAudioFile(content);
+  }
+
+  // upload content
+  await uploadSongFileContent(content);
+
+  // upload audio
+  await uploadAudioFile(content);
+  return content;
+}
+
+/** @param {SongFileContent} content */
+async function uploadSongFileContent(content) {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  const str = JSON.stringify(content);
+  const bytes = new TextEncoder().encode(str);
+  const blob = new Blob([bytes], {
+    type: "application/json;charset=utf-8"
+  });
+  const formData = new FormData();
+  formData.append("files", blob);
+  await fetch(`${apiRoot}/Songs/${content.id}/Files`, {
+    method: "post",
+    body: formData
+  });
+}
+
+/** @param {SongFileContent} content */
+async function uploadAudioFile(content) {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  const blob = await fetch(content.audioUrl).then(res => res.blob());
+  const formData = new FormData();
+  formData.append("files", blob);
+  await fetch(`${apiRoot}/Songs/${content.id}/Audio-Files.mp3`, {
+    method: "post",
+    body: formData
+  });
 }
 
 /** @type {React.FC<{}>} */
@@ -115,6 +186,15 @@ export const App = () => {
               }}
             />
           )}
+          onSave={(content) => {
+            content["id"] = state?.id;
+            return saveSongFileContents({
+              ...content,
+              id: state?.id,
+              audioUrl: state?.audioUrl,
+              lyrics: ""
+            });
+          }}
         />
       )}
     </div>

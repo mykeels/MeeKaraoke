@@ -64,7 +64,7 @@ public class SongsController : ControllerBase
         return repo.CreateSong(song.TransformPaths(repo.AppDirectory));
     }
 
-    [HttpPatch]
+    [HttpPut]
     [Route("~/[controller]/{id}")]
     public ActionResult<SongModel?> UpdateSong([FromRoute] Guid id, [FromBody] SongModel song)
     {

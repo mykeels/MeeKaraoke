@@ -16,7 +16,7 @@ type SongRecord = {
 };
 
 type SongFileContent = {
-  id: string;
+  id?: string;
   title: string;
   lyrics: string;
   audioUrl: string;

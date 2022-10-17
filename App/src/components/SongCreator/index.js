@@ -6,7 +6,6 @@ import axios from "axios";
 import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
-import { DateTime } from "luxon";
 import classNames from "classnames";
 
 /**
@@ -59,6 +58,7 @@ const transformSongLines = (lines) => {
  * @property {string} [title]
  * @property {string} url
  * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
+ * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"audioUrl">) => Promise<any>} [onSave]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
  * @property {() => any} [onReset]
  * @property {{ song: Song, images: string[] }} [defaults]
@@ -74,7 +74,8 @@ export const SongCreator = ({
   getImages,
   LyricsTabView,
   onReset,
-  defaults
+  defaults,
+  onSave
 }) => {
   /** @type {ReactState<Song>} */
   const [song, setSong] = useState(defaults?.song || []);
@@ -170,21 +171,11 @@ export const SongCreator = ({
             onSave={() => {
               const data = {
                 title,
-                lines: song,
+                song,
                 images,
                 duration: song.reduce((sum, line) => sum + line.duration, 0)
               };
-              const blob = new Blob([JSON.stringify(data, null, 2)]);
-              const url = URL.createObjectURL(blob);
-              const downloadElem = document.createElement("a");
-              downloadElem.setAttribute("href", url);
-              downloadElem.setAttribute(
-                "download",
-                `${title || "karaoke"}-${DateTime.local().toFormat(
-                  "yyyy-MM-dd-hh-mm-ss"
-                )}.mee.json`
-              );
-              downloadElem.click();
+              onSave(data);
             }}
             onClear={() => {
               setSong([]);

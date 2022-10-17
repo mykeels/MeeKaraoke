@@ -19,6 +19,13 @@ public class WebApp
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", policyBuilder => policyBuilder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+        });
 
         var app = builder.Build();
 
@@ -30,17 +37,26 @@ public class WebApp
             app.UseSwaggerUI();
         }
 
-        app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod());
-        app.UseAuthorization();
 
         app.MapControllers();
         var repo = new SongRepository();
+
+        app.UseCors("CorsPolicy");
+        app.UseAuthorization();
         app.UseStaticFiles(new StaticFileOptions
         {
             FileProvider = new PhysicalFileProvider(
                 repo.AppDirectory
             ),
-            RequestPath = "/Static"
+            RequestPath = "/Static",
+            ServeUnknownFileTypes = true,
+            OnPrepareResponse = ctx =>
+            {
+                ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Origin", "*"));
+                ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Methods", "*"));
+                ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Headers",
+                  "Origin, X-Requested-With, Content-Type, Accept"));
+            },
         });
 
         app.Run();
