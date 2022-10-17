@@ -82,7 +82,7 @@ public class SongRepository
         string directory = Path.Join(AppDirectory, id.ToString());
         if (Directory.Exists(directory))
         {
-            Directory.Delete(directory);
+            Directory.Delete(directory, true);
         }
     }
 

@@ -55,9 +55,6 @@ async function saveSongFileContents(content) {
       })
     }).then((res) => res.json());
     content.id = record.id;
-
-    // upload audio
-    await uploadAudioFile(content);
   }
 
   // upload content
@@ -71,10 +68,12 @@ async function saveSongFileContents(content) {
 /** @param {SongFileContent} content */
 async function uploadSongFileContent(content) {
   const apiRoot = process.env.REACT_APP_API_ROOT;
-  const str = JSON.stringify(content);
-  const bytes = new TextEncoder().encode(str);
-  const blob = new Blob([bytes], {
-    type: "application/json;charset=utf-8"
+  const str = JSON.stringify({
+    ...content,
+    audioUrl: `~/Static/${content?.id}/audio.mp3`
+  });
+  const blob = new Blob([str], {
+    type: "application/json"
   });
   const formData = new FormData();
   formData.append("files", blob);
@@ -87,7 +86,7 @@ async function uploadSongFileContent(content) {
 /** @param {SongFileContent} content */
 async function uploadAudioFile(content) {
   const apiRoot = process.env.REACT_APP_API_ROOT;
-  const blob = await fetch(content.audioUrl).then(res => res.blob());
+  const blob = await fetch(content.audioUrl).then((res) => res.blob());
   const formData = new FormData();
   formData.append("files", blob);
   await fetch(`${apiRoot}/Songs/${content.id}/Audio-Files.mp3`, {
@@ -193,7 +192,7 @@ export const App = () => {
               id: state?.id,
               audioUrl: state?.audioUrl,
               lyrics: ""
-            });
+            }).then((content) => setState({ ...state, id: content.id }));
           }}
         />
       )}

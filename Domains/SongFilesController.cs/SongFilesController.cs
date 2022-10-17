@@ -33,10 +33,6 @@ public class SongFilesController : ControllerBase
         {
             if (formFile.Length > 0)
             {
-                if (formFile.ContentType != "application/json") {
-                    size -= formFile.Length;
-                    continue;
-                }
                 using (var stream = System.IO.File.Create(songFilePath))
                 {
                     await formFile.CopyToAsync(stream);
