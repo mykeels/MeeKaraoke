@@ -9,6 +9,7 @@ using Microsoft.Extensions.FileProviders;
 
 public class WebApp
 {
+    public static bool StartWwwRootServer = false;
     public static WebApplication Start(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +59,25 @@ public class WebApp
                   "Origin, X-Requested-With, Content-Type, Accept"));
             },
         });
+
+        if (StartWwwRootServer)
+        {
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot")
+            ),
+                RequestPath = "/app",
+                ServeUnknownFileTypes = true,
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Origin", "*"));
+                    ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Methods", "*"));
+                    ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Headers",
+                      "Origin, X-Requested-With, Content-Type, Accept"));
+                },
+            });
+        }
 
         app.Run();
 

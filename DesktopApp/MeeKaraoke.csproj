@@ -14,7 +14,7 @@
 		This will change the output directory of the React build output from
 		the `./wwwroot` folder to `./Resources/wwwroot`.
 		-->
-		<EmbedWwwRoot>true</EmbedWwwRoot>
+		<EmbedWwwRoot>false</EmbedWwwRoot>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<UiRoot>App\</UiRoot>
+		<UiRoot>..\App\</UiRoot>
 		<UiBuildOutput>build\</UiBuildOutput>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' != 'true' ">wwwroot\</WwwRoot>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' == 'true' ">Resources\wwwroot\</WwwRoot>
@@ -54,10 +54,7 @@
 
 	<Target Name="BuildApp" BeforeTargets="BeforeBuild">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." Condition="'$(Configuration)' == 'Release'" />
-		<Exec WorkingDirectory="$(UiRoot)" Command="npm install" Condition="'$(Configuration)' == 'Release'" />
-		<Exec WorkingDirectory="$(UiRoot)" Command="npm run build" Condition="'$(Configuration)' == 'Release'" />
-
+		
 		<ItemGroup>
 			<UiBuildOutputFiles Include="$(UiRoot)$(UiBuildOutput)**\*.*" />
 		</ItemGroup>
@@ -68,7 +65,6 @@
 
 		<Copy SourceFiles="@(UiBuildOutputFiles)" DestinationFiles="@(UiBuildOutputFiles->'$(TargetDir)\$(WwwRoot)%(RecursiveDir)%(Filename)%(Extension)')" Condition=" '$(EmbedWwwRoot)' != 'true' " />
 
-		<RemoveDir Directories="$(UiRoot)$(UiBuildOutput)" />
 	</Target>
 
 </Project>
