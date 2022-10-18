@@ -41,6 +41,7 @@ jobs:
       working-directory: ${{env.desktop-dir}}
 
     # release
+    - run: git reset --hard
     - run: npm version patch -m "bump to %s [skip ci]"
     - run: git tag $(node -p -e "require('./package.json').version")
     - name: Release
