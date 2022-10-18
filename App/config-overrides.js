@@ -1,8 +1,6 @@
 /* config-overrides.js */
 const ModuleFederationPlugin = require("webpack").container
   .ModuleFederationPlugin;
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
 
 const deps = require("./package.json").dependencies;
 
@@ -14,15 +12,8 @@ module.exports = function override(config, env) {
   config.entry = ["./src/index.js"];
 
   config.plugins.push(
-    new BundleAnalyzerPlugin({
-      analyzerMode: "static",
-      generateStatsFile: true,
-      openAnalyzer: false
-    })
-  );
-  config.plugins.push(
     new ModuleFederationPlugin({
-      name: "CustomerSettings",
+      name: "MeeKaraoke",
       filename: "remoteEntry.js",
       exposes: {
         "./index.js": "./src/bootstrap.js"
@@ -41,19 +32,6 @@ module.exports = function override(config, env) {
         },
         "react-query": {
           requiredVersion: deps["react-query"],
-          singleton: true
-        },
-        ...(process.env.WEBPACK_NODE_ENV === "production"
-          ? {}
-          : {
-              "@enpowered/ui": {
-                singleton: true
-              },
-              "@enpowered/ui/dist/index.css": {
-                singleton: true
-              }
-            }),
-        "@enpowered/microfrontends": {
           singleton: true
         }
       }
