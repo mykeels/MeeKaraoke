@@ -30,6 +30,7 @@ class Program
 
         // Creating a new PhotinoWindow instance with the fluent API
         var window = new PhotinoWindow()
+            .SetIconFile("Resources/favicon.ico")
             .SetGrantBrowserPermissions(true)
             .SetTitle(windowTitle)
             // Resize to a percentage of the main monitor work area
@@ -46,7 +47,8 @@ class Program
             {
                 Console.WriteLine("Window created");
                 Console.WriteLine("Starting Server");
-                System.Threading.Tasks.Task.Run(() => {
+                System.Threading.Tasks.Task.Run(() =>
+                {
                     WebApp.Start(args);
                 });
             })

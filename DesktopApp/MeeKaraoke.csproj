@@ -31,6 +31,7 @@
 		<UiBuildOutput>build\</UiBuildOutput>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' != 'true' ">wwwroot\</WwwRoot>
 		<WwwRoot Condition=" '$(EmbedWwwRoot)' == 'true' ">Resources\wwwroot\</WwwRoot>
+		<ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -54,7 +55,7 @@
 
 	<Target Name="BuildApp" BeforeTargets="BeforeBuild">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-		
+
 		<ItemGroup>
 			<UiBuildOutputFiles Include="$(UiRoot)$(UiBuildOutput)**\*.*" />
 		</ItemGroup>
@@ -65,6 +66,9 @@
 
 		<Copy SourceFiles="@(UiBuildOutputFiles)" DestinationFiles="@(UiBuildOutputFiles->'$(TargetDir)\$(WwwRoot)%(RecursiveDir)%(Filename)%(Extension)')" Condition=" '$(EmbedWwwRoot)' != 'true' " />
 
+		<Copy SourceFiles="Resources\favicon.svg" DestinationFiles="$(TargetDir)\Resources\favicon.svg" />
+		<Copy SourceFiles="Resources\favicon.ico" DestinationFiles="$(TargetDir)\Resources\favicon.ico" />
+		<Copy SourceFiles="Resources\favicon.png" DestinationFiles="$(TargetDir)\Resources\favicon.png" />
 	</Target>
 
 </Project>

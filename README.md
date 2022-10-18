@@ -2,6 +2,8 @@
 
 The simplest creator of Karaoke music.
 
+<img src="./DesktopApp/Resources/favicon.svg" width="50" />
+
 ## 1. Planning Phase
 
 See [How it should work](./docs/HOW_IT_SHOULD_WORK.md).
