@@ -39,6 +39,7 @@ jobs:
       working-directory: ${{env.desktop-dir}}
     - run: bash scripts/build-releases.sh
       working-directory: ${{env.desktop-dir}}
+    - run: cat ./DesktopApp/bin/Release
 
     # release
     - run: git reset --hard
@@ -61,7 +62,7 @@ jobs:
       with:
         tag_name: ${{env.NPM_PACKAGE_VERSION}}
         files: |
-            ${{env.desktop-dir}}/bin/Release/net6.0/win-x64-self-contained.zip
-            ${{env.desktop-dir}}/bin/Release/net6.0/win-x64.zip
-            ${{env.desktop-dir}}/bin/Release/net6.0/linux-x64.zip
-            ${{env.desktop-dir}}/bin/Release/net6.0/osx-x64.zip
+            ${{env.desktop-dir}}/bin/Release/win-x64-self-contained.zip
+            ${{env.desktop-dir}}/bin/Release/win-x64.zip
+            ${{env.desktop-dir}}/bin/Release/linux-x64.zip
+            ${{env.desktop-dir}}/bin/Release/osx-x64.zip
