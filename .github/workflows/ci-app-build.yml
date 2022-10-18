@@ -49,6 +49,11 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git commit -m "bump version to %s [skip ci]" -a
     - run: git tag $(node -p -e "require('./package.json').version")
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.OUR_GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
