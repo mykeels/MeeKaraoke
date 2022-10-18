@@ -37,3 +37,23 @@ jobs:
     # build desktop app
     - run: dotnet build -c Release
       working-directory: ${{env.desktop-dir}}
+    - run: bash script/build-releases.sh
+      working-directory: ${{env.desktop-dir}}
+
+    # release
+    - run: npm version patch -m "bump to %s [skip ci]"
+    - run: git tag $(node -p -e "require('./package.json').version")
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+            ${{env.desktop-dir}}/bin/Release/net6.0/lean-win-x64.zip
+            ${{env.desktop-dir}}/bin/Release/net6.0/win-x64.zip
+            ${{env.desktop-dir}}/bin/Release/net6.0/linux-x64.zip
+            ${{env.desktop-dir}}/bin/Release/net6.0/osx-x64.zip
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.OUR_GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
