@@ -37,7 +37,7 @@ jobs:
     # build desktop app
     - run: dotnet build -c Release
       working-directory: ${{env.desktop-dir}}
-    - run: bash script/build-releases.sh
+    - run: bash scripts/build-releases.sh
       working-directory: ${{env.desktop-dir}}
 
     # release
