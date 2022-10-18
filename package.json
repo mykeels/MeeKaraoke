@@ -1,4 +1,7 @@
 {
+    "name": "mee-karaoke",
+    "version": "0.0.0",
+    "private": true,
     "scripts": {
         "install": "cd App && npm i",
         "start": "cd App && npm start",
