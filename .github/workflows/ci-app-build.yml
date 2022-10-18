@@ -51,7 +51,6 @@ jobs:
     - run: git tag $(node -p -e "require('./package.json').version")
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
             ${{env.desktop-dir}}/bin/Release/net6.0/win-x64-self-contained.zip
