@@ -54,6 +54,7 @@ jobs:
       with:
         github_token: ${{ secrets.OUR_GITHUB_TOKEN }}
         branch: ${{ github.ref }}
+        tags: true
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
@@ -62,8 +63,3 @@ jobs:
             ${{env.desktop-dir}}/bin/Release/net6.0/win-x64.zip
             ${{env.desktop-dir}}/bin/Release/net6.0/linux-x64.zip
             ${{env.desktop-dir}}/bin/Release/net6.0/osx-x64.zip
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.OUR_GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
