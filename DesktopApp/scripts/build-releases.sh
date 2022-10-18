@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-cd bin/Release/net6.0; zip -r ../win-x64.zip . -i * wwwroot/*
+cd bin/Release/net6.0; zip -r ../win-x64.zip . -i * wwwroot
 
 cd $DIR/../
 
