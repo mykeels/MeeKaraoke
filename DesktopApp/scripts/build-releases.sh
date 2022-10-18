@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-cd bin/Release/net6.0; zip -r ../win-x64.zip *
+cd bin/Release/net6.0; zip -r ../win-x64.zip *.* wwwroot
 
 cd $DIR/../
 
@@ -16,5 +16,5 @@ dotnet build -c Release -r osx-x64 --no-self-contained
 
 # zip
 #cd $DIR/../bin/Release/net6.0/win-x64; zip -r ../../win-x64-self-contained.zip . -i wwwroot/* MeeKaraoke.exe
-cd $DIR/../bin/Release/net6.0/linux-x64; zip -r ../../linux-x64.zip . -i * wwwroot/*
-cd $DIR/../bin/Release/net6.0/osx-x64; zip -r ../../osx-x64.zip . -i * wwwroot/*
+cd $DIR/../bin/Release/net6.0/linux-x64; zip -r ../../linux-x64.zip *
+cd $DIR/../bin/Release/net6.0/osx-x64; zip -r ../../osx-x64.zip *
