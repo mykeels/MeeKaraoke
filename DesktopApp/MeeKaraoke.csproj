@@ -68,7 +68,6 @@
 
 		<Copy SourceFiles="Resources\favicon.svg" DestinationFiles="$(TargetDir)\Resources\favicon.svg" />
 		<Copy SourceFiles="Resources\favicon.ico" DestinationFiles="$(TargetDir)\Resources\favicon.ico" />
-		<Copy SourceFiles="Resources\favicon.png" DestinationFiles="$(TargetDir)\Resources\favicon.png" />
 	</Target>
 
 </Project>
