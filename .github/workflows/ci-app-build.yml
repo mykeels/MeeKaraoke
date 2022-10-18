@@ -39,7 +39,7 @@ jobs:
       working-directory: ${{env.desktop-dir}}
     - run: bash scripts/build-releases.sh
       working-directory: ${{env.desktop-dir}}
-    - run: cat ./DesktopApp/bin/Release
+    - run: ls ./DesktopApp/bin/Release
 
     # release
     - run: git reset --hard
