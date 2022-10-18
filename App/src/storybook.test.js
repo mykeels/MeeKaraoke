@@ -1,6 +1,10 @@
-import initStoryshots from "@storybook/addon-storyshots";
+import React from "react";
+import initStoryshots, {
+  Stories2SnapsConverter
+} from "@storybook/addon-storyshots";
 import { Settings } from "luxon";
 import timemachine from "timemachine";
+import { create, act } from "react-test-renderer";
 
 import { sleep } from "./common";
 
@@ -25,69 +29,28 @@ afterAll(() => {
   timemachine.reset();
 });
 
+const converter = new Stories2SnapsConverter();
+
 initStoryshots({
   suite: "@mykeels/mee-karaoke",
-  test: multiSnapshotWithOptions({}),
-  storyKindRegex: /^((?!.*?App).)*$/
+  asyncJest: true,
+  storyKindRegex: /^((?!.*?App).)*$/,
+  test: async ({ story, context, done }) => {
+    let renderer;
+    act(() => {
+      // React.createElement() is important because of hooks [shouldn't call story.render() directly]
+      renderer = create(React.createElement(story.render));
+    });
+
+    // Let one render cycle pass before rendering snapshot
+    await act(() => sleep(0));
+
+    // save each snapshot to a different file (similar to "multiSnapshotWithOptions")
+    const snapshotFileName = converter.getSnapshotFileName(context);
+    expect(renderer).toMatchSpecificSnapshot(
+      snapshotFileName.replace(/^src(\\|\/)/, "")
+    );
+
+    done();
+  }
 });
-
-const isFunction = obj => !!(obj && obj.constructor && obj.call && obj.apply);
-const optionsOrCallOptions = (opts, story) =>
-  isFunction(opts) ? opts(story) : opts;
-
-function snapshotWithOptions(options = {}) {
-  return ({ story, context, renderTree, snapshotFileName }) => {
-    console.log({
-      renderTree, story, context, options
-    });
-    const result = renderTree(
-      story,
-      context,
-      optionsOrCallOptions(options, story)
-    );
-
-    async function match(tree) {
-      let target = tree;
-      const isReact = story.parameters.framework === "react";
-
-      await sleep(400);
-
-      if (isReact && typeof tree.childAt === "function") {
-        target = tree.childAt(0);
-      }
-      if (isReact && Array.isArray(tree.children)) {
-        [target] = tree.children;
-      }
-
-      if (snapshotFileName) {
-        expect(target).toMatchSpecificSnapshot(snapshotFileName);
-      } else {
-        expect(target).toMatchSnapshot();
-      }
-
-      if (typeof tree.unmount === "function") {
-        tree.unmount();
-      }
-    }
-
-    if (typeof result.then === "function") {
-      return result.then(match).catch(() => match(result));
-    }
-
-    return match(result);
-  };
-}
-
-function multiSnapshotWithOptions(options = {}) {
-  return ({ story, context, renderTree, stories2snapsConverter }) => {
-    const snapshotFileName = stories2snapsConverter.getSnapshotFileName(
-      context
-    );
-    return snapshotWithOptions(options)({
-      story,
-      context,
-      renderTree,
-      snapshotFileName: snapshotFileName.replace(/^src(\\|\/)/, "")
-    });
-  };
-}

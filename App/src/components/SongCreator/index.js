@@ -2,7 +2,6 @@ import "./SongCreator.css";
 
 import React, { useEffect, useRef, useState } from "react";
 import { LyricsTabView } from "./components/LyricsTabView";
-import axios from "axios";
 import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
@@ -221,11 +220,7 @@ async function getImages(lines, intervals = 5) {
   }
   return Promise.all(
     keywords.map((keyword) =>
-      axios
-        .get(`https://source.unsplash.com/random/1280x720/?${keyword}`, {
-          maxRedirects: 0
-        })
-        .then((res) => res.request.responseURL)
+      fetch(`https://source.unsplash.com/random/1280x720/?${keyword}`).then((res) => res.url)
     )
   );
 }

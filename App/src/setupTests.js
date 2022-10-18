@@ -1,5 +1,6 @@
 const Enzyme = require("enzyme");
 const EnzymeAdapter = require("@zarconontol/enzyme-adapter-react-18");
+require("mutationobserver-shim");
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
@@ -9,15 +10,8 @@ jest.mock("react", () => ({
   useLayoutEffect: jest.requireActual("react").useEffect
 }));
 
-// @ts-ignore
-window.getComputedStyle = jest.fn(() => ({}));
-
-// @ts-ignore
-window.MutationObserver = jest.fn(function MutationObserver(callback) {
-  this.observe = jest.fn();
-  this.disconnect = jest.fn();
-  this.trigger = mockedMutationsList => {
-    // @ts-ignore
-    callback(mockedMutationsList, this);
-  };
-});
+jest.mock("react-dom/client", () => ({
+  // @ts-ignore
+  ...jest.requireActual("react-dom/client"),
+  createRoot: () => ({ render: () => {} })
+}));

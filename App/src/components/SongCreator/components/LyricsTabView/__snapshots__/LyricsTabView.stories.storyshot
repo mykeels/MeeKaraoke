@@ -1,0 +1,556 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Cursor 5 1`] = `
+<div
+  className="w-full"
+>
+  <ul
+    className="nav nav-tabs flex flex-row flex-wrap list-none border-b-0 pl-0 justify-end"
+    role="tablist"
+  >
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        ❌
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        💾
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        aria-selected="true"
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 bg-purple-200 text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        Pretty
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        aria-selected="false"
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:bg-purple-100"
+        onClick={[Function]}
+        role="tab"
+      >
+        Text
+      </button>
+    </li>
+  </ul>
+  <div
+    className="tab-content py-2 custom-scroller overflow-y-auto"
+  >
+    <div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          I've been reading books of old
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          The legends and the myths
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          Achilles and his gold
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        />
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          But she said, where d'you wanna go?
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer bg-lavender-100"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          How much you wanna risk?
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          I'm not looking for somebody
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          With some superhuman gifts
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          With some superhuman gifts
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          Some superhero
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          Some fairytale bliss
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          Just something I can turn to
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer"
+        onClick={[Function]}
+      >
+        <div
+          className="inline-block w-5/6"
+        >
+          Somebody I can miss
+        </div>
+        <div
+          className="inline-block w-1/6"
+        >
+          <div
+            className="block w-full"
+          >
+            <div
+              className="inline-block w-1/2"
+            />
+            <div
+              className="inline-block w-1/2"
+            >
+              00:01
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Empty 1`] = `
+<div
+  className="w-full"
+>
+  <ul
+    className="nav nav-tabs flex flex-row flex-wrap list-none border-b-0 pl-0 justify-end"
+    role="tablist"
+  >
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        📂
+      </button>
+      <input
+        type="file"
+      />
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        aria-selected="false"
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100"
+        onClick={[Function]}
+        role="tab"
+      >
+        Pretty
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        aria-selected="true"
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 bg-purple-200 text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        Text
+      </button>
+    </li>
+  </ul>
+  <div
+    className="tab-content py-2 custom-scroller overflow-y-auto"
+  >
+    <div>
+      <textarea
+        className="h-75vh w-full p-2 bg-pink text-purple-200 custom-scroller"
+        onChange={[Function]}
+        placeholder="Paste Song Lyrics here"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Index 1`] = `
+<div
+  className="w-full"
+>
+  <ul
+    className="nav nav-tabs flex flex-row flex-wrap list-none border-b-0 pl-0 justify-end"
+    role="tablist"
+  >
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        ❌
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        💾
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        aria-selected="false"
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100"
+        onClick={[Function]}
+        role="tab"
+      >
+        Pretty
+      </button>
+    </li>
+    <li
+      className="nav-item"
+      role="presentation"
+    >
+      <button
+        aria-selected="true"
+        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 bg-purple-200 text-white"
+        onClick={[Function]}
+        role="tab"
+      >
+        Text
+      </button>
+    </li>
+  </ul>
+  <div
+    className="tab-content py-2 custom-scroller overflow-y-auto"
+  >
+    <div>
+      <textarea
+        className="h-75vh w-full p-2 bg-pink text-purple-200 custom-scroller"
+        onChange={[Function]}
+        placeholder="Paste Song Lyrics here"
+        value="I've been reading books of old
+The legends and the myths
+Achilles and his gold
+
+But she said, where d'you wanna go?
+How much you wanna risk?
+I'm not looking for somebody
+With some superhuman gifts
+With some superhuman gifts
+Some superhero
+Some fairytale bliss
+Just something I can turn to
+Somebody I can miss"
+      />
+    </div>
+  </div>
+</div>
+`;

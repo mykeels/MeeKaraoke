@@ -13,7 +13,7 @@ export const SongLine = ({ isActive, line, ...props }) => {
   const ref = useRef();
   useEffect(() => {
     if (isActive) {
-      ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [isActive]);
 
