@@ -42,7 +42,12 @@ jobs:
 
     # release
     - run: git reset --hard
-    - run: npm version patch -m "bump to %s [skip ci]"
+    - run: npm version patch  --git-tag-version false
+    - name: commit version bump
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -m "bump version to %s [skip ci]" -a
     - run: git tag $(node -p -e "require('./package.json').version")
     - name: Release
       uses: softprops/action-gh-release@v1
