@@ -54,7 +54,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-            ${{env.desktop-dir}}/bin/Release/net6.0/lean-win-x64.zip
+            ${{env.desktop-dir}}/bin/Release/net6.0/win-x64-self-contained.zip
             ${{env.desktop-dir}}/bin/Release/net6.0/win-x64.zip
             ${{env.desktop-dir}}/bin/Release/net6.0/linux-x64.zip
             ${{env.desktop-dir}}/bin/Release/net6.0/osx-x64.zip
