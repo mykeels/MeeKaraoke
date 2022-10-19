@@ -65,3 +65,4 @@ jobs:
             ${{env.desktop-dir}}/bin/Release/linux-x64.zip
             ${{env.desktop-dir}}/bin/Release/osx-x64.zip
             ${{env.desktop-dir}}/bin/Release/osx-x64-self-contained.zip
+            ${{env.desktop-dir}}/bin/Release/win-x64-self-contained.zip
