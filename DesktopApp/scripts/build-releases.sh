@@ -18,5 +18,5 @@ dotnet publish -c Release -o bin/Release/net6.0/win-x64-self-con -p:PublishReady
 #dotnet publish -c Release -o bin/Release/net6.0/linux-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:RuntimeIdentifier=linux-x64
 dotnet publish -c Release -o bin/Release/net6.0/osx-x64-self-con -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:RuntimeIdentifier=osx-x64
 
-cd $DIR/../bin/Release/net6.0/win-x64-self-con; zip -r ../../win-x64-self-contained.zip wwwroot/* MeeKaraoke.exe
-cd $DIR/../bin/Release/net6.0/osx-x64-self-con; zip -r ../../osx-x64-self-contained.zip wwwroot/* MeeKaraoke
+cd $DIR/../bin/Release/net6.0/win-x64-self-con; zip -r ../../win-x64-self-contained.zip *
+cd $DIR/../bin/Release/net6.0/osx-x64-self-con; zip -r ../../osx-x64-self-contained.zip *
