@@ -30,7 +30,6 @@ class Program
 
         // Creating a new PhotinoWindow instance with the fluent API
         var window = new PhotinoWindow()
-            .SetIconFile("Resources/favicon.ico")
             .SetGrantBrowserPermissions(true)
             .SetTitle(windowTitle)
             // Resize to a percentage of the main monitor work area
@@ -82,6 +81,12 @@ class Program
                 window?.SendWebMessage(response);
             })
             .Load(baseUrl);
+
+        try {
+            window.SetIconFile("Resources/favicon.ico");
+        } catch (Exception e) {
+            Console.WriteLine($"Cannot set Window Icon: {e.Message}");
+        }
 
         window.WaitForClose(); // Starts the application event loop
     }
