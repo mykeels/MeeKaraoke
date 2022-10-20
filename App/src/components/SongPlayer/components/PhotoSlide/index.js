@@ -11,7 +11,7 @@ import {
 /**
  * @typedef {object} PhotoSlideProps
  * @property {any} [children]
- * @property {string} imageURL
+ * @property {string} [imageURL]
  */
 
 /**
@@ -37,12 +37,13 @@ export const PhotoSlide = ({ children, imageURL }) => {
   return (
     <AbsoluteFill
       className="bg-gray-100 items-center justify-center"
-      style={{ backgroundImage: imageURL, backgroundSize: "cover" }}
     >
-      <Img
-        className="h-full w-full block absolute top-0 left-0"
-        src={imageURL}
-      />
+      {imageURL ? (
+        <Img
+          className="h-full w-full block absolute top-0 left-0"
+          src={imageURL}
+        />
+      ) : null}
       {children ? (
         <div
           className="p-8 z-10 text-4xl text-white font-bold relative"

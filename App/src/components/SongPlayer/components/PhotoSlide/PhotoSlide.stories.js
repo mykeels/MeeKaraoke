@@ -2,21 +2,20 @@ import React from "react";
 import { Player } from "@remotion/player";
 
 import { PhotoSlide } from "./";
+import { frames } from "../../../../common/utils";
 
 export default {
-  title: "components/PhotoSlide",
+  title: "components/SongPlayer/components/PhotoSlide",
   component: PhotoSlide,
   decorators: []
 };
 
-const fps = 30;
-const durationInFrames = 3 * fps;
 
 export const Index = () => (
   <Player
     component={() => <PhotoSlide imageURL={image}>Hello World</PhotoSlide>}
-    durationInFrames={durationInFrames}
-    fps={fps}
+    durationInFrames={frames(2)}
+    fps={frames(1)}
     compositionWidth={1280}
     compositionHeight={720}
     autoPlay
