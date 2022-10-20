@@ -82,12 +82,6 @@ class Program
             })
             .Load(baseUrl);
 
-        try {
-            window.SetIconFile("Resources/favicon.ico");
-        } catch (Exception e) {
-            Console.WriteLine($"Cannot set Window Icon: {e.Message}");
-        }
-
         window.WaitForClose(); // Starts the application event loop
     }
 }
