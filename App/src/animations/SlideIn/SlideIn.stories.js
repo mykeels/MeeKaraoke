@@ -32,7 +32,7 @@ const SlideInComponent = ({ from }) => (
     fps={fps}
     compositionWidth={640}
     compositionHeight={320}
-    autoPlay
+    autoPlay={!process.env.REACT_APP_PREVENT_AUTOPLAY}
     loop
     controls
   />

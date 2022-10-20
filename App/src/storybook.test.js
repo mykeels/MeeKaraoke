@@ -8,6 +8,8 @@ import { create, act } from "react-test-renderer";
 
 import { sleep } from "./common";
 
+process.env.REACT_APP_PREVENT_AUTOPLAY = true;
+
 beforeEach(() => {
   window.matchMedia = () => ({
     matches: true,
@@ -18,7 +20,9 @@ beforeEach(() => {
 
 beforeAll(() => {
   timemachine.config({
-    dateString: "2020-08-08T04:00:00.000Z"
+    dateString: "2020-08-08T04:00:00.000Z",
+    keepTime: false,
+    tick: false
   });
   Settings.defaultLocale = "en";
   Settings.defaultZoneName = "utc";

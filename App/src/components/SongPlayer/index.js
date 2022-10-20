@@ -26,7 +26,7 @@ export const SongPlayer = ({ lines, audioUrl, images }) => {
         compositionHeight={720}
         fps={frames(1)}
         controls
-        autoPlay
+        autoPlay={!process.env.REACT_APP_PREVENT_AUTOPLAY}
       />
     </div>
   );
