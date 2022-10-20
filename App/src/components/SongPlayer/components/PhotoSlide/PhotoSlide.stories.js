@@ -18,6 +18,7 @@ export const Index = () => (
     fps={frames(1)}
     compositionWidth={1280}
     compositionHeight={720}
+    controls
     autoPlay={!process.env.REACT_APP_PREVENT_AUTOPLAY}
     loop
   />
