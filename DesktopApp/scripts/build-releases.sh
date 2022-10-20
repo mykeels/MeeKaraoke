@@ -23,6 +23,8 @@ function build-self-contained
         -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true \
         --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true \
         -p:RuntimeIdentifier=$RUNTIME
+    cp -R $DIR/../Resources $DIR/../bin/Release/net6.0/$RUNTIME-self-contained
+    cp -R $DIR/../bin/Release/net6.0/win-64/wwwroot $DIR/../bin/Release/net6.0/$RUNTIME-self-contained
     ls $DIR/../bin/Release/net6.0/$RUNTIME-self-contained
     echo "Zip $RUNTIME-self-contained"
     cd $DIR/../bin/Release/net6.0/$RUNTIME-self-contained; zip -r ../../$RUNTIME-self-contained.zip *
