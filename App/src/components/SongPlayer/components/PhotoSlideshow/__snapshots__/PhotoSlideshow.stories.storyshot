@@ -151,7 +151,7 @@ Array [
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "
-	.__remotion-volume-slider-03495158941950649::-webkit-slider-thumb {
+	.__remotion-volume-slider-08929587388411164::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		background-color: white;
 		border-radius: 6px;
@@ -159,14 +159,14 @@ Array [
 		height: 12px;
 		width: 12px;
 	}
-	.__remotion-volume-slider-03495158941950649 {
+	.__remotion-volume-slider-08929587388411164 {
 		background-image: linear-gradient(
 			to right,
 			white 100%, rgba(255, 255, 255, 0) 100%
 		);
 	}
 
-	.__remotion-volume-slider-03495158941950649::-moz-range-thumb {
+	.__remotion-volume-slider-08929587388411164::-moz-range-thumb {
 		-webkit-appearance: none;
 		background-color: white;
 		border-radius: 6px;

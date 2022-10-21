@@ -1,13 +1,13 @@
+import { Player } from "@remotion/player";
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { Player } from "@remotion/player";
 
-import { SlideIn } from "./index";
+import { Pulse } from "./";
 import { frames } from "../../common";
 
 export default {
-  title: "animations/SlideIn",
-  component: SlideIn,
+  title: "animations/Pulse",
+  component: Pulse,
   decorators: []
 };
 
@@ -15,17 +15,17 @@ const duration = 1.5;
 
 /**
  *
- * @type {React.FC<{ from: "top" | "bottom" | "left" | "right" }>}
+ * @type {React.FC<Parameters<Pulse>[0]>}
  */
-const SlideInComponent = ({ from }) => (
+const PulseComponent = ({ ...props }) => (
   <Player
     component={() => (
       <AbsoluteFill className="bg-pink items-center justify-center">
-        <SlideIn duration={1} from={from}>
+        <Pulse {...props}>
           <div className="bg-purple-200 p-8 rounded text-white text-xl">
             Hello World
           </div>
-        </SlideIn>
+        </Pulse>
       </AbsoluteFill>
     )}
     durationInFrames={frames(duration)}
@@ -38,10 +38,7 @@ const SlideInComponent = ({ from }) => (
   />
 );
 
-export const FromBottom = () => <SlideInComponent from="bottom" />;
-
-export const FromTop = () => <SlideInComponent from="top" />;
-
-export const FromLeft = () => <SlideInComponent from="left" />;
-
-export const FromRight = () => <SlideInComponent from="right" />;
+export const Size1 = () => <PulseComponent size={0.1} />;
+export const Size2 = () => <PulseComponent size={0.2} />;
+export const Size3 = () => <PulseComponent size={0.3} />;
+export const Size4 = () => <PulseComponent size={0.4} />;
