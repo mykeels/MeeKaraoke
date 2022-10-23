@@ -50,7 +50,7 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git commit -m "bump version to %s [skip ci]" -a
     - run: git tag $(node -p -e "require('./package.json').version")
-    - run: echo "NPM_PACKAGE_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
+    - run: echo "NPM_PACKAGE_VERSION=$(node -p -e "require('./package.json').version")" >> $env:GITHUB_ENV
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
