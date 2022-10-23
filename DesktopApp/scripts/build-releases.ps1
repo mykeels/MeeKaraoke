@@ -5,10 +5,14 @@ function build-simple($RUNTIME)
     echo "Building $RUNTIME"
     cd $DIR/../
     dotnet build -c Release -r $RUNTIME --no-self-contained
-    ls $DIR/../bin/Release/net6.0/win-x64
+    ls $DIR/../bin/Release/net6.0/$RUNTIME
     echo "Zip $RUNTIME"
     cd $DIR/../bin/Release/net6.0/$RUNTIME
     Compress-Archive -Path .\* -DestinationPath ../../$RUNTIME.zip
+    if ([System.IO.File]::Exists("$DIR/../bin/Release/net6.0/$RUNTIME/MeeKaraoke")) {
+        # chmod +x
+        ICACLS $DIR/../bin/Release/net6.0/$RUNTIME/MeeKaraoke /grant:r "users:(RX)" /C
+    }
     echo "---------------------------------------------------------------------"
 }
 
@@ -26,6 +30,10 @@ function build-self-contained($RUNTIME)
     echo "Zip $RUNTIME-self-contained"
     cd $DIR/../bin/Release/net6.0/$RUNTIME-self-contained
     Compress-Archive -Path .\* -DestinationPath ../../$RUNTIME-self-contained.zip
+    if ([System.IO.File]::Exists("$DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke")) {
+        # chmod +x
+        ICACLS $DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke /grant:r "users:(RX)" /C
+    }
     echo "---------------------------------------------------------------------"
 }
 
