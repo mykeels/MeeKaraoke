@@ -915,6 +915,10 @@ video {
     display: inline-block;
   }
 
+  .md\:inline {
+    display: inline;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -1203,4 +1207,4 @@ input.file-upload {
   background-color: #9568a8;
 }
 
-/*# sourceMappingURL=main.f6062d12.css.map*/
+/*# sourceMappingURL=main.bbddb964.css.map*/
