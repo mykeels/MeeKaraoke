@@ -13,26 +13,27 @@ import { frames } from "../../common/utils";
  */
 
 /**
- * @type {React.FC<SongPlayerProps & { [key: string]: any }>}
+ * @type {React.FC<SongPlayerProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
  */
-export const SongPlayer = ({ lines, audioUrl, images, width, height }) => {
+export const SongPlayer = React.forwardRef(function SongPlayer(
+  { lines, audioUrl, images, width, height },
+  ref
+) {
   const duration = lines.reduce((sum, line) => sum + line.duration, 0);
   return (
-    <div className="block h-screen w-screen px-16 py-8">
-      <Player
-        component={() => (
-          <PhotoSlideshow audioUrl={audioUrl} images={images} lines={lines} />
-        )}
-        durationInFrames={frames(duration)}
-        compositionWidth={width}
-        compositionHeight={height}
-        fps={frames(1)}
-        controls
-        autoPlay={!process.env.REACT_APP_PREVENT_AUTOPLAY}
-      />
-    </div>
+    <Player
+      ref={ref}
+      component={() => (
+        <PhotoSlideshow audioUrl={audioUrl} images={images} lines={lines} />
+      )}
+      durationInFrames={frames(duration)}
+      compositionWidth={width}
+      compositionHeight={height}
+      fps={frames(1)}
+      controls
+    />
   );
-};
+});
 
 SongPlayer.defaultProps = {
   width: 1280,

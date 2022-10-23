@@ -1,7 +1,7 @@
 import React from "react";
 
 import { SongPlayer } from "./";
-import sampleSong from "./components/PhotoSlideshow/sample-song.json";
+import sampleSong from "../../common/data/sample-song.json";
 
 export default {
   title: "components/SongPlayer",

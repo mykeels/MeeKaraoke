@@ -27,6 +27,10 @@ export const NoDurations = () => (
 export const WithDurations = () => (
   <SongCreator
     url={"./sounds/something-just-like-this.mp3"}
+    defaults={{
+      song: sampleSong.lines,
+      images: sampleSong.images
+    }}
     LyricsTabView={(props) => (
       <LyricsTabView
         {...props}
