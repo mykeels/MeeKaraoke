@@ -11,7 +11,7 @@ function build-simple($RUNTIME)
     Compress-Archive -Path .\* -DestinationPath ../../$RUNTIME.zip
     if ([System.IO.File]::Exists("$DIR/../bin/Release/net6.0/$RUNTIME/MeeKaraoke")) {
         # chmod +x
-        ICACLS $DIR/../bin/Release/net6.0/$RUNTIME/MeeKaraoke /grant:r "users:(RX)" /C
+        attrib +s $DIR/../bin/Release/net6.0/$RUNTIME/MeeKaraoke /s
     }
     echo "---------------------------------------------------------------------"
 }
@@ -32,7 +32,7 @@ function build-self-contained($RUNTIME)
     Compress-Archive -Path .\* -DestinationPath ../../$RUNTIME-self-contained.zip
     if ([System.IO.File]::Exists("$DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke")) {
         # chmod +x
-        ICACLS $DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke /grant:r "users:(RX)" /C
+        attrib +s $DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke /s
     }
     echo "---------------------------------------------------------------------"
 }
