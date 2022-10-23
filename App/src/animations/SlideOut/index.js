@@ -5,7 +5,7 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
  * @typedef {object} SlideOutProps
  * @property {any} children
  * @property {"top"|"bottom"|"left"|"right"} [to]
- * @property {(style: React.CSSProperties) => any} [onChange]
+ * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
  */
 
 /**
@@ -47,7 +47,7 @@ export const SlideOut = ({ children, to, onChange }) => {
     };
   }, []);
 
-  const Component = children;
+  const Component = typeof children === "function" ? children : null;
 
   return children ? (
     typeof children === "function" ? (

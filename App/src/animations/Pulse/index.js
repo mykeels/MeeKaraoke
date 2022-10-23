@@ -5,7 +5,7 @@ import { useCurrentFrame } from "remotion";
  * @typedef {object} PulseProps
  * @property {any} children
  * @property {number} [size]
- * @property {(style: React.CSSProperties) => any} [onChange]
+ * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
  */
 
 /**
@@ -27,7 +27,7 @@ export const Pulse = ({ children, size, onChange }) => {
     };
   }, []);
 
-  const Component = children;
+  const Component = typeof children === "function" ? children : null;
 
   return children ? (
     typeof children === "function" ? (

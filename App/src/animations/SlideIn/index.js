@@ -3,7 +3,7 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 
 /**
  * @typedef {object} SlideInProps
- * @property {React.FC<{ style: React.CSSProperties }>} [children]
+ * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
  * @property {"top"|"bottom"|"left"|"right"} [from]
  * @property {(style: React.CSSProperties) => any} [onChange]
  */
@@ -47,7 +47,7 @@ export const SlideIn = ({ children, from, onChange }) => {
     };
   }, []);
 
-  const Component = children;
+  const Component = typeof children === "function" ? children : null;
 
   return children ? (
     typeof children === "function" ? (
