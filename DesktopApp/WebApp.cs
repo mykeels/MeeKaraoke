@@ -57,6 +57,7 @@ public class WebApp
 
         if (StartWwwRootServer)
         {
+            Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
@@ -74,7 +75,7 @@ public class WebApp
             });
         }
 
-        app.Run();
+        app.Start();
 
         return app;
 
