@@ -26,15 +26,15 @@ jobs:
         dotnet-version: '6.0.300'
 
     # build app
-    # - run: echo "REACT_APP_API_ROOT=http://localhost:5000`n" >> .env
-    #   working-directory: ${{env.app-dir}}
-    # - run: npm ci
-    #   working-directory: ${{ env.app-dir }}
-    # - run: npm run build:tsc
-    #   working-directory: ${{ env.app-dir }}
-    # - name: Build App
-    #   run: npx cross-env NODE_ENV=production npm run build
-    #   working-directory: ${{ env.app-dir }}
+    - run: echo "REACT_APP_API_ROOT=http://localhost:5000`n" >> .env
+      working-directory: ${{env.app-dir}}
+    - run: npm ci
+      working-directory: ${{ env.app-dir }}
+    - run: npm run build:tsc
+      working-directory: ${{ env.app-dir }}
+    - name: Build App
+      run: npx cross-env NODE_ENV=production npm run build
+      working-directory: ${{ env.app-dir }}
 
     # build desktop app
     - run: ./build-releases.ps1
