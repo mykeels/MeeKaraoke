@@ -82,6 +82,14 @@ class Program
             })
             .Load(baseUrl);
 
+        bool IsWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                System.Runtime.InteropServices.OSPlatform.Windows
+            );
+        if (IsWindows)
+        {
+            window.SetIconFile("./Resources/favicon.ico");
+        }
+
         window.WaitForClose(); // Starts the application event loop
     }
 }
