@@ -56,7 +56,7 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
   };
   return (
     <>
-      <Audio src={audioUrl.replace("~", apiRootURL)} volume={0.1} />
+      <Audio src={audioUrl.replace("~", apiRootURL)} />
       <Img className="h-full w-full block absolute top-0 left-0" src={image} />
       {linesWithImages.map((line, i) =>
         line.text ? (
