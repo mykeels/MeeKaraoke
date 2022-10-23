@@ -26,15 +26,15 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
   }
   useEffect(() => {
     if (isFullscreen) {
-      ref.current.requestFullscreen();
-      ref.current.play();
+      ref.current?.requestFullscreen();
+      ref.current?.play();
     }
     const onFullScreenChange = (e) => {
       if (!e.detail.isFullscreen) {
         typeof onPlayEnd === "function" && onPlayEnd();
       }
     };
-    ref.current.addEventListener("fullscreenchange", onFullScreenChange);
+    ref.current?.addEventListener("fullscreenchange", onFullScreenChange);
     return () => {
       ref.current?.removeEventListener("fullscreenchange", onFullScreenChange);
     };

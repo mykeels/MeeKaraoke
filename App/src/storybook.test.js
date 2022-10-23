@@ -10,6 +10,11 @@ import { sleep } from "./common";
 
 process.env.REACT_APP_PREVENT_AUTOPLAY = true;
 
+jest.mock("@remotion/player", () => ({
+  ...jest.requireActual("@remotion/player"),
+  Player: () => <div>Player</div>
+}));
+
 beforeEach(() => {
   window.matchMedia = () => ({
     matches: true,

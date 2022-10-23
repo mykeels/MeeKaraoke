@@ -16,7 +16,7 @@ export const Index = () => (
     component={() => (
       <PhotoSlideshow
         images={sampleSong.images}
-        audioUrl="/sounds/something-just-like-this.mp3"
+        audioUrl="./sounds/something-just-like-this.mp3"
         lines={sampleSong.lines}
       ></PhotoSlideshow>
     )}

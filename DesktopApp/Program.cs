@@ -23,6 +23,7 @@ class Program
         IsDebugMode = false;
 #endif
         dotenv.net.DotEnv.Load();
+        Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
 
         // Window title declared here for visibility
         string windowTitle = "MeeKaraoke - The Ultimate Karaoke Creator";
@@ -38,17 +39,22 @@ class Program
             .Center()
             // Users can resize windows by default.
             // Let's make this one fixed instead.
-            .SetDevToolsEnabled(false)
-            .SetContextMenuEnabled(false)
+            .SetDevToolsEnabled(true)
+            .SetContextMenuEnabled(true)
             .SetUseOsDefaultSize(false)
             .SetSize(1366, 880)
             .RegisterWindowCreatedHandler((object? sender, EventArgs e) =>
             {
+                var window = (PhotinoWindow?)sender;
                 Console.WriteLine("Window created");
-                Console.WriteLine("Starting Server");
                 System.Threading.Tasks.Task.Run(() =>
                 {
+                    Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+                    Console.WriteLine("Starting Server");
                     WebApp.Start(args);
+                    Console.WriteLine("Server Started");
+                    window?.Load(baseUrl);
+                    Console.WriteLine(baseUrl);
                 });
             })
             .RegisterCustomSchemeHandler("app", (object sender, string scheme, string url, out string contentType) =>
@@ -80,7 +86,15 @@ class Program
                 // "window.external.receiveMessage(callback: Function)"
                 window?.SendWebMessage(response);
             })
-            .Load(baseUrl);
+            .LoadRawString($"<script>location.href = \"{baseUrl}\"</script>");
+
+        bool IsWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                System.Runtime.InteropServices.OSPlatform.Windows
+            );
+        if (IsWindows)
+        {
+            window.SetIconFile("./Resources/favicon.ico");
+        }
 
         window.WaitForClose(); // Starts the application event loop
     }

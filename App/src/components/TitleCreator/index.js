@@ -130,7 +130,8 @@ export const TitleCreator = ({
                     className="bg-purple-100 px-8 py-4 text-xl"
                     onClick={() => onFileUploadIntent()}
                   >
-                    Upload a File
+                    Upload
+                    <span className="hidden md:inline"> a File</span>
                   </button>
                 </div>
                 <div className="inline-block w-1/2 text-right">
@@ -138,7 +139,8 @@ export const TitleCreator = ({
                     className="bg-purple-100 px-8 py-4 text-xl"
                     onClick={() => setManual(true)}
                   >
-                    Skip and Enter Lyrics Manually
+                    Type Lyrics
+                    <span className="hidden md:inline"> Instead</span>
                   </button>
                 </div>
               </div>
@@ -182,7 +184,9 @@ TitleCreator.defaultProps = {
       );
   },
   getLyrics: async (url) => {
-    return fetch(url.replace("https://genius.com", "http://localhost:5000/lyrics"))
+    return fetch(
+      url.replace("https://genius.com", "http://localhost:5000/lyrics")
+    )
       .then((res) => res.text())
       .then((html) => {
         const $ = cheerio.load(html);

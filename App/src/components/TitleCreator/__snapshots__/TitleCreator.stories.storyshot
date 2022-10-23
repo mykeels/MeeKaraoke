@@ -43,7 +43,12 @@ exports[`@mykeels/mee-karaoke components/TitleCreator Index 1`] = `
             className="bg-purple-100 px-8 py-4 text-xl"
             onClick={[Function]}
           >
-            Upload a File
+            Upload
+            <span
+              className="hidden md:inline"
+            >
+               a File
+            </span>
           </button>
         </div>
         <div
@@ -53,7 +58,12 @@ exports[`@mykeels/mee-karaoke components/TitleCreator Index 1`] = `
             className="bg-purple-100 px-8 py-4 text-xl"
             onClick={[Function]}
           >
-            Skip and Enter Lyrics Manually
+            Type Lyrics
+            <span
+              className="hidden md:inline"
+            >
+               Instead
+            </span>
           </button>
         </div>
       </div>

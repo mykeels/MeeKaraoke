@@ -27,18 +27,13 @@ public class WebApp
                         .AllowAnyMethod()
                         .AllowAnyHeader());
         });
+        builder.WebHost.UseUrls(new string[] { "http://localhost:5000" });
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            Console.WriteLine("Development");
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-
+        app.UseSwagger();
+        app.UseSwaggerUI();
         app.MapControllers();
         var repo = new SongRepository();
 
@@ -62,6 +57,7 @@ public class WebApp
 
         if (StartWwwRootServer)
         {
+            Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
@@ -79,7 +75,7 @@ public class WebApp
             });
         }
 
-        app.Run();
+        app.Start();
 
         return app;
 
