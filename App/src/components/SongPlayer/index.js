@@ -8,12 +8,14 @@ import { frames } from "../../common/utils";
  * @property {LyricLine[]} lines
  * @property {string} audioUrl
  * @property {string[]} images
+ * @property {number} width
+ * @property {number} height
  */
 
 /**
  * @type {React.FC<SongPlayerProps & { [key: string]: any }>}
  */
-export const SongPlayer = ({ lines, audioUrl, images }) => {
+export const SongPlayer = ({ lines, audioUrl, images, width, height }) => {
   const duration = lines.reduce((sum, line) => sum + line.duration, 0);
   return (
     <div className="block h-screen w-screen px-16 py-8">
@@ -22,8 +24,8 @@ export const SongPlayer = ({ lines, audioUrl, images }) => {
           <PhotoSlideshow audioUrl={audioUrl} images={images} lines={lines} />
         )}
         durationInFrames={frames(duration)}
-        compositionWidth={1280}
-        compositionHeight={720}
+        compositionWidth={width}
+        compositionHeight={height}
         fps={frames(1)}
         controls
         autoPlay={!process.env.REACT_APP_PREVENT_AUTOPLAY}
@@ -32,4 +34,7 @@ export const SongPlayer = ({ lines, audioUrl, images }) => {
   );
 };
 
-SongPlayer.defaultProps = {};
+SongPlayer.defaultProps = {
+  width: 1280,
+  height: 720
+};

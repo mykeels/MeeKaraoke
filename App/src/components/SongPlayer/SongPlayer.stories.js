@@ -14,5 +14,7 @@ export const Index = () => (
     images={sampleSong.images}
     audioUrl="/sounds/something-just-like-this.mp3"
     lines={sampleSong.lines}
+    width={640}
+    height={320}
   />
 );
