@@ -2,20 +2,21 @@ import React from "react";
 
 import { SongCreator } from "./";
 import { LyricsTabView } from "./components/LyricsTabView";
+import sampleSong from "../../common/data/sample-song.json";
 
 export default {
   title: "components/SongCreator",
   component: SongCreator
 };
 
-export const Index = () => (
+export const NoDurations = () => (
   <SongCreator
     url={"./sounds/something-just-like-this.mp3"}
     LyricsTabView={(props) => (
       <LyricsTabView
         {...props}
         defaults={{
-          text: somethingJustLikeThisLyrics,
+          text: sampleSong.lines.map((line) => line.text).join("\n"),
           active: "pretty"
         }}
       />
@@ -23,79 +24,18 @@ export const Index = () => (
   />
 );
 
-var somethingJustLikeThisLyrics = `
-I've been reading books of old
-The legends and the myths
-Achilles and his gold
-Hercules and his gifts
-Spiderman's control
-And Batman with his fists
-And clearly I don't see myself upon that list
-But she said, where d'you wanna go?
-How much you wanna risk?
-I'm not looking for somebody
-With some superhuman gifts
-Some superhero
-Some fairytale bliss
-Just something I can turn to
-Somebody I can kiss
-I want something just like this
-Doo-doo-doo, doo-doo-doo
-Doo-doo-doo, doo-doo
-Doo-doo-doo, doo-doo-doo
-Oh, I want something just like this
-Doo-doo-doo, doo-doo-doo
-Doo-doo-doo, doo-doo
-Doo-doo-doo, doo-doo-doo
-Oh, I want something just like this
-
-I want something just like this
-
-I've been reading books of old
-The legends and the myths
-The testaments they told
-The moon and its eclipse
-And Superman unrolls
-A suit before he lifts
-But I'm not the kind of person that it fits
-
-She said, where d'you wanna go?
-How much you wanna risk?
-I'm not looking for somebody
-With some superhuman gifts
-Some superhero
-Some fairytale bliss
-Just something I can turn to
-Somebody I can miss
-
-I want something just like this
-
-Oh, I want something just like this
-
-Oh, I want something just like this
-Doo-doo-doo, doo-doo-doo
-Doo-doo-doo, doo-doo
-Doo-doo-doo, doo-doo-doo
-Oh, I want something just like this
-Doo-doo-doo, doo-doo-doo
-Doo-doo-doo, doo-doo
-Doo-doo-doo, doo-doo-doo
-
-Where d'you wanna go?
-How much you wanna risk?
-I'm not looking for somebody
-With some superhuman gifts
-Some superhero
-Some fairytale bliss
-Just something I can turn to
-Somebody I can kiss
-So I want something just like this
-Doo-doo-doo, doo-doo-doo
-Doo-doo-doo, doo-doo
-Doo-doo-doo, doo-doo-doo
-Oh, I want something just like this
-Doo-doo-doo, doo-doo-doo
-Doo-doo-doo, doo-doo
-Doo-doo-doo, doo-doo-doo
-Oh, I want something just like this
-`;
+export const WithDurations = () => (
+  <SongCreator
+    url={"./sounds/something-just-like-this.mp3"}
+    LyricsTabView={(props) => (
+      <LyricsTabView
+        {...props}
+        song={sampleSong.lines}
+        defaults={{
+          text: sampleSong.lines.map((line) => line.text).join("\n"),
+          active: "pretty"
+        }}
+      />
+    )}
+  />
+);

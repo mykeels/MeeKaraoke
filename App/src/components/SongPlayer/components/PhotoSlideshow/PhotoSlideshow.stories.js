@@ -2,7 +2,7 @@ import React from "react";
 import { Player } from "@remotion/player";
 
 import { PhotoSlideshow } from "./index";
-import sampleSong from "./sample-song.json";
+import sampleSong from "../../../../common/data/sample-song.json";
 import { frames } from "../../../../common/utils";
 
 export default {
