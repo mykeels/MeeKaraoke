@@ -1,31 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`@mykeels/mee-karaoke components/SongPlayer Index 1`] = `
-<div
-  className="block h-screen w-screen px-16 py-8"
->
+Array [
   <audio
     src="data:audio/mp3;base64,/+MYxAAJcAV8AAgAABn//////+/gQ5BAMA+D4Pg+BAQBAEAwD4Pg+D4EBAEAQDAPg++hYBH///hUFQVBUFREDQNHmf///////+MYxBUGkAGIMAAAAP/29Xt6lUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDUAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-  />
+  />,
   <audio
     src="data:audio/mp3;base64,/+MYxAAJcAV8AAgAABn//////+/gQ5BAMA+D4Pg+BAQBAEAwD4Pg+D4EBAEAQDAPg++hYBH///hUFQVBUFREDQNHmf///////+MYxBUGkAGIMAAAAP/29Xt6lUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDUAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-  />
+  />,
   <audio
     src="data:audio/mp3;base64,/+MYxAAJcAV8AAgAABn//////+/gQ5BAMA+D4Pg+BAQBAEAwD4Pg+D4EBAEAQDAPg++hYBH///hUFQVBUFREDQNHmf///////+MYxBUGkAGIMAAAAP/29Xt6lUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDUAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-  />
+  />,
   <audio
     src="data:audio/mp3;base64,/+MYxAAJcAV8AAgAABn//////+/gQ5BAMA+D4Pg+BAQBAEAwD4Pg+D4EBAEAQDAPg++hYBH///hUFQVBUFREDQNHmf///////+MYxBUGkAGIMAAAAP/29Xt6lUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDUAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-  />
+  />,
   <audio
     src="data:audio/mp3;base64,/+MYxAAJcAV8AAgAABn//////+/gQ5BAMA+D4Pg+BAQBAEAwD4Pg+D4EBAEAQDAPg++hYBH///hUFQVBUFREDQNHmf///////+MYxBUGkAGIMAAAAP/29Xt6lUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDUAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-  />
+  />,
   <div
     style={
       Object {
-        "height": 720,
+        "height": 320,
         "overflow": "hidden",
         "position": "relative",
-        "width": 1280,
+        "width": 640,
       }
     }
   >
@@ -153,7 +151,7 @@ exports[`@mykeels/mee-karaoke components/SongPlayer Index 1`] = `
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "
-	.__remotion-volume-slider-028682985017076135::-webkit-slider-thumb {
+	.__remotion-volume-slider-07267039124853909::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		background-color: white;
 		border-radius: 6px;
@@ -161,14 +159,14 @@ exports[`@mykeels/mee-karaoke components/SongPlayer Index 1`] = `
 		height: 12px;
 		width: 12px;
 	}
-	.__remotion-volume-slider-028682985017076135 {
+	.__remotion-volume-slider-07267039124853909 {
 		background-image: linear-gradient(
 			to right,
 			white 100%, rgba(255, 255, 255, 0) 100%
 		);
 	}
 
-	.__remotion-volume-slider-028682985017076135::-moz-range-thumb {
+	.__remotion-volume-slider-07267039124853909::-moz-range-thumb {
 		-webkit-appearance: none;
 		background-color: white;
 		border-radius: 6px;
@@ -326,6 +324,6 @@ exports[`@mykeels/mee-karaoke components/SongPlayer Index 1`] = `
         />
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;

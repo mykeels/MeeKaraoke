@@ -20,10 +20,10 @@ Array [
   <div
     style={
       Object {
-        "height": 720,
+        "height": 320,
         "overflow": "hidden",
         "position": "relative",
-        "width": 1280,
+        "width": 640,
       }
     }
   >
@@ -151,7 +151,7 @@ Array [
               dangerouslySetInnerHTML={
                 Object {
                   "__html": "
-	.__remotion-volume-slider-05166408885270357::-webkit-slider-thumb {
+	.__remotion-volume-slider-08541790158487856::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		background-color: white;
 		border-radius: 6px;
@@ -159,14 +159,14 @@ Array [
 		height: 12px;
 		width: 12px;
 	}
-	.__remotion-volume-slider-05166408885270357 {
+	.__remotion-volume-slider-08541790158487856 {
 		background-image: linear-gradient(
 			to right,
 			white 100%, rgba(255, 255, 255, 0) 100%
 		);
 	}
 
-	.__remotion-volume-slider-05166408885270357::-moz-range-thumb {
+	.__remotion-volume-slider-08541790158487856::-moz-range-thumb {
 		-webkit-appearance: none;
 		background-color: white;
 		border-radius: 6px;
