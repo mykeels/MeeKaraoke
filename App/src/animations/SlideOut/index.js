@@ -48,5 +48,5 @@ export const SlideOut = ({ children, duration, to }) => {
 
 SlideOut.defaultProps = {
   duration: 1,
-  from: "bottom"
+  to: "bottom"
 };

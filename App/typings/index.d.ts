@@ -1,0 +1,1 @@
+type AnyOf<A extends object, B extends object> = A | B | (A & B);
