@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       app-dir: ./App
       desktop-dir: ./DesktopApp
@@ -26,16 +26,18 @@ jobs:
         dotnet-version: '6.0.300'
 
     # build app
-    - run: printf "REACT_APP_API_ROOT=http://localhost:5000\n" >> .env
+    - run: echo "REACT_APP_API_ROOT=http://localhost:5000`n" >> .env
       working-directory: ${{env.app-dir}}
     - run: npm ci
+      working-directory: ${{ env.app-dir }}
+    - run: npm run build:tsc
       working-directory: ${{ env.app-dir }}
     - name: Build App
       run: NODE_ENV=production npm run build
       working-directory: ${{ env.app-dir }}
 
     # build desktop app
-    - run: bash scripts/build-releases.sh
+    - run: ./build-releases.ps1
       working-directory: ${{env.desktop-dir}}
     - run: ls ./DesktopApp/bin/Release
 
