@@ -1,21 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 
 /**
  * @typedef {object} SlideOutProps
  * @property {any} children
- * @property {number} [duration] duration in seconds
  * @property {"top"|"bottom"|"left"|"right"} [to]
+ * @property {(style: React.CSSProperties) => any} [onChange]
  */
 
 /**
  * @type {React.FC<SlideOutProps & { [key: string]: any }>}
  */
-export const SlideOut = ({ children, duration, to }) => {
+export const SlideOut = ({ children, to, onChange }) => {
   const frame = useCurrentFrame();
-  const { width, height, fps } = useVideoConfig();
-
-  const durationInFrames = Math.ceil(fps * duration);
+  const { width, height, fps, durationInFrames } = useVideoConfig();
 
   const entrance = spring({
     fps,
@@ -39,11 +37,27 @@ export const SlideOut = ({ children, duration, to }) => {
   const transform = ["top", "bottom"].includes(to)
     ? `translateY(${wave}px)`
     : `translateX(${wave}px)`;
-  return (
-    <div className="relative" style={{ transform }}>
-      {children}
-    </div>
-  );
+
+  useEffect(() => {
+    typeof onChange === "function" && onChange({ transform });
+  }, [transform]);
+  useEffect(() => {
+    return () => {
+      typeof onChange === "function" && onChange(null);
+    };
+  }, []);
+
+  const Component = children;
+
+  return children ? (
+    typeof children === "function" ? (
+      <Component style={{ transform }} />
+    ) : (
+      <div className="relative" style={{ transform }}>
+        {children}
+      </div>
+    )
+  ) : null;
 };
 
 SlideOut.defaultProps = {

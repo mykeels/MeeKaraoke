@@ -1,21 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 
 /**
  * @typedef {object} SlideInProps
- * @property {any} children
- * @property {number} [duration] duration in seconds
+ * @property {React.FC<{ style: React.CSSProperties }>} [children]
  * @property {"top"|"bottom"|"left"|"right"} [from]
+ * @property {(style: React.CSSProperties) => any} [onChange]
  */
 
 /**
  * @type {React.FC<SlideInProps & { [key: string]: any }>}
  */
-export const SlideIn = ({ children, duration, from }) => {
+export const SlideIn = ({ children, from, onChange }) => {
   const frame = useCurrentFrame();
-  const { width, height, fps } = useVideoConfig();
-
-  const durationInFrames = Math.ceil(fps * duration);
+  const { width, height, fps, durationInFrames } = useVideoConfig();
 
   const entrance = spring({
     fps,
@@ -39,11 +37,27 @@ export const SlideIn = ({ children, duration, from }) => {
   const transform = ["top", "bottom"].includes(from)
     ? `translateY(${wave}px)`
     : `translateX(${wave}px)`;
-  return (
-    <div className="relative" style={{ transform }}>
-      {children}
-    </div>
-  );
+
+  useEffect(() => {
+    typeof onChange === "function" && onChange({ transform });
+  }, [transform]);
+  useEffect(() => {
+    return () => {
+      typeof onChange === "function" && onChange(null);
+    };
+  }, []);
+
+  const Component = children;
+
+  return children ? (
+    typeof children === "function" ? (
+      <Component style={{ transform }} />
+    ) : (
+      <div className="relative" style={{ transform }}>
+        {children}
+      </div>
+    )
+  ) : null;
 };
 
 SlideIn.defaultProps = {

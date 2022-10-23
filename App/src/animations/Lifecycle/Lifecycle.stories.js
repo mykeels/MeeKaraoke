@@ -3,7 +3,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 
 import { Lifecycle } from "./";
-import { SlideIn, SlideOut } from "../";
+import { SlideIn, SlideOut, Pulse } from "../";
 import { frames } from "../../common/utils";
 
 export default {
@@ -48,11 +48,31 @@ export const LeftToRight = () => (
   />
 );
 
+export const LeftToRightWithPulse = () => (
+  <LifecycleComponent
+    ratio="1:5:1"
+    duration={duration}
+    Entrance={(props) => <SlideIn {...props} from="left" />}
+    Main={(props) => <Pulse {...props} />}
+    Exit={(props) => <SlideOut {...props} to="right" />}
+  />
+);
+
 export const TopToBottom = () => (
   <LifecycleComponent
     ratio="1:5:1"
     duration={duration}
     Entrance={(props) => <SlideIn {...props} from="top" />}
+    Exit={(props) => <SlideOut {...props} to="bottom" />}
+  />
+);
+
+export const TopToBottomWithPulse = () => (
+  <LifecycleComponent
+    ratio="1:5:1"
+    duration={duration}
+    Entrance={(props) => <SlideIn {...props} from="top" />}
+    Main={(props) => <Pulse {...props} />}
     Exit={(props) => <SlideOut {...props} to="bottom" />}
   />
 );
