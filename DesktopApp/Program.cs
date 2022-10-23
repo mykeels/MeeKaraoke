@@ -23,6 +23,7 @@ class Program
         IsDebugMode = false;
 #endif
         dotenv.net.DotEnv.Load();
+        Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
 
         // Window title declared here for visibility
         string windowTitle = "MeeKaraoke - The Ultimate Karaoke Creator";
@@ -44,11 +45,14 @@ class Program
             .SetSize(1366, 880)
             .RegisterWindowCreatedHandler((object? sender, EventArgs e) =>
             {
+                var window = (PhotinoWindow?)sender;
                 Console.WriteLine("Window created");
-                Console.WriteLine("Starting Server");
                 System.Threading.Tasks.Task.Run(() =>
                 {
+                    Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+                    Console.WriteLine("Starting Server");
                     WebApp.Start(args);
+                    window?.Load(baseUrl);
                 });
             })
             .RegisterCustomSchemeHandler("app", (object sender, string scheme, string url, out string contentType) =>
