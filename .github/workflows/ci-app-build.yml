@@ -37,8 +37,8 @@ jobs:
     #   working-directory: ${{ env.app-dir }}
 
     # build desktop app
-    - run: ./scripts/build-releases.ps1
-      working-directory: ${{env.desktop-dir}}
+    - run: ./build-releases.ps1
+      working-directory: ${{env.desktop-dir}}/scripts
     - run: ls ./DesktopApp/bin/Release
 
     # release
