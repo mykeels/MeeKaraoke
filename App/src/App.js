@@ -3,6 +3,7 @@ import { SongCreator, SongUploader, TitleCreator } from "./components";
 import { SavedFileUploader } from "./components/SavedFileUploader";
 import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView";
 import { SongPicker } from "./components/SongPicker";
+import { SongPlayer } from "./components/SongPlayer";
 
 /** @param {SongRecord} record */
 async function getSongFileContents(record) {
@@ -108,6 +109,15 @@ export const App = () => {
     setState(song);
     setStage(3);
   };
+  /**
+   * @type {ReactState<boolean>}
+   */
+  const [playing, setPlaying] = useState(false);
+  const playSong = async (record) => {
+    const song = await getSongFileContents(record);
+    setState(song);
+    setPlaying(true);
+  };
   return (
     <div
       className="block overflow-auto custom-scroller h-screen"
@@ -144,10 +154,20 @@ export const App = () => {
           }}
         />
       ) : null}
+      {playing ? (
+        <SongPlayer
+          audioUrl={state.audioUrl}
+          images={state.images}
+          lines={state.song}
+          onPlayEnd={() => setPlaying(null)}
+          isFullscreen
+        />
+      ) : null}
       {stage === 0 ? (
         <SongPicker
           onNewSong={() => setStage(stage + 1)}
           onSelectSong={selectSong}
+          onPlaySong={playSong}
         />
       ) : stage === 1 ? (
         <TitleCreator

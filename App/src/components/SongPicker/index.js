@@ -11,6 +11,7 @@ import { DateTime } from "luxon";
  * @prop {() => Promise<SongRecord[]>} [getSongRecords]
  * @prop {(id: string) => Promise<any>} [deleteSong]
  * @prop {(song: SongRecord) => any} onSelectSong
+ * @prop {(song: SongRecord) => any} [onPlaySong]
  * @prop {() => any} onNewSong
  */
 
@@ -21,6 +22,7 @@ export const SongPicker = ({
   getSongRecords,
   deleteSong,
   onNewSong,
+  onPlaySong,
   onSelectSong
 }) => {
   const {
@@ -60,7 +62,7 @@ export const SongPicker = ({
                 <div className="flex w-full" key={record.id}>
                   <button
                     key={record.id}
-                    className="inline-block w-11/12 text-left bg-purple-100 bg-opacity-75 p-4 my-4 text-lg border border-purple-100 hover:border-white"
+                    className="inline-block w-10/12 text-left bg-purple-100 bg-opacity-75 p-4 my-4 text-lg border border-purple-100 hover:border-white"
                     onClick={() => onSelectSong(record)}
                   >
                     <div className="block w-full text-right text-sm">
@@ -69,6 +71,25 @@ export const SongPicker = ({
                     <div className="block w-full">
                       {i + 1}. {record.title}
                     </div>
+                  </button>
+                  <button
+                    onClick={() => onPlaySong(record)}
+                    className="flex w-1/12 justify-center items-center text-center my-4 mx-1 text-purple-200 bg-pink border border-pink hover:border-purple-100"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
+                      />
+                    </svg>
                   </button>
                   <button
                     onClick={() => _deleteSong(record.id)}

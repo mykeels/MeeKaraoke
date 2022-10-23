@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
 import { PhotoSlideshow } from "./components";
 import { frames } from "../../common/utils";
@@ -8,17 +8,37 @@ import { frames } from "../../common/utils";
  * @property {LyricLine[]} lines
  * @property {string} audioUrl
  * @property {string[]} images
- * @property {number} width
- * @property {number} height
+ * @property {number} [width]
+ * @property {number} [height]
+ * @property {boolean} [isFullscreen]
+ * @property {() => any} [onPlayEnd]
  */
 
 /**
  * @type {React.FC<SongPlayerProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
  */
 export const SongPlayer = React.forwardRef(function SongPlayer(
-  { lines, audioUrl, images, width, height },
+  { lines, audioUrl, images, width, height, isFullscreen, onPlayEnd },
   ref
 ) {
+  if (!ref) {
+    ref = React.createRef();
+  }
+  useEffect(() => {
+    if (isFullscreen) {
+      ref.current.requestFullscreen();
+      ref.current.play();
+    }
+    const onFullScreenChange = (e) => {
+      if (!e.detail.isFullscreen) {
+        typeof onPlayEnd === "function" && onPlayEnd();
+      }
+    };
+    ref.current.addEventListener("fullscreenchange", onFullScreenChange);
+    return () => {
+      ref.current?.removeEventListener("fullscreenchange", onFullScreenChange);
+    };
+  }, []);
   const duration = lines.reduce((sum, line) => sum + line.duration, 0);
   return (
     <Player
