@@ -4,6 +4,8 @@ function build-simple($RUNTIME)
 {
     echo "Building $RUNTIME"
     cd $DIR/../
+    pwd
+    ls
     dotnet build -c Release -r $RUNTIME --no-self-contained
     ls $DIR/../bin/Release/net6.0/win-x64
     echo "Zip $RUNTIME"
@@ -16,6 +18,8 @@ function build-self-contained($RUNTIME)
 {
     echo "Building $RUNTIME-self-contained"
     cd $DIR/../
+    pwd
+    ls
     dotnet publish -c Release -o bin/Release/net6.0/$RUNTIME-self-contained `
         -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true `
         --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true `
