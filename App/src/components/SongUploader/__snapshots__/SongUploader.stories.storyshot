@@ -37,7 +37,7 @@ exports[`@mykeels/mee-karaoke components/SongUploader Index 1`] = `
     </div>
   </div>
   <input
-    accept=".mp3, .ogg, .wav"
+    accept=".mp3, .ogg, .wav, .webm"
     className="file-upload fixed top-0 left-0 h-screen w-screen cursor-pointer"
     onChange={[Function]}
     type="file"

@@ -46,7 +46,7 @@ export const SongUploader = ({ onAudioFileReceived }) => {
       </div>
       <input
         type="file"
-        accept=".mp3, .ogg, .wav"
+        accept=".mp3, .ogg, .wav, .webm"
         className="file-upload fixed top-0 left-0 h-screen w-screen cursor-pointer"
         onChange={(e) => {
           /** @type {HTMLInputElement} */
