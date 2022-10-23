@@ -22,8 +22,8 @@ export const Index = () => (
     )}
     durationInFrames={Math.ceil(frames(sampleSong.duration))}
     fps={frames(1)}
-    compositionWidth={1280}
-    compositionHeight={720}
+    compositionWidth={640}
+    compositionHeight={320}
     autoPlay={!process.env.REACT_APP_PREVENT_AUTOPLAY}
     loop
     controls

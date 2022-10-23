@@ -9,7 +9,7 @@ import { starts } from "../../common/utils";
  * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Exit]
  * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Main]
  * @property {number} duration
- * @property {`${number}:${number}:${number}` | `${number}:${number}`} ratio
+ * @property {(`${number}:${number}:${number}` | `${number}:${number}`) | (string & {})} ratio
  */
 
 /**

@@ -5,13 +5,14 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
  * @typedef {object} SlideInProps
  * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
  * @property {"top"|"bottom"|"left"|"right"} [from]
+ * @property {number} [durationInFrames]
  * @property {(style: React.CSSProperties) => any} [onChange]
  */
 
 /**
  * @type {React.FC<SlideInProps & { [key: string]: any }>}
  */
-export const SlideIn = ({ children, from, onChange }) => {
+export const SlideIn = ({ children, from, onChange, ...props }) => {
   const frame = useCurrentFrame();
   const { width, height, fps, durationInFrames } = useVideoConfig();
 
@@ -21,7 +22,7 @@ export const SlideIn = ({ children, from, onChange }) => {
     config: {
       damping: 200
     },
-    durationInFrames
+    durationInFrames: props?.durationInFrames || durationInFrames
   });
   const outputRange = {
     bottom: [height, 0],

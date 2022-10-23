@@ -5,13 +5,14 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
  * @typedef {object} SlideOutProps
  * @property {any} children
  * @property {"top"|"bottom"|"left"|"right"} [to]
+ * @property {number} [durationInFrames]
  * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
  */
 
 /**
  * @type {React.FC<SlideOutProps & { [key: string]: any }>}
  */
-export const SlideOut = ({ children, to, onChange }) => {
+export const SlideOut = ({ children, to, onChange, ...props }) => {
   const frame = useCurrentFrame();
   const { width, height, fps, durationInFrames } = useVideoConfig();
 
@@ -21,7 +22,7 @@ export const SlideOut = ({ children, to, onChange }) => {
     config: {
       damping: 200
     },
-    durationInFrames
+    durationInFrames: props?.durationInFrames || durationInFrames
   });
   const outputRange = {
     bottom: [0, height / 1.5],
