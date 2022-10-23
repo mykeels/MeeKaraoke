@@ -1,7 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import { App } from "./";
+import { App } from "./App";
 
 export default {
   title: "App",

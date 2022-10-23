@@ -109,9 +109,7 @@ export const App = () => {
     setState(song);
     setStage(3);
   };
-  /**
-   * @type {ReactState<boolean>}
-   */
+  /** @type {ReactState<boolean>} */
   const [playing, setPlaying] = useState(false);
   const playSong = async (record) => {
     const song = await getSongFileContents(record);

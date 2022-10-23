@@ -1,7 +1,7 @@
 import "./SongPicker.css";
 
 import classNames from "classnames";
-import React from "react";
+import React, { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { Spinner } from "../../common";
 import { DateTime } from "luxon";
@@ -28,8 +28,15 @@ export const SongPicker = ({
   const {
     data: songRecords = [],
     isLoading,
+    isFetched,
     refetch
   } = useQuery(["song-records"], () => getSongRecords());
+
+  useEffect(() => {
+    if (isFetched && !songRecords.length) {
+      typeof onNewSong === "function" && onNewSong();
+    }
+  }, [isFetched, songRecords.length]);
 
   const { mutate: _deleteSong } = useMutation(
     /** @param {string} id */
@@ -57,7 +64,7 @@ export const SongPicker = ({
           >
             {isLoading ? (
               <Spinner size={16} />
-            ) : (
+            ) : songRecords.length ? (
               songRecords.map((record, i) => (
                 <div className="flex w-full" key={record.id}>
                   <button
@@ -114,6 +121,8 @@ export const SongPicker = ({
                   </button>
                 </div>
               ))
+            ) : (
+              <div className="text-xl">No songs saved</div>
             )}
           </div>
           <div className="block w-full md:flex md:w-1/6 md:h-full justify-center items-center px-4 md:px-2">

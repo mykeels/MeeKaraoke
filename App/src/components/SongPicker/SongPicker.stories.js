@@ -33,6 +33,17 @@ export const Only3Records = () => (
   </QueryClientProvider>
 );
 
+export const Empty = () => (
+  <QueryClientProvider client={queryClient}>
+    <SongPicker
+      getSongRecords={async () => []}
+      deleteSong={async () => {}}
+      onNewSong={() => {}}
+      onSelectSong={console.log}
+    />
+  </QueryClientProvider>
+);
+
 var records = [
   {
     id: "1",
