@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
  * @param {object} props
  * @param {number} [props.value]
  * @param {() => any} props.onStart
- * @param {() => any} props.onStop
+ * @param {(isRecording: boolean) => any} props.onStop
  * @param {(seconds: number) => any} props.onTick
  * @param {(interval: number) => any} props.onRecordTick
  * @returns {JSX.Element}
@@ -25,6 +25,8 @@ export const TimeKeeper = ({
   const [recordMs, setRecordMs] = useState(null);
   /** @type {import("react").MutableRefObject<NodeJS.Timer>} */
   const intervalRef = useRef();
+  const isRecording = recordMs !== null;
+  const isPlaying = !!clock;
   const start = () => {
     if (clock) {
       return;
@@ -40,7 +42,7 @@ export const TimeKeeper = ({
     intervalRef.current && clearInterval(intervalRef.current);
     setMs(0);
     setRecordMs(null);
-    onStop();
+    onStop(isRecording);
   };
   const record = () => {
     if (!clock) {
@@ -51,7 +53,6 @@ export const TimeKeeper = ({
       setRecordMs(ms);
     }
   };
-  const isRecording = recordMs !== null;
   useEffect(() => {
     if (!isRecording) {
       typeof onTick === "function" && onTick(ms / 1000);
@@ -60,42 +61,37 @@ export const TimeKeeper = ({
   useEffect(() => {
     setMs(value * 1000);
   }, [value]);
-  const isPlaying = !!clock;
   return (
     <div className="block w-full px-2 py-2">
       <button
-        className={classNames("record")}
+        className={classNames(
+          "inline-block text-center text-white px-4 py-2 text-xs rounded shadow mx-2",
+          "border-2 border-pink focus:border-white focus:outline-none",
+          {
+            "record hover:bg-purple-200": !(isPlaying && !isRecording),
+            "bg-purple-200": isRecording,
+            "bg-purple-100": !isRecording,
+            "bg-pink cursor-not-allowed": isPlaying && !isRecording
+          }
+        )}
         onClick={() => record()}
         disabled={isPlaying && !isRecording}
       >
-        <span
-          className={classNames(
-            "inline-block text-center text-white px-4 py-2 text-xs rounded shadow hover:bg-purple-200",
-            {
-              "bg-purple-200": isRecording,
-              "bg-purple-100": !isRecording,
-              "bg-pink cursor-not-allowed": isPlaying && !isRecording
-            }
-          )}
-        >
-          {isRecording ? "Next Line" : "Record ⏺️"}
-        </span>
+        <span>{isRecording ? "Next Line" : "Record ⏺️"}</span>
       </button>
       <button
-        className="px-2 play"
+        className={classNames(
+          "inline-block text-center text-white px-4 py-2 text-xs rounded shadow mx-2",
+          "border-2 border-pink focus:border-white focus:outline-none",
+          {
+            "play hover:bg-purple-200": !isPlaying,
+            "bg-purple-200": isPlaying,
+            "bg-purple-100": !isPlaying
+          }
+        )}
         onClick={() => (isPlaying ? stop() : start())}
       >
-        <span
-          className={classNames(
-            "inline-block text-center text-white px-4 py-2 text-xs rounded shadow hover:bg-purple-200",
-            {
-              "bg-purple-200": isPlaying,
-              "bg-purple-100": !isPlaying
-            }
-          )}
-        >
-          {isPlaying ? "Stop" : "Play"}
-        </span>
+        <span>{isPlaying ? (isRecording ? "Pause" : "Stop") : "Play"}</span>
       </button>
 
       <span className="inline-block float-right text-purple-200 text-lg font-bold px-4">

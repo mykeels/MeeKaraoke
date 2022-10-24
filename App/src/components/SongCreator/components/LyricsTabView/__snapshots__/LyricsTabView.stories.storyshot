@@ -21,16 +21,23 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Cu
       </button>
     </li>
     <li
-      className="nav-item"
+      className="nav-item relative"
       role="presentation"
     >
-      <button
-        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
-        onClick={[Function]}
-        role="tab"
+      <div
+        className="relative"
       >
-        💾
-      </button>
+        <audio
+          src="save.mp3"
+        />
+        <button
+          className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+          onClick={[Function]}
+          role="tab"
+        >
+          💾
+        </button>
+      </div>
     </li>
     <li
       className="nav-item"
@@ -490,16 +497,23 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView In
       </button>
     </li>
     <li
-      className="nav-item"
+      className="nav-item relative"
       role="presentation"
     >
-      <button
-        className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
-        onClick={[Function]}
-        role="tab"
+      <div
+        className="relative"
       >
-        💾
-      </button>
+        <audio
+          src="save.mp3"
+        />
+        <button
+          className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+          onClick={[Function]}
+          role="tab"
+        >
+          💾
+        </button>
+      </div>
     </li>
     <li
       className="nav-item"

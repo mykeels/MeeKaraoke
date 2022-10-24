@@ -25,7 +25,10 @@ const getCurrentLineIndex = (song, timeInSeconds) => {
 const getLineTime = (song, currentLine) => {
   let sum = 0.01;
   for (let line of song) {
-    if (line === currentLine) {
+    if (
+      line === currentLine ||
+      (line.text === currentLine.text && line.from === currentLine.from)
+    ) {
       return sum;
     }
     sum += line.duration;
@@ -133,11 +136,19 @@ export const SongCreator = ({
                 onStart={() => {
                   audioRef.current.play();
                 }}
-                onStop={() => {
+                onStop={(isRecording) => {
                   audioRef.current.pause();
-                  audioRef.current.currentTime = 0;
-                  setCursor(0);
-                  setRecordCursor(0);
+                  if (!isRecording) {
+                    audioRef.current.currentTime = 0;
+                    setCursor(0);
+                    setRecordCursor(0);
+                  } else {
+                    const seconds = getLineTime(song, currentLine);
+                    setTimeReset(seconds);
+                    audioRef.current.currentTime = seconds;
+                    setCursor(getCurrentLineIndex(song, seconds));
+                    setRecordCursor(recordCursor);
+                  }
                 }}
               />
             </div>
@@ -160,8 +171,8 @@ export const SongCreator = ({
                 getImages(lines).then(setImages);
               }
             }}
-            onLineClick={(line) => {
-              const seconds = getLineTime(song, line);
+            onLineClick={(line, i) => {
+              const seconds = getLineTime(song, song[i]);
               setTimeReset(seconds);
               audioRef.current.currentTime = seconds;
               setRecordCursor(getCurrentLineIndex(song, seconds));
@@ -220,7 +231,9 @@ async function getImages(lines, intervals = 5) {
   }
   return Promise.all(
     keywords.map((keyword) =>
-      fetch(`https://source.unsplash.com/random/1280x720/?${keyword}`).then((res) => res.url)
+      fetch(`https://source.unsplash.com/random/1280x720/?${keyword}`).then(
+        (res) => res.url
+      )
     )
   );
 }

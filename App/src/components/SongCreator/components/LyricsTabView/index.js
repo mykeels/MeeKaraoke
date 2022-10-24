@@ -12,7 +12,7 @@ import { SaveButton } from "./components";
  * @param {number} [props.cursor]
  * @param {Song} [props.song]
  * @param {(lines: Song) => any} [props.onSongChanged]
- * @param {(line: LyricLine) => any} [props.onLineClick]
+ * @param {(line: LyricLine, index: number) => any} [props.onLineClick]
  * @param {() => any} [props.onSave]
  * @param {() => any} [props.onClear]
  * @param {() => any} [props.onOpen]
@@ -153,7 +153,7 @@ export const LyricsTabView = ({
                   isActive={cursor === i}
                   line={line}
                   // @ts-ignore
-                  onClick={() => onLineClick(line)}
+                  onClick={() => onLineClick(line, i)}
                 ></SongLine>
               ))
             ) : (
