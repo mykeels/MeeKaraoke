@@ -157,13 +157,12 @@ TitleCreator.defaultProps = {
   onTitleChanged: () => {},
   onFileUploadIntent: () => {},
   getLyricsOptions: async (title) => {
+    const apiRootUrl = process.env.REACT_APP_API_ROOT;
     if (!title) {
       return [];
     }
     return fetch(
-      `http://localhost:5000/lyrics/options?per_page=5&q=${encodeURIComponent(
-        title
-      )}`
+      `${apiRootUrl}/lyrics/options?per_page=5&q=${encodeURIComponent(title)}`
     )
       .then((res) => res.json())
       .then((data) =>
