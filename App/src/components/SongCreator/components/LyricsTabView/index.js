@@ -4,6 +4,7 @@ import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 
 import { SongLine } from "../SongLine";
+import { SaveButton } from "./components";
 
 /**
  * @param {object} props
@@ -89,16 +90,8 @@ export const LyricsTabView = ({
                 ❌
               </button>
             </li>
-            <li className="nav-item" role="presentation">
-              <button
-                className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
-                )}
-                onClick={onSave}
-                role="tab"
-              >
-                💾
-              </button>
+            <li className="nav-item relative" role="presentation">
+              <SaveButton onClick={onSave} />
             </li>
           </>
         ) : (

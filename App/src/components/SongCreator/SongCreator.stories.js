@@ -39,6 +39,7 @@ export const WithDurations = () => (
           text: sampleSong.lines.map((line) => line.text).join("\n"),
           active: "pretty"
         }}
+        onSave={() => {}}
       />
     )}
   />
