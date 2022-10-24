@@ -1,36 +1,19 @@
 # MeeKaraoke
 
-The simplest creator of Karaoke music.
+MeeKaraoke is supposed to be a really simple creator app for Karaoke music. It is a React web app hosted by a Windows Form, capable of running on Windows, OSX and Linux.
 
 <img src="./DesktopApp/Resources/favicon.svg" width="50" />
 
-## 1. Planning Phase
+This project was started to answer the question, "What is the simplest way to create Karaoke videos?"
 
-See [How it should work](./docs/HOW_IT_SHOULD_WORK.md).
+See [Demo](https://mykeels.github.io/MeeKaraoke/index.html?path=/story/components-songcreator--with-durations) showing the Karaoke creator.
 
-## 2. Defining Requirements
+See [Software Development Lifecycle](./SDLC.md) Notes.
 
-See [User Stories](./docs/USER_STORIES.md).
+## Installation
 
-## 3. Design and Prototyping
+Download an appropriate zip file for your OS, and run the executable. See [Releases](https://github.com/mykeels/MeeKaraoke/releases).
 
-See [Figma](https://www.figma.com/file/QnV0ZGBr4LKyFSA0xQ1MxK/MeeKaraoke?node-id=0%3A1).
+## Setup Project Locally
 
-## 4. Software Development
-
-### Setup
-
-Run
-
-```sh
-dotnet restore
-npm install
-```
-
-Create `.env` files as siblings of both [.env.sample](./.env.sample) and [App/.env.sample](./App/.env.sample) and be sure to add the appropriate values.
-
-### Run Locally
-
-Run `npm start` and `dotnet run` in separate terminals.
-
-To view Storybook, run `npm run storybook`.
+See [Contribution Guide](./CONTRIBUTING.md).
