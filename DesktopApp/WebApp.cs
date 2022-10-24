@@ -9,6 +9,7 @@ using Microsoft.Extensions.FileProviders;
 
 public class WebApp
 {
+    public static string Address = Environment.GetEnvironmentVariable("API_ROOT_URL") ?? "http://localhost:5000";
     public static bool StartWwwRootServer = false;
     public static WebApplication Start(string[] args)
     {
@@ -16,7 +17,10 @@ public class WebApp
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.WebHost.UseUrls(new string[] { Address });
+        builder.Services.AddControllers(options => {
+            
+        });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -27,7 +31,6 @@ public class WebApp
                         .AllowAnyMethod()
                         .AllowAnyHeader());
         });
-        builder.WebHost.UseUrls(new string[] { "http://localhost:5000" });
 
         var app = builder.Build();
 

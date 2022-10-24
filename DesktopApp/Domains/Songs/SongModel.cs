@@ -30,10 +30,13 @@ public class SongModel
         return this;
     }
 
-    public SongModel TransformPaths(string appDirectory)
+    public SongModel TransformPaths(string appDirectory, string? apiRootUrl = null)
     {
-        this.AudioFilePath = this.AudioFilePath?.Replace(appDirectory, "~/Static")?.Replace("\\", "/");
-        this.SongFilePath = this.SongFilePath?.Replace(appDirectory, "~/Static")?.Replace("\\", "/");
+        apiRootUrl = apiRootUrl ?? WebApp.Address;
+        this.AudioFilePath = this.AudioFilePath?
+            .Replace(appDirectory, $"{apiRootUrl}/Static")?
+            .Replace("\\", "/");
+        this.SongFilePath = this.SongFilePath?.Replace(appDirectory, $"{apiRootUrl}/Static")?.Replace("\\", "/");
         return this;
     }
 }

@@ -42,7 +42,7 @@ public class SongsController : ControllerBase
 
     [HttpGet]
     [Route("~/[controller]/{id}")]
-    public ActionResult<SongModel?> GetSongById([FromRoute] Guid id)
+    public ActionResult<SongContentModel?> GetSongById([FromRoute] Guid id)
     {
         var repo = new SongRepository();
         var song = repo.GetSongById(id);
@@ -53,7 +53,7 @@ public class SongsController : ControllerBase
                 Message = $"Song with Id {id} not found"
             });
         }
-        return song.TransformPaths(repo.AppDirectory);
+        return SongContentModel.From(song, repo.AppDirectory);
     }
 
     [HttpPost]
