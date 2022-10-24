@@ -11,7 +11,7 @@ import { AbsoluteFill } from "remotion";
  */
 export const CenterFill = ({ children }) => {
   return (
-    <AbsoluteFill className="bg-gray-100 items-center justify-center">
+    <AbsoluteFill className="bg-pink items-center justify-center">
       {children}
     </AbsoluteFill>
   );

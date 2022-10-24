@@ -1,6 +1,8 @@
+import classNames from "classnames/dedupe";
 import React, { useState } from "react";
 import { Sequence, useVideoConfig } from "remotion";
 import { starts } from "../../common/utils";
+import * as transformParser from "transform-parser";
 
 /**React.FC<{ duration: number }>
  * @typedef {object} LifecycleProps
@@ -8,7 +10,7 @@ import { starts } from "../../common/utils";
  * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Entrance]
  * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Exit]
  * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Main]
- * @property {number} duration
+ * @property {number} [duration]
  * @property {(`${number}:${number}:${number}` | `${number}:${number}`) | (string & {})} ratio
  */
 
@@ -16,16 +18,19 @@ import { starts } from "../../common/utils";
  * @type {React.FC<LifecycleProps & { [key: string]: any }>}
  */
 export const Lifecycle = ({
+  className,
   Entrance,
   Exit,
   Main,
   ratio,
   children,
-  duration
+  duration,
+  ...props
 }) => {
   const stages = ratio.split(":").map((n) => Number(n));
   const total = stages.reduce((sum, n) => sum + n, 0);
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
+  duration = duration || Math.round(durationInFrames / fps);
   const entranceDuration =
     (stages.length === 3 ? stages[0] : !Entrance ? 0 : stages[0]) / total;
   const exitDuration =
@@ -37,7 +42,23 @@ export const Lifecycle = ({
   );
   const startPoints = starts(durations);
 
+  /** @type {ReactState<React.CSSProperties>} */
   const [style, setStyle] = useState({});
+  const updateStyle = (s) =>
+    setStyle({
+      ...style,
+      ...s,
+      ...(s?.transform
+        ? {
+            transform: transformParser.stringify({
+              ...(style?.transform
+                ? transformParser.parse(style?.transform)
+                : {}),
+              ...transformParser.parse(s?.transform)
+            })
+          }
+        : {})
+    });
 
   return (
     <>
@@ -47,7 +68,7 @@ export const Lifecycle = ({
           durationInFrames={durations[0]}
           layout="none"
         >
-          <Entrance onChange={(s) => setStyle(s)}></Entrance>
+          <Entrance onChange={updateStyle}></Entrance>
         </Sequence>
       ) : null}
       {durations[1] && Main ? (
@@ -56,7 +77,7 @@ export const Lifecycle = ({
           durationInFrames={durations[1]}
           layout="none"
         >
-          <Main onChange={(s) => setStyle(s)}></Main>
+          <Main onChange={updateStyle}></Main>
         </Sequence>
       ) : null}
       {durations[2] ? (
@@ -65,10 +86,14 @@ export const Lifecycle = ({
           durationInFrames={durations[2]}
           layout="none"
         >
-          <Exit onChange={(s) => setStyle(s)}></Exit>
+          <Exit onChange={updateStyle}></Exit>
         </Sequence>
       ) : null}
-      <div className="relative" style={style}>
+      <div
+        {...props}
+        className={classNames("relative", className)}
+        style={{ ...props?.style, ...style }}
+      >
         {children}
       </div>
     </>
