@@ -51,7 +51,7 @@ const mergeLinesWithImages = (lines, images, linesPerImage = 5) => {
 export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
   const startTimes = starts(lines.map((l) => frames(l.duration)));
   const linesWithImages = mergeLinesWithImages(lines, images);
-  const { durationInFrames } = useVideoConfig();
+  const { durationInFrames, width, height } = useVideoConfig();
   const durationInSeconds = f2s(durationInFrames);
   const imageCount = Math.ceil(durationInSeconds / 5);
   const repeatedImages = new Array(imageCount)
@@ -61,6 +61,12 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
     const colors = ["bg-purple-200", "bg-lavender-200"];
     return colors[i % colors.length];
   };
+  const fontSize = classNames({
+    "text-xs": width <= 320,
+    "text-lg": width > 320 && width <= 640,
+    "text-xl": width > 640 && width <= 1024,
+    "text-4xl": width > 1024
+  });
   return (
     <>
       <Audio src={audioUrl.replace("~", apiRootURL)} />
@@ -82,7 +88,11 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
               Main={(props) => <ZoomIn {...props} size={0.3} />}
               style={{ zIndex: 10 - (i % 10) }}
             >
-              <Img className="h-full w-full block" src={image} />
+              <Img
+                className="h-full w-full block"
+                src={image.replace("&w=1280", `&w=${width}`)}
+                style={{ width, height }}
+              />
             </Lifecycle>
           </Sequence>
         ))}
@@ -113,7 +123,12 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
                       bgColor(i)
                     )}
                   />
-                  <div className="z-10 relative text-white text-xs lg:text-lg xl:text-xl font-bold p-4">
+                  <div
+                    className={classNames(
+                      "z-10 relative text-white font-bold p-4",
+                      fontSize
+                    )}
+                  >
                     {line.text}
                   </div>
                 </div>

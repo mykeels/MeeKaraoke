@@ -27,8 +27,8 @@ export const SongURLComposition = () => {
       )}
       durationInFrames={frames(duration)}
       fps={frames(1)}
-      width={1280}
-      height={720}
+      width={1920}
+      height={1080}
     />
   );
 };
