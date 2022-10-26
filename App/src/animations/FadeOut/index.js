@@ -19,11 +19,6 @@ export const FadeOut = ({ children, onChange }) => {
   useEffect(() => {
     typeof onChange === "function" && onChange({ opacity });
   }, [opacity]);
-  useEffect(() => {
-    return () => {
-      typeof onChange === "function" && onChange(null);
-    };
-  }, []);
 
   const Component = typeof children === "function" ? children : null;
 

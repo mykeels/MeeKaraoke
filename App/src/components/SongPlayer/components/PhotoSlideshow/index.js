@@ -99,7 +99,6 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
           >
             <AbsoluteFill className="items-center justify-center z-20">
               <Lifecycle
-                id={`text-lifecycle-${i}`}
                 className="z-20"
                 ratio={`1:2:1`}
                 Entrance={(props) => <SlideIn {...props} from="left" />}

@@ -47,7 +47,6 @@ export const Lifecycle = ({
   const updateStyle = useCallback(
     (s) =>
       {
-        console.log({ s });
         setStyle({
           ...style,
           ...s,
@@ -65,9 +64,6 @@ export const Lifecycle = ({
       },
     []
   );
-  if (props.id?.startsWith("text-lifecycle")) {
-    console.log(props.id, style);
-  }
 
   return (
     <>

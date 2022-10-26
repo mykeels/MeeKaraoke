@@ -42,11 +42,6 @@ export const SlideOut = ({ children, to, onChange, ...props }) => {
   useEffect(() => {
     typeof onChange === "function" && onChange({ transform });
   }, [transform]);
-  useEffect(() => {
-    return () => {
-      typeof onChange === "function" && onChange(null);
-    };
-  }, []);
 
   const Component = typeof children === "function" ? children : null;
 
