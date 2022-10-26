@@ -51,6 +51,7 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
       compositionHeight={height}
       fps={frames(1)}
       controls
+      initialFrame={frames(33)}
     />
   );
 });

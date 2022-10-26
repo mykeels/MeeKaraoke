@@ -22,4 +22,5 @@ type SongFileContent = {
   audioUrl: string;
   images: string[];
   song: Song;
+  lines?: Song;
 };

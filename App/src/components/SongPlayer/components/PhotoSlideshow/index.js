@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Audio,
-  Sequence,
-  Img,
-  useVideoConfig
-} from "remotion";
+import { Audio, Sequence, Img, useVideoConfig, AbsoluteFill } from "remotion";
 
 import {
   Lifecycle,
@@ -96,12 +91,16 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
         line.text ? (
           <Sequence
             key={`${line.text}-${i}`}
-            from={line.from ? frames(line.from - 0.75) : startTimes[i]}
+            from={
+              line.from ? Math.max(frames(line.from - 0.75), 0) : startTimes[i]
+            }
             durationInFrames={frames(line.duration + 1)}
+            layout="none"
           >
-            <CenterFill>
+            <AbsoluteFill className="items-center justify-center z-20">
               <Lifecycle
-                className="z-10"
+                id={`text-lifecycle-${i}`}
+                className="z-20"
                 ratio={`1:2:1`}
                 Entrance={(props) => <SlideIn {...props} from="left" />}
                 Exit={(props) => <SlideOut {...props} to="right" />}
@@ -120,7 +119,7 @@ export const PhotoSlideshow = ({ lines, audioUrl, images }) => {
                   </div>
                 </div>
               </Lifecycle>
-            </CenterFill>
+            </AbsoluteFill>
           </Sequence>
         ) : null
       )}

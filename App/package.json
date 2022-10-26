@@ -14,7 +14,8 @@
         "build:tsc": "tsc -p ./tsconfig.json",
         "storybook": "start-storybook -p 6925 -s public",
         "build-storybook": "build-storybook -s public",
-        "analyze": "webpack-bundle-analyzer build/stats.json"
+        "analyze": "webpack-bundle-analyzer build/stats.json",
+        "render": "npx remotion render src/components/SongURLComposition/index.tsx SongURLPlayer videos/video.mp4"
     },
     "dependencies": {
         "@remotion/player": "^3.2.34",
@@ -37,6 +38,7 @@
     "devDependencies": {
         "@craco/craco": "^6.4.3",
         "@fullhuman/postcss-purgecss": "^4.1.3",
+        "@remotion/cli": "^3.2.34",
         "@storybook/addon-actions": "^6.4.18",
         "@storybook/addon-essentials": "^6.4.18",
         "@storybook/addon-links": "^6.4.18",

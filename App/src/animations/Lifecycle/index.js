@@ -1,5 +1,5 @@
 import classNames from "classnames/dedupe";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Sequence, useVideoConfig } from "remotion";
 import { starts } from "../../common/utils";
 import * as transformParser from "transform-parser";
@@ -44,21 +44,30 @@ export const Lifecycle = ({
 
   /** @type {ReactState<React.CSSProperties>} */
   const [style, setStyle] = useState({});
-  const updateStyle = (s) =>
-    setStyle({
-      ...style,
-      ...s,
-      ...(s?.transform
-        ? {
-            transform: transformParser.stringify({
-              ...(style?.transform
-                ? transformParser.parse(style?.transform)
-                : {}),
-              ...transformParser.parse(s?.transform)
-            })
-          }
-        : {})
-    });
+  const updateStyle = useCallback(
+    (s) =>
+      {
+        console.log({ s });
+        setStyle({
+          ...style,
+          ...s,
+          ...(s?.transform || style?.transform
+            ? {
+                transform: transformParser.stringify({
+                  ...(style?.transform
+                    ? transformParser.parse(style?.transform)
+                    : {}),
+                  ...(s?.transform ? transformParser.parse(s?.transform) : {})
+                })
+              }
+            : {})
+        })
+      },
+    []
+  );
+  if (props.id?.startsWith("text-lifecycle")) {
+    console.log(props.id, style);
+  }
 
   return (
     <>

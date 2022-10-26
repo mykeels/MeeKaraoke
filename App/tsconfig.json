@@ -14,7 +14,7 @@
     "resolveJsonModule": true
   },
   "compileOnSave": false,
-  "include": ["typings/**/*.d.ts", "src/**/*.js"],
+  "include": ["typings/**/*.d.ts", "src/**/*.js", "src/**/*.tsx"],
   "exclude": [
     "node_modules/",
     "**/*.test.js",

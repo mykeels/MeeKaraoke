@@ -33,7 +33,7 @@ export const SlideIn = ({ children, from, onChange, ...props }) => {
 
   const entranceOffset = interpolate(entrance, [0, 1], outputRange);
 
-  const wave = Math.cos(frame / 15) * 10 + entranceOffset;
+  const wave = Math.cos(frame / Math.floor(fps / 4)) * 10 + entranceOffset;
 
   const transform = ["top", "bottom"].includes(from)
     ? `translateY(${wave}px)`
@@ -42,11 +42,6 @@ export const SlideIn = ({ children, from, onChange, ...props }) => {
   useEffect(() => {
     typeof onChange === "function" && onChange({ transform });
   }, [transform]);
-  useEffect(() => {
-    return () => {
-      typeof onChange === "function" && onChange(null);
-    };
-  }, []);
 
   const Component = typeof children === "function" ? children : null;
 
@@ -62,6 +57,5 @@ export const SlideIn = ({ children, from, onChange, ...props }) => {
 };
 
 SlideIn.defaultProps = {
-  duration: 1,
   from: "bottom"
 };
