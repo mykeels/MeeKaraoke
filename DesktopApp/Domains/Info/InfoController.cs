@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 
-namespace MeeKaraoke.Controllers.X;
+namespace MeeKaraoke.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,10 +17,12 @@ public class InfoController : ControllerBase
 
     [HttpGet]
     [Route("~/[controller]")]
-    public IActionResult GetInfo()
+    public async Task<IActionResult> GetInfo()
     {
         var repo = new SongRepository();
 
-        return Ok(new { Address = WebApp.Address, AppDirectory = repo.AppDirectory });
+        string NodeJS = await SystemInfo.GetNodeJSVersion();
+        string Ffmpeg = await SystemInfo.GetFfmpegVersion();
+        return Ok(new { Address = WebApp.Address, AppDirectory = repo.AppDirectory, NodeJS, Ffmpeg });
     }
 }
