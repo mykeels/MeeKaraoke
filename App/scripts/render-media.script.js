@@ -100,10 +100,8 @@ const usage = commandLineUsage([
           // Second pass, adding audio to the video
           console.log("Muxing audio...");
         }
-        // Amount of frames rendered into images
-        console.log(`${renderedFrames} rendered`);
         // Amount of frame encoded into a video
-        console.log(`${encodedFrames} encoded`);
+        console.log(`${renderedFrames} rendered, ${encodedFrames} encoded`);
         // Time to create images of all frames
         if (renderedDoneIn !== null) {
           console.log(`Rendered in ${renderedDoneIn}ms`);

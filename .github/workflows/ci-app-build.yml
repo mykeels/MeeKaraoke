@@ -35,8 +35,11 @@ jobs:
     - name: Build App
       run: npx cross-env NODE_ENV=production npm run build
       working-directory: ${{ env.app-dir }}
-    - name: Build Video Renderer
+    - name: Build Video Renderer Module
       run: npm run build-renderer
+      working-directory: ${{ env.app-dir }}
+    - name: Build Video Render Script
+      run: npm run build-render-script
       working-directory: ${{ env.app-dir }}
 
     # build desktop app
