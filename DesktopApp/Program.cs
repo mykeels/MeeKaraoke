@@ -13,7 +13,7 @@ class Program
     {
         WebApp.StartWwwRootServer = true;
 
-        return "http://localhost:5000/app/index.html";
+        return "http://localhost:5000/app";
     }
 
     [STAThread]
@@ -28,6 +28,7 @@ class Program
         // Window title declared here for visibility
         string windowTitle = "MeeKaraoke - The Ultimate Karaoke Creator";
         string baseUrl = IsDebugMode ? Environment.GetEnvironmentVariable("APP_URL") ?? "http://localhost:3456" : StartReleaseServer(args);
+        VideoBuildModel.SetRendererUrl(baseUrl);
 
         // Creating a new PhotinoWindow instance with the fluent API
         var window = new PhotinoWindow()
