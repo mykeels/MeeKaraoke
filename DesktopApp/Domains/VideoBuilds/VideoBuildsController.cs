@@ -15,10 +15,14 @@ public class VideoBuildsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost]
-    [Route("~/[controller]")]
-    public async Task<IActionResult> BuildVideo([FromBody] VideoBuildModel model)
+    [HttpGet]
+    [Route("~/[controller]/{songId}")]
+    public async Task<IActionResult> BuildVideo([FromRoute] Guid songId)
     {
+        var model = new VideoBuildModel()
+        {
+            SongId = songId
+        };
         var repo = new SongRepository();
         var song = repo.GetSongById(model.SongId);
         if (song == null)
@@ -31,8 +35,17 @@ public class VideoBuildsController : ControllerBase
             return NotFound($"Content: {model.SongId}");
         }
         model.Song = songContent;
+
+        Response.ContentType = "text/event-stream";
+
         var builder = new VideoBuilder();
-        await builder.Build(model);
-        return Ok(builder);
+        await builder.Build(model, async (output) =>
+        {
+            await Response.WriteAsync(
+                string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output }))
+            );
+            await Response.Body.FlushAsync();
+        });
+        return NoContent();
     }
 }

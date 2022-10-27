@@ -7,8 +7,6 @@ namespace MeeKaraoke;
 public class VideoBuilder
 {
     public Guid SongId { get; set; }
-    public List<string> Outputs { get; set; } = new List<string>();
-    public List<string> Errors { get; set; } = new List<string>();
     public string OutputFilepath { get; set; } = String.Empty;
     public string Command { get; set; } = String.Empty;
     public double Duration { get; set; }
@@ -23,7 +21,7 @@ public class VideoBuilder
         }
     }
 
-    public async Task<string> Build(VideoBuildModel model)
+    public async Task<string> Build(VideoBuildModel model, Action<string>? onProgress = null)
     {
         this.SongId = model.SongId;
         if (model.Song == null)
@@ -40,7 +38,7 @@ public class VideoBuilder
         );
         this.OutputFilepath = outputFilepath;
         var karaokeUrl = $"{WebApp.Address}/Songs/{model.SongId}";
-        this.Command = $"node {this.ScriptPath} --out=\"{outputFilepath}\" --duration={model.Song.Duration}" +
+        this.Command = $"node {this.ScriptPath} --out=\"{outputFilepath}\" --duration={model.Song.Duration + 3}" +
             $" --karaokeUrl={karaokeUrl} --rendererUrl={VideoBuildModel.RendererUrl}";
 
         return await Task.Run(async () =>
@@ -56,18 +54,21 @@ public class VideoBuilder
                     {
                         if (output.StartsWith("Error:"))
                         {
-                            this.Errors.Add(Regex.Replace(output, "^Error: ", ""));
+                            if (onProgress != null) {
+                                onProgress(Regex.Replace(output, "^Error: ", ""));
+                            }
                         }
                         else
                         {
-                            this.Outputs.Add(output.Replace($"{Directory.GetCurrentDirectory()}>", ""));
+                            if (onProgress != null) {
+                                onProgress(output.Replace($"{Directory.GetCurrentDirectory()}>", ""));
+                            }
                         }
                     }
                     Console.WriteLine(output);
                 }
             );
             process.WaitForExit();
-            await Task.Delay(1000);
             return outputFilepath;
         });
     }
