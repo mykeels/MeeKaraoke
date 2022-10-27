@@ -15,6 +15,7 @@
         "storybook": "start-storybook -p 6925 -s public",
         "build-storybook": "build-storybook -s public",
         "analyze": "webpack-bundle-analyzer build/stats.json",
+        "build:renderer": "node ./scripts/build-video-renderer.script.js",
         "render": "npx remotion render src/components/SongURLComposition/index.tsx SongURLPlayer videos/video.mp4"
     },
     "dependencies": {

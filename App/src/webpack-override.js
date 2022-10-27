@@ -1,4 +1,4 @@
-export const webpackOverride = (currentConfiguration) => {
+module.exports.webpackOverride = (currentConfiguration) => {
   return {
     ...currentConfiguration,
     module: {
