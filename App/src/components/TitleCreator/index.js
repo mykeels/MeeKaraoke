@@ -61,11 +61,12 @@ export const TitleCreator = ({
     ({ url }) => getLyrics(url),
     {
       onSettled: (lyrics, error, props) => {
-        if (!error) {
-          onTitleChanged({
-            title: props?.title,
-            lyrics
-          });
+        if (!error && lyrics) {
+          typeof onTitleChanged === "function" &&
+            onTitleChanged({
+              title: props?.title,
+              lyrics: lyrics
+            });
         }
       }
     }
@@ -76,7 +77,9 @@ export const TitleCreator = ({
       {manual ? (
         <ManualTitleCreator
           onCancel={() => setManual(false)}
-          onSubmit={onTitleChanged}
+          onSubmit={(data) =>
+            typeof onTitleChanged === "function" && onTitleChanged(data)
+          }
         />
       ) : (
         <div className="block h-screen w-screen title-creator px-16 py-8">
@@ -111,12 +114,16 @@ export const TitleCreator = ({
                         key={option.id}
                         className="block w-full bg-purple-100 bg-opacity-75 p-2 my-1 text-xs"
                         onClick={() => {
-                          setSelected(option);
-                          _getLyrics(option);
+                          if (option) {
+                            setSelected(option);
+                            _getLyrics(option);
+                          }
                         }}
                       >
                         {i + 1}. {option.title}
-                        {isLyricsLoading && selected?.url === option.url ? (
+                        {isLyricsLoading &&
+                        typeof selected === "object" &&
+                        selected?.url === option.url ? (
                           <Spinner size={12} />
                         ) : null}
                       </button>
@@ -128,7 +135,10 @@ export const TitleCreator = ({
                 <div className="inline-block w-1/2">
                   <button
                     className="bg-purple-100 px-8 py-4 text-xl"
-                    onClick={() => onFileUploadIntent()}
+                    onClick={() =>
+                      typeof onFileUploadIntent === "function" &&
+                      onFileUploadIntent()
+                    }
                   >
                     Upload
                     <span className="hidden md:inline"> a File</span>
@@ -156,6 +166,7 @@ TitleCreator.defaultProps = {
   onSkip: () => {},
   onTitleChanged: () => {},
   onFileUploadIntent: () => {},
+  /** @param {string} title */
   getLyricsOptions: async (title) => {
     const apiRootUrl = process.env.REACT_APP_API_ROOT;
     if (!title) {
@@ -165,23 +176,26 @@ TitleCreator.defaultProps = {
       `${apiRootUrl}/lyrics/options?per_page=5&q=${encodeURIComponent(title)}`
     )
       .then((res) => res.json())
-      .then((data) =>
-        uniqBy(
-          data?.response?.sections
-            ?.map((s) => s?.hits)
-            ?.reduce((arr, hit) => arr.concat(hit), [])
-            ?.map((hit) => hit?.result)
-            ?.filter(Boolean)
-            ?.map((song) => ({
-              id: song.id,
-              title: song.full_title,
-              url: song.url
-            }))
-            ?.filter((song) => song.title),
-          (item) => item.title
-        )
+      .then(
+        /** @param {LyricOptions.Data} data */
+        (data) =>
+          uniqBy(
+            data?.response?.sections
+              ?.map((s) => s?.hits)
+              ?.reduce((arr, hit) => arr.concat(hit), [])
+              ?.map((hit) => hit?.result)
+              ?.filter(Boolean)
+              ?.map((song) => ({
+                id: song.id,
+                title: song.full_title,
+                url: song.url
+              }))
+              ?.filter((song) => song.title),
+            (item) => item.title
+          )
       );
   },
+  /** @param {string} url */
   getLyrics: async (url) => {
     return fetch(
       url.replace("https://genius.com", "http://localhost:5000/lyrics")
@@ -191,8 +205,11 @@ TitleCreator.defaultProps = {
         const $ = cheerio.load(html);
         const lyrics = $('[data-lyrics-container="true"]')
           .html()
-          .replace(/<br>/g, "\n");
-        return cheerio.load(lyrics).root().text();
+          ?.replace(/<br>/g, "\n");
+        return cheerio
+          .load(lyrics || "")
+          .root()
+          .text();
       });
   }
 };

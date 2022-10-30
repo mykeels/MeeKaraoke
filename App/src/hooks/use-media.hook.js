@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 /**
  * 
  * @param {string[]} queries e.g. ["(min-width: 1200px)", "(max-width: 1199px)"]
- * @param {array} values to pick from, depending on the current media breakpoint value
+ * @param {any[]} values to pick from, depending on the current media breakpoint value
  * @param {any} defaultValue selected value from [values] prop depending on the current media breakpoint value
  * @example 
  * 

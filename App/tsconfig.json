@@ -20,7 +20,10 @@
     "**/*.test.js",
     "**/*.spec.js",
     "**/*.stories.js",
-    "dist"
+    "dist",
+    "./src/webpack-override.js",
+    "./src/setupTests.js",
+    "./src/reportWebVitals.js"
   ],
   "typeRoots": ["./node_modules/@types", "./typings"]
 }
