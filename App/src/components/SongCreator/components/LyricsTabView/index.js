@@ -1,7 +1,7 @@
 import "./LyricsTabView.css";
 
 import classNames from "classnames";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { SongLine } from "../SongLine";
 import { SaveButton } from "./components";
@@ -15,7 +15,6 @@ import { SaveButton } from "./components";
  * @param {(line: LyricLine, index: number) => any} [props.onLineClick]
  * @param {() => any} [props.onSave]
  * @param {() => any} [props.onClear]
- * @param {() => any} [props.onOpen]
  * @returns {JSX.Element}
  */
 export const LyricsTabView = ({
@@ -25,11 +24,8 @@ export const LyricsTabView = ({
   onSongChanged,
   onLineClick,
   onSave,
-  onClear,
-  onOpen
+  onClear
 }) => {
-  /** @type {import("react").MutableRefObject<HTMLInputElement>} */
-  const fileRef = useRef();
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
   const starts = (durations) => {
@@ -74,42 +70,27 @@ export const LyricsTabView = ({
         className="nav nav-tabs flex flex-row flex-wrap list-none border-b-0 pl-0 justify-end"
         role="tablist"
       >
+        <li className="nav-item" role="presentation">
+          <button
+            className={classNames(
+              "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+            )}
+            role="tab"
+            onClick={() => {
+              setText("");
+              onClear();
+            }}
+          >
+            ❌
+          </button>
+        </li>
         {text ? (
           <>
-            <li className="nav-item" role="presentation">
-              <button
-                className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
-                )}
-                role="tab"
-                onClick={() => {
-                  setText("");
-                  onClear();
-                }}
-              >
-                ❌
-              </button>
-            </li>
             <li className="nav-item relative" role="presentation">
               <SaveButton onClick={onSave} />
             </li>
           </>
-        ) : (
-          <>
-            <li className="nav-item" role="presentation">
-              <button
-                className={classNames(
-                  "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
-                )}
-                role="tab"
-                onClick={onOpen}
-              >
-                📂
-              </button>
-              <input type="file" ref={fileRef} />
-            </li>
-          </>
-        )}
+        ) : null}
         <li className="nav-item" role="presentation">
           <button
             className={classNames(
@@ -180,6 +161,5 @@ LyricsTabView.defaultProps = {
   onSongChanged: () => {},
   onLineClick: () => {},
   onSave: () => {},
-  onClear: () => {},
-  onOpen: () => {}
+  onClear: () => {}
 };
