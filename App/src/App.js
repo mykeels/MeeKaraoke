@@ -103,7 +103,10 @@ export const App = () => {
                     id: state?.id,
                     audioUrl: state?.audioUrl,
                     lyrics: ""
-                  }).then((content) => setState({ ...state, id: content.id }));
+                  }).then((content) => {
+                    setState({ ...state, id: content.id });
+                    navigate(`/create/${content.id}`);
+                  });
                 }}
               />
             ) : (
@@ -127,7 +130,7 @@ export const App = () => {
                     return saveSongFileContents({
                       ...content,
                       id: state?.id,
-                      audioUrl: state?.audioUrl,
+                      audioUrl: content.audioUrl || state?.audioUrl,
                       lyrics: ""
                     }).then((content) =>
                       setState({ ...state, id: content.id })

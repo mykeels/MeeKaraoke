@@ -57,10 +57,11 @@ const transformSongLines = (lines) => {
 /**
  * @typedef {object} SongCreatorProps
  * @property {string} [className]
+ * @property {string} [id]
  * @property {string} [title]
  * @property {string} url
  * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
- * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"audioUrl">) => Promise<any>} [onSave]
+ * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"song"> & { lines: Song }) => Promise<any>} [onSave]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
  * @property {() => any} [onReset]
  * @property {{ song: Song, images: string[] }} [defaults]
@@ -70,6 +71,7 @@ const transformSongLines = (lines) => {
  * @type {React.FC<SongCreatorProps>}
  */
 export const SongCreator = ({
+  id,
   title,
   url,
   className,
@@ -180,10 +182,12 @@ export const SongCreator = ({
             }}
             onSave={() => {
               const data = {
+                id,
                 title,
-                song,
+                lines: song,
                 images,
-                duration: song.reduce((sum, line) => sum + line.duration, 0)
+                duration: song.reduce((sum, line) => sum + line.duration, 0),
+                audioUrl: url
               };
               onSave(data);
             }}

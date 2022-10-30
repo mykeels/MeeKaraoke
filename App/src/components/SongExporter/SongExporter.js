@@ -39,7 +39,7 @@ export const SongExporter = ({ id, getCapabilities, getSongById }) => {
     if (song) {
       setStatus((status) => ({ ...status, frames: frames(song.duration + 3) }));
     }
-  }, [song]);
+  }, [song?.duration]);
 
   useEffect(() => {
     if (capabilities?.ffmpeg && capabilities?.nodeJS && song) {
@@ -78,7 +78,7 @@ export const SongExporter = ({ id, getCapabilities, getSongById }) => {
         }
       };
     }
-  }, [capabilities?.ffmpeg, capabilities?.nodeJS, song]);
+  }, [capabilities?.ffmpeg, capabilities?.nodeJS, song?.id]);
 
   return (
     <div className="block h-screen w-screen song-exporter relative">

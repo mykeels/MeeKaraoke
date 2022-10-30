@@ -21,7 +21,7 @@ type SongFileContent = {
   lyrics: string;
   audioUrl: string;
   images: string[];
-  song: Song;
+  song?: Song;
   lines?: Song;
   duration: number;
 };
