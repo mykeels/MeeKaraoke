@@ -15,6 +15,7 @@ export const NoDurations = () => (
     LyricsTabView={(props) => (
       <LyricsTabView
         {...props}
+        title="Something just like this"
         defaults={{
           text: sampleSong.lines.map((line) => line.text).join("\n"),
           active: "pretty"
@@ -34,6 +35,7 @@ export const WithDurations = () => (
     LyricsTabView={(props) => (
       <LyricsTabView
         {...props}
+        title="Something just like this"
         song={sampleSong.lines}
         defaults={{
           text: sampleSong.lines.map((line) => line.text).join("\n"),

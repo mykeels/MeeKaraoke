@@ -71,7 +71,7 @@ export const LyricsTabView = ({
       <div className="w-full flex">
         {title ? (
           <div
-            className="inline-block w-5/12 font-bold justify-left"
+            className="hidden sm:inline-block w-5/12 font-bold justify-left"
             role="presentation"
           >
             {title}
@@ -79,10 +79,9 @@ export const LyricsTabView = ({
         ) : null}
         <ul
           className={classNames(
-            "nav nav-tabs flex flex-row list-none border-b-0 pl-0 justify-end",
+            "nav nav-tabs w-full flex flex-row list-none border-b-0 pl-0 justify-end",
             {
-              "w-7/12": title,
-              "w-full": !title,
+              "sm:w-7/12": title
             }
           )}
           role="tablist"
