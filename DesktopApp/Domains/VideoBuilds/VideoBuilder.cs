@@ -41,7 +41,7 @@ public class VideoBuilder
         this.Command = $"node {this.ScriptPath} --out=\"{outputFilepath}\" --duration={model.Song.Duration + 3}" +
             $" --karaokeUrl={karaokeUrl} --rendererUrl={VideoBuildModel.RendererUrl}";
 
-        return await Task.Run(async () =>
+        return await Task.Run(() =>
         {
             var process = Shell.Run(
                 new List<string>() {
