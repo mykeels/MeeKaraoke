@@ -8,7 +8,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView/co
     src="save.mp3"
   />
   <button
-    className="w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+    className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
     onClick={[Function]}
     role="tab"
   >

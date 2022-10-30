@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
 
 import { LyricsTabView } from "./";
 
@@ -12,11 +13,13 @@ export const Index = () => {
   const [song, setSong] = useState([]);
 
   return (
-    <LyricsTabView
-      defaults={{ text: somethingJustLikeThisLyrics }}
-      song={song}
-      onSongChanged={setSong}
-    />
+    <BrowserRouter>
+      <LyricsTabView
+        defaults={{ text: somethingJustLikeThisLyrics }}
+        song={song}
+        onSongChanged={setSong}
+      />
+    </BrowserRouter>
   );
 };
 
@@ -24,12 +27,14 @@ export const Cursor5 = () => {
   const [song, setSong] = useState([]);
 
   return (
-    <LyricsTabView
-      defaults={{ text: somethingJustLikeThisLyrics, active: "pretty" }}
-      song={song}
-      onSongChanged={setSong}
-      cursor={5}
-    />
+    <BrowserRouter>
+      <LyricsTabView
+        defaults={{ text: somethingJustLikeThisLyrics, active: "pretty" }}
+        song={song}
+        onSongChanged={setSong}
+        cursor={5}
+      />
+    </BrowserRouter>
   );
 };
 
@@ -37,12 +42,14 @@ export const Empty = () => {
   const [song, setSong] = useState([]);
 
   return (
-    <LyricsTabView
-      defaults={{ text: "" }}
-      song={song}
-      onSongChanged={setSong}
-      cursor={5}
-    />
+    <BrowserRouter>
+      <LyricsTabView
+        defaults={{ text: "" }}
+        song={song}
+        onSongChanged={setSong}
+        cursor={5}
+      />
+    </BrowserRouter>
   );
 };
 
@@ -50,12 +57,14 @@ export const WithTitle = () => {
   const [song, setSong] = useState([]);
 
   return (
-    <LyricsTabView
-      title="Something just like this"
-      defaults={{ text: somethingJustLikeThisLyrics }}
-      song={song}
-      onSongChanged={setSong}
-    />
+    <BrowserRouter>
+      <LyricsTabView
+        title="Something just like this"
+        defaults={{ text: somethingJustLikeThisLyrics }}
+        song={song}
+        onSongChanged={setSong}
+      />
+    </BrowserRouter>
   );
 };
 
