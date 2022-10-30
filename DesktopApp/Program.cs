@@ -54,8 +54,9 @@ class Program
                     Console.WriteLine("Starting Server");
                     WebApp.Start(args);
                     Console.WriteLine("Server Started");
-                    window?.Load(baseUrl);
-                    Console.WriteLine(baseUrl);
+                    var appUrl = IsDebugMode ? baseUrl : $"{baseUrl}/index.html";
+                    window?.Load(appUrl);
+                    Console.WriteLine(appUrl);
                 });
             })
             .RegisterCustomSchemeHandler("app", (object sender, string scheme, string url, out string contentType) =>
