@@ -17,7 +17,7 @@ export async function getLyricsOptions(title) {
       (data) =>
         uniqBy(
           data?.response?.sections
-            ?.map((s) => s?.hits)
+            ?.map((s) => s?.hits?.filter(hit => hit?.type === "song"))
             ?.reduce((arr, hit) => arr.concat(hit), [])
             ?.map((hit) => hit?.result)
             ?.filter(Boolean)
