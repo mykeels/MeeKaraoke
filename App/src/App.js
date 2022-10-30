@@ -6,8 +6,7 @@ import {
   SongUploader,
   TitleCreatorScreen,
   SongPlayerScreen,
-  SongPicker,
-  SavedFileUploader
+  SongPicker
 } from "./components";
 import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView";
 import { getSongById, saveSongFileContents } from "./common/services";
@@ -16,8 +15,6 @@ import { getSongById, saveSongFileContents } from "./common/services";
 export const App = () => {
   /** @type {ReactState<SongFileContent>} */
   const [state, setState] = useState(null);
-  /** @type {ReactState<boolean | "open">} */
-  const [isFileUploadActive, setIsFileUploadActive] = useState(false);
   const navigate = useNavigate();
   const selectSong = async (record) => {
     const song = await getSongById(record.id);
@@ -50,7 +47,7 @@ export const App = () => {
           path="/create/set-title"
           element={
             <TitleCreatorScreen
-              onFileUploadIntent={() => setIsFileUploadActive("open")}
+              onFileUploadIntent={() => {}}
               onTitleChanged={(data) => {
                 setState((state) => ({ ...state, ...data }));
               }}
@@ -61,6 +58,7 @@ export const App = () => {
           path="/create/upload-audio"
           element={
             <SongUploader
+              title={state?.title}
               onAudioFileReceived={(audioUrl) => {
                 setState((state) => ({ ...state, audioUrl }));
               }}
@@ -70,75 +68,41 @@ export const App = () => {
         <Route
           path="/create/:id"
           element={
-            <SongCreator
-              title={state?.title}
-              url={state?.audioUrl}
-              onReset={() => {
-                setState(null);
-                navigate("/");
-              }}
-              defaults={{
-                song: state?.song,
-                images: state?.images
-              }}
-              LyricsTabView={(props) => (
-                <LyricsTabView
-                  {...props}
-                  defaults={{
-                    active: "pretty",
-                    text: state?.lyrics
-                  }}
-                />
-              )}
-              onSave={(content) => {
-                content["id"] = state?.id;
-                return saveSongFileContents({
-                  ...content,
-                  id: state?.id,
-                  audioUrl: state?.audioUrl,
-                  lyrics: ""
-                }).then((content) => setState({ ...state, id: content.id }));
-              }}
-            />
+            state?.audioUrl ? (
+              <SongCreator
+                title={state?.title}
+                url={state?.audioUrl}
+                onReset={() => {
+                  setState(null);
+                  navigate("/");
+                }}
+                defaults={{
+                  song: state?.song,
+                  images: state?.images
+                }}
+                LyricsTabView={(props) => (
+                  <LyricsTabView
+                    {...props}
+                    defaults={{
+                      active: "pretty",
+                      text: state?.lyrics
+                    }}
+                  />
+                )}
+                onSave={(content) => {
+                  content["id"] = state?.id;
+                  return saveSongFileContents({
+                    ...content,
+                    id: state?.id,
+                    audioUrl: state?.audioUrl,
+                    lyrics: ""
+                  }).then((content) => setState({ ...state, id: content.id }));
+                }}
+              />
+            ) : null
           }
         />
       </Routes>
-      <div
-        className="block overflow-auto custom-scroller h-screen"
-        onDragEnter={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.type === "dragenter" || e.type === "dragover") {
-            setIsFileUploadActive(true);
-          } else if (e.type === "dragleave") {
-            setIsFileUploadActive(false);
-          }
-        }}
-        onDrop={() => {}}
-      >
-        {isFileUploadActive ? (
-          <SavedFileUploader
-            className="fixed top-0 left-0 z-10"
-            open={isFileUploadActive}
-            onKaraokeFileReceived={(karaoke) => {
-              setIsFileUploadActive(false);
-              setState({
-                ...state,
-                ...karaoke,
-                audioUrl: null,
-                title: karaoke.title || "karaoke",
-                lyrics: karaoke.song.map((l) => l.text).join("\n")
-              });
-              navigate("/create/upload-audio");
-            }}
-            onDragLeave={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsFileUploadActive(false);
-            }}
-          />
-        ) : null}
-      </div>
     </>
   );
 };

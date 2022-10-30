@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { QueryClientProvider, QueryClient } from "react-query";
 
 import { SongUploader } from "./";
 
@@ -8,7 +9,8 @@ export default {
   decorators: []
 };
 
-export const Index = () => {
+const queryClient = new QueryClient();
+const SongUploaderComponent = (props) => {
   const [url, setUrl] = useState(null);
   return (
     <>
@@ -19,7 +21,21 @@ export const Index = () => {
           </audio>
         </div>
       ) : null}
-      <SongUploader onAudioFileReceived={setUrl} />
+      <SongUploader {...props} onAudioFileReceived={setUrl} />
     </>
   );
 };
+
+export const Index = () => (
+  <QueryClientProvider client={queryClient}>
+    <SongUploaderComponent />
+  </QueryClientProvider>
+);
+
+export const CanFetchFromYoutube = () => (
+  <QueryClientProvider client={queryClient}>
+    <SongUploaderComponent
+      getCapabilities={async () => ({ nodejs: "14.16.0" })}
+    />
+  </QueryClientProvider>
+);
