@@ -8,7 +8,7 @@ import {
   FfMpegInstructions,
   NodeJSInstructions
 } from "./components/Instructions";
-import { frames } from "../../common";
+import { frames, Spinner } from "../../common";
 
 /**
  * @typedef {object} SongExporterProps
@@ -105,7 +105,14 @@ export const SongExporter = ({ id, getCapabilities, getSongById }) => {
             </div>
 
             <div className="block w-full px-4 py-2 bg-purple-200 my-4">
-              3. Rendering Video
+              3. Rendering Video{" "}
+              {capabilities?.nodeJS && capabilities?.ffmpeg ? (
+                status.complete ? (
+                  "✅"
+                ) : (
+                  <Spinner size={16} />
+                )
+              ) : null}
             </div>
           </div>
           <div className="inline-block w-full md:w-3/4 px-2">
