@@ -3,10 +3,11 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 
 import {
   SongCreator,
-  SongUploader,
   TitleCreatorScreen,
   SongPlayerScreen,
-  SongPicker
+  SongPicker,
+  SongUploaderScreen,
+  SongUploader
 } from "./components";
 import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView";
 import { getSongById, saveSongFileContents } from "./common/services";
@@ -57,16 +58,55 @@ export const App = () => {
         <Route
           path="/create/upload-audio"
           element={
-            <SongUploader
-              title={state?.title}
+            <SongUploaderScreen
               onAudioFileReceived={(audioUrl) => {
                 setState((state) => ({ ...state, audioUrl }));
               }}
+              SongUploader={(props) => (
+                <SongUploader {...props} title={state?.title} />
+              )}
             />
           }
         />
         <Route
           path="/create/:id"
+          element={
+            state?.audioUrl ? (
+              <SongCreator
+                title={state?.title}
+                url={state?.audioUrl}
+                onReset={() => {
+                  setState(null);
+                  navigate("/");
+                }}
+                defaults={{
+                  song: state?.song,
+                  images: state?.images
+                }}
+                LyricsTabView={(props) => (
+                  <LyricsTabView
+                    {...props}
+                    defaults={{
+                      active: "pretty",
+                      text: state?.lyrics
+                    }}
+                  />
+                )}
+                onSave={(content) => {
+                  content["id"] = state?.id;
+                  return saveSongFileContents({
+                    ...content,
+                    id: state?.id,
+                    audioUrl: state?.audioUrl,
+                    lyrics: ""
+                  }).then((content) => setState({ ...state, id: content.id }));
+                }}
+              />
+            ) : null
+          }
+        />
+        <Route
+          path="/create"
           element={
             state?.audioUrl ? (
               <SongCreator

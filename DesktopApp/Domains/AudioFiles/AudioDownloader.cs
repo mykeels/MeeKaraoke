@@ -20,7 +20,7 @@ public class AudioDownloader
         var outFilePath = Path.Combine(outFileDir, outFileName);
         if (File.Exists(outFilePath))
         {
-            model.Url = $"{WebApp.Address}/Temp/{outFileName}";
+            model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}";
             return model;
         }
         if (!Directory.Exists(outFileDir))
@@ -41,7 +41,7 @@ public class AudioDownloader
             });
             process.WaitForExit();
         });
-        model.Url = $"{WebApp.Address}/Temp/{outFileName}";
+        model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}";
         return model;
     }
 

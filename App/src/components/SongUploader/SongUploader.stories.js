@@ -35,7 +35,7 @@ export const Index = () => (
 export const CanFetchFromYoutube = () => (
   <QueryClientProvider client={queryClient}>
     <SongUploaderComponent
-      getCapabilities={async () => ({ nodejs: "14.16.0" })}
+      getCapabilities={async () => ({ nodeJS: "14.16.0" })}
     />
   </QueryClientProvider>
 );

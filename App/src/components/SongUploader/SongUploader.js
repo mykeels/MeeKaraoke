@@ -4,6 +4,7 @@ import React from "react";
 import { YoutubeDownloader } from "./components";
 import { useQuery } from "react-query";
 import classNames from "classnames";
+import { getAudioUrl, getSystemCapabilities } from "../../common/services";
 
 /**
  * @param {HTMLInputElement} input
@@ -31,7 +32,8 @@ const grabFileURL = async (input) => {
  * @property {(blobUrl: string) => any} onAudioFileReceived
  * @property {any} [className]
  * @property {string} [title]
- * @property {() => Promise<{ nodejs: string }>} [getCapabilities]
+ * @property {() => Promise<{ nodeJS: string }>} [getCapabilities]
+ * @property {React.FC<{ onDownload: (url: string) => any, [key: string]: any }>} [AudioDownloader]
  */
 
 /**
@@ -40,7 +42,8 @@ const grabFileURL = async (input) => {
 export const SongUploader = ({
   title,
   onAudioFileReceived,
-  getCapabilities
+  getCapabilities,
+  AudioDownloader
 }) => {
   const { data: capabilities } = useQuery(["capabilities"], getCapabilities);
   return (
@@ -52,15 +55,15 @@ export const SongUploader = ({
             Step 2: Choose the audio{title ? ` for ${title}` : null}
           </div>
           <div className="block p-8 text-xl">
-            {capabilities?.nodejs ? (
-              <YoutubeDownloader
+            {capabilities?.nodeJS ? (
+              <AudioDownloader
                 className="inline-block w-full lg:w-1/2 lg:text-center"
-                getAudioUrl={async (url) => url}
+                onDownload={onAudioFileReceived}
               />
             ) : null}
             <div
               className={classNames("inline-block w-full lg:text-center", {
-                "lg:w-1/2": capabilities?.nodejs
+                "lg:w-1/2": capabilities?.nodeJS
               })}
             >
               <div className="py-4">From File</div>
@@ -89,5 +92,13 @@ export const SongUploader = ({
 
 SongUploader.defaultProps = {
   onAudioFileReceived: () => {},
-  getCapabilities: async () => ({ nodejs: null })
+  getCapabilities: getSystemCapabilities,
+  AudioDownloader: (props) => (
+    <YoutubeDownloader
+      {...props}
+      getAudioUrl={(youtubeUrl) =>
+        getAudioUrl(youtubeUrl).then((res) => res.url)
+      }
+    />
+  )
 };

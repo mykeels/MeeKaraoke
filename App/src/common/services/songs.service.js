@@ -53,6 +53,7 @@ export async function saveSongFileContents(content) {
 export async function uploadSongFileContent(content) {
   const str = JSON.stringify({
     ...content,
+    lines: content?.song,
     audioUrl: `~/Static/${content?.id}/audio.mp3`
   });
   const blob = new Blob([str], {

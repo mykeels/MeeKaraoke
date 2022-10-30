@@ -67,7 +67,7 @@ export const YoutubeDownloader = ({ className, getAudioUrl, onDownload }) => {
           </div>
           <div className="inline-block w-1/4">
             <button className="flex bg-lavender-100 px-4 py-2" type="submit">
-              {isLoading ? <Spinner size={16} /> : "Fetch"}
+              {isLoading ? <Spinner size={24} /> : "Fetch"}
             </button>
           </div>
         </form>
