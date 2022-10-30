@@ -4,14 +4,14 @@ import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 
 /**
- * @typedef {object} SongUploaderProps
+ * @typedef {object} SavedFileUploaderProps
  * @property {(karaoke: { title: string, song: Song, images: string[] }) => any} onKaraokeFileReceived
  * @property {any} [className]
  * @property {boolean | "open"} [open] immediately opens the File Dialog when set to "open"
  */
 
 /**
- * @type {React.FC<SongUploaderProps & { [key: string]: any }>}
+ * @type {React.FC<SavedFileUploaderProps & { [key: string]: any }>}
  */
 export const SavedFileUploader = ({
   onKaraokeFileReceived,

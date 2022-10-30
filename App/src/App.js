@@ -1,219 +1,146 @@
 import React, { useState } from "react";
-import { SongCreator, SongUploader, TitleCreator } from "./components";
-import { SavedFileUploader } from "./components/SavedFileUploader";
+import { Routes, Route, useNavigate } from "react-router-dom";
+
+import {
+  SongCreator,
+  SongUploader,
+  TitleCreatorScreen,
+  SongPlayerScreen,
+  SongPicker,
+  SavedFileUploader
+} from "./components";
 import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView";
-import { SongPicker } from "./components/SongPicker";
-import { SongPlayer } from "./components/SongPlayer";
+import { getSongById, saveSongFileContents } from "./common/services";
 
-/** @param {SongRecord} record */
-async function getSongFileContents(record) {
-  const apiRoot = process.env.REACT_APP_API_ROOT;
-  /** @type {SongFileContent} */
-  const song = await fetch(record.songFilePath.replace("~", apiRoot)).then(
-    (res) => res.json()
-  );
-  song["song"] = song["lines"] || song["song"];
-  song.audioUrl = await getAudioUrl(record);
-  song.lyrics = song.song.map((l) => l.text).join("\n");
-  song.id = record.id;
-  return song;
-}
-
-/** @param {SongRecord} record */
-async function getAudioUrl(record) {
-  const apiRoot = process.env.REACT_APP_API_ROOT;
-  return fetch(record.audioFilePath.replace("~", apiRoot))
-    .then((res) => res.blob())
-    .then((blob) => URL.createObjectURL(blob));
-}
-
-/** @param {SongFileContent} content */
-async function saveSongFileContents(content) {
-  const apiRoot = process.env.REACT_APP_API_ROOT;
-  if (content.id) {
-    // existing record
-    /** @type {SongRecord} */
-    await fetch(`${apiRoot}/Songs/${content.id}`, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        Title: content.title,
-        Id: content.id
-      })
-    }).then((res) => res.json());
-  } else {
-    // new record
-    /** @type {SongRecord} */
-    const record = await fetch(`${apiRoot}/Songs`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        Title: content.title
-      })
-    }).then((res) => res.json());
-    content.id = record.id;
-  }
-
-  // upload content
-  await uploadSongFileContent(content);
-
-  // upload audio
-  await uploadAudioFile(content);
-  return content;
-}
-
-/** @param {SongFileContent} content */
-async function uploadSongFileContent(content) {
-  const apiRoot = process.env.REACT_APP_API_ROOT;
-  const str = JSON.stringify({
-    ...content,
-    audioUrl: `~/Static/${content?.id}/audio.mp3`
-  });
-  const blob = new Blob([str], {
-    type: "application/json"
-  });
-  const formData = new FormData();
-  formData.append("files", blob);
-  await fetch(`${apiRoot}/Songs/${content.id}/Files`, {
-    method: "post",
-    body: formData
-  });
-}
-
-/** @param {SongFileContent} content */
-async function uploadAudioFile(content) {
-  const apiRoot = process.env.REACT_APP_API_ROOT;
-  const blob = await fetch(content.audioUrl).then((res) => res.blob());
-  const formData = new FormData();
-  formData.append("files", blob);
-  await fetch(`${apiRoot}/Songs/${content.id}/Audio-Files.mp3`, {
-    method: "post",
-    body: formData
-  });
-}
-
-/** @type {React.FC<{}>} */
+/** @type {React.FC<{ Router?: React.FC<{ basename?: string, children: any }> }>} */
 export const App = () => {
-  /** @type {ReactState<number>} */
-  const [stage, setStage] = useState(0);
   /** @type {ReactState<SongFileContent>} */
   const [state, setState] = useState(null);
   /** @type {ReactState<boolean | "open">} */
   const [isFileUploadActive, setIsFileUploadActive] = useState(false);
+  const navigate = useNavigate();
   const selectSong = async (record) => {
-    const song = await getSongFileContents(record);
+    const song = await getSongById(record.id);
     setState(song);
-    setStage(3);
+    navigate(`/create/${song.id}`);
   };
-  /** @type {ReactState<boolean>} */
-  const [playing, setPlaying] = useState(false);
   const playSong = async (record) => {
-    const song = await getSongFileContents(record);
+    const song = await getSongById(record.id);
     setState(song);
-    setPlaying(true);
+
+    navigate(`/play/${song.id}`);
   };
   return (
-    <div
-      className="block overflow-auto custom-scroller h-screen"
-      onDragEnter={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.type === "dragenter" || e.type === "dragover") {
-          setIsFileUploadActive(true);
-        } else if (e.type === "dragleave") {
-          setIsFileUploadActive(false);
-        }
-      }}
-      onDrop={() => {}}
-    >
-      {isFileUploadActive ? (
-        <SavedFileUploader
-          className="fixed top-0 left-0 z-10"
-          open={isFileUploadActive}
-          onKaraokeFileReceived={(karaoke) => {
-            setIsFileUploadActive(false);
-            setState({
-              ...state,
-              ...karaoke,
-              audioUrl: null,
-              title: karaoke.title || "karaoke",
-              lyrics: karaoke.song.map((l) => l.text).join("\n")
-            });
-            setStage(2);
-          }}
-          onDragLeave={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsFileUploadActive(false);
-          }}
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <SongPicker
+              onNewSong={() => {
+                navigate("/create/set-title");
+              }}
+              onSelectSong={selectSong}
+              onPlaySong={playSong}
+            />
+          }
         />
-      ) : null}
-      {playing ? (
-        <SongPlayer
-          audioUrl={state.audioUrl}
-          images={state.images}
-          lines={state.song}
-          onPlayEnd={() => setPlaying(null)}
-          isFullscreen
-        />
-      ) : null}
-      {stage === 0 ? (
-        <SongPicker
-          onNewSong={() => setStage(stage + 1)}
-          onSelectSong={selectSong}
-          onPlaySong={playSong}
-        />
-      ) : stage === 1 ? (
-        <TitleCreator
-          onFileUploadIntent={() => setIsFileUploadActive("open")}
-          onTitleChanged={(data) => {
-            setState((state) => ({ ...state, ...data }));
-            setStage(stage + 1);
-          }}
-        />
-      ) : stage === 2 ? (
-        <SongUploader
-          onAudioFileReceived={(audioUrl) => {
-            setState((state) => ({ ...state, audioUrl }));
-            setStage(stage + 1);
-          }}
-        />
-      ) : (
-        <SongCreator
-          title={state.title}
-          url={state.audioUrl}
-          onReset={() => {
-            setState(null);
-            setStage(0);
-          }}
-          defaults={{
-            song: state?.song,
-            images: state?.images
-          }}
-          LyricsTabView={(props) => (
-            <LyricsTabView
-              {...props}
-              defaults={{
-                active: "pretty",
-                text: state.lyrics
+        <Route path="/play/:id" element={<SongPlayerScreen />} />
+        <Route
+          path="/create/set-title"
+          element={
+            <TitleCreatorScreen
+              onFileUploadIntent={() => setIsFileUploadActive("open")}
+              onTitleChanged={(data) => {
+                setState((state) => ({ ...state, ...data }));
               }}
             />
-          )}
-          onSave={(content) => {
-            content["id"] = state?.id;
-            return saveSongFileContents({
-              ...content,
-              id: state?.id,
-              audioUrl: state?.audioUrl,
-              lyrics: ""
-            }).then((content) => setState({ ...state, id: content.id }));
-          }}
+          }
         />
-      )}
-    </div>
+        <Route
+          path="/create/upload-audio"
+          element={
+            <SongUploader
+              onAudioFileReceived={(audioUrl) => {
+                setState((state) => ({ ...state, audioUrl }));
+              }}
+            />
+          }
+        />
+        <Route
+          path="/create/:id"
+          element={
+            <SongCreator
+              title={state?.title}
+              url={state?.audioUrl}
+              onReset={() => {
+                setState(null);
+                navigate("/");
+              }}
+              defaults={{
+                song: state?.song,
+                images: state?.images
+              }}
+              LyricsTabView={(props) => (
+                <LyricsTabView
+                  {...props}
+                  defaults={{
+                    active: "pretty",
+                    text: state?.lyrics
+                  }}
+                />
+              )}
+              onSave={(content) => {
+                content["id"] = state?.id;
+                return saveSongFileContents({
+                  ...content,
+                  id: state?.id,
+                  audioUrl: state?.audioUrl,
+                  lyrics: ""
+                }).then((content) => setState({ ...state, id: content.id }));
+              }}
+            />
+          }
+        />
+      </Routes>
+      <div
+        className="block overflow-auto custom-scroller h-screen"
+        onDragEnter={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.type === "dragenter" || e.type === "dragover") {
+            setIsFileUploadActive(true);
+          } else if (e.type === "dragleave") {
+            setIsFileUploadActive(false);
+          }
+        }}
+        onDrop={() => {}}
+      >
+        {isFileUploadActive ? (
+          <SavedFileUploader
+            className="fixed top-0 left-0 z-10"
+            open={isFileUploadActive}
+            onKaraokeFileReceived={(karaoke) => {
+              setIsFileUploadActive(false);
+              setState({
+                ...state,
+                ...karaoke,
+                audioUrl: null,
+                title: karaoke.title || "karaoke",
+                lyrics: karaoke.song.map((l) => l.text).join("\n")
+              });
+              navigate("/create/upload-audio");
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsFileUploadActive(false);
+            }}
+          />
+        ) : null}
+      </div>
+    </>
   );
 };
+
+App.defaultProps = {};
