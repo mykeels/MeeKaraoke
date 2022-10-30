@@ -36,17 +36,61 @@ public class VideoBuildsController : ControllerBase
         }
         model.Song = songContent;
 
+        var httpResponse = Response;
+
         Response.ContentType = "text/event-stream";
 
-        var builder = new VideoBuilder();
-        await builder.Build(model, async (output) =>
+        VideoBuilder builder;
+        if (VideoBuilder.Storage.ContainsKey(model.SongId))
         {
-            await Response.WriteAsync(
-                string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output }))
-            );
-            await Response.Body.FlushAsync();
-        });
-        Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+            var completion = new TaskCompletionSource<bool>();
+            builder = VideoBuilder.Storage[model.SongId];
+            builder.OnProgress = async (output) =>
+            {
+                if (output.Contains("exit"))
+                {
+                    if (VideoBuilder.Storage.ContainsKey(model.SongId))
+                    {
+                        completion.SetResult(true);
+                        VideoBuilder.Storage.Remove(model.SongId);
+                        Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+                    }
+                }
+                await httpResponse.WriteAsync(
+                        string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output }))
+                    );
+                await httpResponse.Body.FlushAsync();
+            };
+            await completion.Task;
+        }
+        else
+        {
+            builder = new VideoBuilder();
+            builder.OnProgress = async (output) =>
+            {
+                await Response.WriteAsync(
+                    string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output }))
+                );
+                await Response.Body.FlushAsync();
+            };
+            Response.HttpContext.RequestAborted.Register(() =>
+            {
+                builder.OnProgress = (output) =>
+                {
+                    Console.WriteLine("Connection Ended: " + output);
+                };
+            });
+            if (!VideoBuilder.Storage.ContainsKey(model.SongId))
+            {
+                VideoBuilder.Storage.Add(model.SongId, builder);
+                await builder.Build(model);
+            }
+            if (VideoBuilder.Storage.ContainsKey(model.SongId))
+            {
+                VideoBuilder.Storage.Remove(model.SongId);
+            }
+            Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+        }
         return NoContent();
     }
 }

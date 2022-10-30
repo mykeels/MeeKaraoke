@@ -10,6 +10,10 @@ public class VideoBuilder
     public string OutputFilepath { get; set; } = String.Empty;
     public string Command { get; set; } = String.Empty;
     public double Duration { get; set; }
+    public Action<string> OnProgress { get; set; } = (string output) =>
+    {
+        Console.WriteLine(output);
+    };
     public string ScriptPath
     {
         get
@@ -20,8 +24,9 @@ public class VideoBuilder
             );
         }
     }
+    public static Dictionary<Guid, VideoBuilder> Storage = new Dictionary<Guid, VideoBuilder>();
 
-    public async Task<string> Build(VideoBuildModel model, Action<string>? onProgress = null)
+    public async Task<string> Build(VideoBuildModel model)
     {
         this.SongId = model.SongId;
         if (model.Song == null)
@@ -54,18 +59,19 @@ public class VideoBuilder
                     {
                         if (output.StartsWith("Error:"))
                         {
-                            if (onProgress != null) {
-                                onProgress(Regex.Replace(output, "^Error: ", ""));
+                            if (this.OnProgress != null)
+                            {
+                                this.OnProgress(Regex.Replace(output, "^Error: ", ""));
                             }
                         }
                         else
                         {
-                            if (onProgress != null) {
-                                onProgress(output.Replace($"{Directory.GetCurrentDirectory()}>", ""));
+                            if (this.OnProgress != null)
+                            {
+                                this.OnProgress(output.Replace($"{Directory.GetCurrentDirectory()}>", ""));
                             }
                         }
                     }
-                    Console.WriteLine(output);
                 }
             );
             process.WaitForExit();
