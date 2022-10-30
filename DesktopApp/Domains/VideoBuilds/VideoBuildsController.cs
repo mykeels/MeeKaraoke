@@ -16,7 +16,7 @@ public class VideoBuildsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("~/[controller]/{songId}")]
+    [Route("~/songs/{songId}/build-video")]
     public async Task<IActionResult> BuildVideo([FromRoute] Guid songId)
     {
         var model = new VideoBuildModel()
@@ -46,6 +46,7 @@ public class VideoBuildsController : ControllerBase
             );
             await Response.Body.FlushAsync();
         });
+        Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
         return NoContent();
     }
 }

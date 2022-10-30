@@ -23,4 +23,5 @@ type SongFileContent = {
   images: string[];
   song: Song;
   lines?: Song;
+  duration: number;
 };
