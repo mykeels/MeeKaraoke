@@ -10,6 +10,7 @@ public class VideoBuilder
     public string OutputFilepath { get; set; } = String.Empty;
     public string Command { get; set; } = String.Empty;
     public double Duration { get; set; }
+    public System.Diagnostics.Process? Process { get; set; }
     public Action<string> OnProgress { get; set; } = (string output) =>
     {
         Console.WriteLine(output);
@@ -48,7 +49,7 @@ public class VideoBuilder
 
         return await Task.Run(() =>
         {
-            var process = Shell.Run(
+            this.Process = Shell.Run(
                 new List<string>() {
                     this.Command
                 },
@@ -74,7 +75,7 @@ public class VideoBuilder
                     }
                 }
             );
-            process.WaitForExit();
+            this.Process.WaitForExit();
             return outputFilepath;
         });
     }

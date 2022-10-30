@@ -61,6 +61,9 @@ public class VideoBuildsController : ControllerBase
                     );
                 await httpResponse.Body.FlushAsync();
             };
+            if (builder.Process != null) {
+                await builder.Process.WaitForExitAsync();
+            }
             await completion.Task;
         }
         else
