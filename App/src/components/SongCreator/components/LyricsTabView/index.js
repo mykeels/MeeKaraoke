@@ -8,6 +8,7 @@ import { SaveButton } from "./components";
 
 /**
  * @param {object} props
+ * @param {string} [props.title]
  * @param {{ text: string, active: string }} [props.defaults]
  * @param {number} [props.cursor]
  * @param {Song} [props.song]
@@ -18,6 +19,7 @@ import { SaveButton } from "./components";
  * @returns {JSX.Element}
  */
 export const LyricsTabView = ({
+  title,
   cursor,
   defaults,
   song,
@@ -66,64 +68,80 @@ export const LyricsTabView = ({
 
   return (
     <div className="w-full">
-      <ul
-        className="nav nav-tabs flex flex-row flex-wrap list-none border-b-0 pl-0 justify-end"
-        role="tablist"
-      >
-        <li className="nav-item" role="presentation">
-          <button
-            className={classNames(
-              "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
-            )}
-            role="tab"
-            onClick={() => {
-              setText("");
-              onClear();
-            }}
+      <div className="w-full flex">
+        {title ? (
+          <div
+            className="inline-block w-5/12 font-bold justify-left"
+            role="presentation"
           >
-            ❌
-          </button>
-        </li>
-        {text ? (
-          <>
-            <li className="nav-item relative" role="presentation">
-              <SaveButton onClick={onSave} />
-            </li>
-          </>
+            {title}
+          </div>
         ) : null}
-        <li className="nav-item" role="presentation">
-          <button
-            className={classNames(
-              "w-full block text-xs leading-tight uppercase px-6 py-2",
-              {
-                "bg-purple-200 text-white": active === "pretty",
-                "hover:bg-purple-100": active !== "pretty"
-              }
-            )}
-            onClick={() => setActive("pretty")}
-            role="tab"
-            aria-selected={active === "pretty" ? "true" : "false"}
-          >
-            Pretty
-          </button>
-        </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className={classNames(
-              "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100",
-              {
-                "bg-purple-200 text-white": active === "text",
-                "hover:bg-purple-100": active !== "text"
-              }
-            )}
-            onClick={() => setActive("text")}
-            role="tab"
-            aria-selected={active === "text" ? "true" : "false"}
-          >
-            Text
-          </button>
-        </li>
-      </ul>
+        <ul
+          className={classNames(
+            "nav nav-tabs flex flex-row list-none border-b-0 pl-0 justify-end",
+            {
+              "w-7/12": title,
+              "w-full": !title,
+            }
+          )}
+          role="tablist"
+        >
+          <li className="nav-item" role="presentation">
+            <button
+              className={classNames(
+                "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100 hover:text-white"
+              )}
+              role="tab"
+              onClick={() => {
+                setText("");
+                onClear();
+              }}
+            >
+              ❌
+            </button>
+          </li>
+          {text ? (
+            <>
+              <li className="nav-item relative" role="presentation">
+                <SaveButton onClick={onSave} />
+              </li>
+            </>
+          ) : null}
+          <li className="nav-item" role="presentation">
+            <button
+              className={classNames(
+                "w-full block text-xs leading-tight uppercase px-6 py-2",
+                {
+                  "bg-purple-200 text-white": active === "pretty",
+                  "hover:bg-purple-100": active !== "pretty"
+                }
+              )}
+              onClick={() => setActive("pretty")}
+              role="tab"
+              aria-selected={active === "pretty" ? "true" : "false"}
+            >
+              Pretty
+            </button>
+          </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className={classNames(
+                "w-full block text-xs leading-tight uppercase px-6 py-2 hover:bg-purple-100",
+                {
+                  "bg-purple-200 text-white": active === "text",
+                  "hover:bg-purple-100": active !== "text"
+                }
+              )}
+              onClick={() => setActive("text")}
+              role="tab"
+              aria-selected={active === "text" ? "true" : "false"}
+            >
+              Text
+            </button>
+          </li>
+        </ul>
+      </div>
       <div className="tab-content py-2 custom-scroller overflow-y-auto">
         {active === "pretty" ? (
           <div>

@@ -46,6 +46,19 @@ export const Empty = () => {
   );
 };
 
+export const WithTitle = () => {
+  const [song, setSong] = useState([]);
+
+  return (
+    <LyricsTabView
+      title="Something just like this"
+      defaults={{ text: somethingJustLikeThisLyrics }}
+      song={song}
+      onSongChanged={setSong}
+    />
+  );
+};
+
 var somethingJustLikeThisLyrics = `I've been reading books of old
 The legends and the myths
 Achilles and his gold

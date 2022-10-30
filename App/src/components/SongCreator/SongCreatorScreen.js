@@ -30,6 +30,7 @@ export const SongCreatorScreen = ({ SongCreator, getSongById }) => {
       LyricsTabView={(props) => (
         <LyricsTabView
           {...props}
+          title={song?.title}
           defaults={{
             active: "pretty",
             text: song?.lyrics
