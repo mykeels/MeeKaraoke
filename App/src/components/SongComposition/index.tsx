@@ -20,9 +20,10 @@ export const SongURLComposition: React.FC<
   return (
     <Composition
       id="SongComposition"
-      component={({ url }) => (
-        <SongURLPlayer url={url} onDurationChange={() => {}} />
-      )}
+      component={
+        /** @type {React.FC<{ url: string }>} */
+        ({ url }) => <SongURLPlayer url={url} onDurationChange={() => {}} />
+      }
       durationInFrames={frames(duration)}
       fps={frames(1)}
       width={1920}
