@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace MeeKaraoke.Controllers;
 
@@ -23,7 +24,8 @@ public class AudioFilesController : ControllerBase
         var song = repo.GetSongById(id);
         if (song == null)
         {
-            return NotFound(new {
+            return NotFound(new
+            {
                 Message = $"No Song with Id {id} exists"
             });
         }
@@ -39,7 +41,7 @@ public class AudioFilesController : ControllerBase
                 }
             }
         }
-        
+
         song.AudioFilePath = audioFilePath;
         repo.Update(song);
 
@@ -47,5 +49,24 @@ public class AudioFilesController : ControllerBase
         // Don't rely on or trust the FileName property without validation.
 
         return Ok(new { count = files.Count, size, song });
+    }
+
+    [HttpGet]
+    [Route("~/download")]
+    public async Task<IActionResult> DownloadAudio([FromQuery][Required] string url)
+    {
+        string NodeJS = await SystemInfo.GetNodeJSVersion();
+        if (String.IsNullOrEmpty(NodeJS))
+        {
+            return NotFound(new
+            {
+                Message = "No version of NodeJS is installed"
+            });
+        }
+        var model = new AudioDownloadModel();
+        model.YoutubeUrl = url;
+        await AudioDownloader.GetAudioInfo(model);
+        await AudioDownloader.GetAudio(model);
+        return Ok(model);
     }
 }
