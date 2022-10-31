@@ -3,6 +3,7 @@ namespace MeeKaraoke;
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
@@ -62,6 +63,7 @@ public class WebApp
         if (StartWwwRootServer)
         {
             Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+            app.UseStatusCodePagesWithReExecute("/app/");
             var fileServerOptions = new FileServerOptions()
             {
                 EnableDirectoryBrowsing = true,
