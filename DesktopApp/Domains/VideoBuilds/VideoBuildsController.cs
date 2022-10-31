@@ -52,10 +52,6 @@ public class VideoBuildsController : ControllerBase
                 {
                     completion.SetResult(true);
                     VideoBuilder.Storage.Remove(songId);
-                    if (builder?.Process?.ExitCode == 0)
-                    {
-                        Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
-                    }
                 }
             }
             await Response.WriteAsync(
@@ -75,6 +71,10 @@ public class VideoBuildsController : ControllerBase
                     string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output = "exit" }))
                 );
                 await Response.Body.FlushAsync();
+                if (builder?.Process?.ExitCode == 0)
+                {
+                    Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+                }
             }
         }
         await completion.Task;

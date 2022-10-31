@@ -113,8 +113,9 @@ exports[`@mykeels/mee-karaoke components/SongCreator No Durations 1`] = `
               className="nav-item"
               role="presentation"
             >
-              <button
+              <a
                 className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
+                href="/exports"
                 onClick={[Function]}
                 role="tab"
               >
@@ -145,7 +146,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator No Durations 1`] = `
                     </g>
                   </g>
                 </svg>
-              </button>
+              </a>
             </li>
             <li
               className="nav-item"
@@ -2411,8 +2412,9 @@ exports[`@mykeels/mee-karaoke components/SongCreator With Durations 1`] = `
               className="nav-item"
               role="presentation"
             >
-              <button
+              <a
                 className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
+                href="/exports"
                 onClick={[Function]}
                 role="tab"
               >
@@ -2443,7 +2445,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator With Durations 1`] = `
                     </g>
                   </g>
                 </svg>
-              </button>
+              </a>
             </li>
             <li
               className="nav-item"

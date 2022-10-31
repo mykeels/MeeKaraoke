@@ -15,8 +15,9 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Cu
         className="nav-item"
         role="presentation"
       >
-        <button
+        <a
           className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
+          href="/exports"
           onClick={[Function]}
           role="tab"
         >
@@ -47,7 +48,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Cu
               </g>
             </g>
           </svg>
-        </button>
+        </a>
       </li>
       <li
         className="nav-item"
@@ -468,8 +469,9 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Em
         className="nav-item"
         role="presentation"
       >
-        <button
+        <a
           className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
+          href="/exports"
           onClick={[Function]}
           role="tab"
         >
@@ -500,7 +502,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Em
               </g>
             </g>
           </svg>
-        </button>
+        </a>
       </li>
       <li
         className="nav-item"
@@ -572,8 +574,9 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView In
         className="nav-item"
         role="presentation"
       >
-        <button
+        <a
           className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
+          href="/exports"
           onClick={[Function]}
           role="tab"
         >
@@ -604,7 +607,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView In
               </g>
             </g>
           </svg>
-        </button>
+        </a>
       </li>
       <li
         className="nav-item"
@@ -713,8 +716,9 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Wi
         className="nav-item"
         role="presentation"
       >
-        <button
+        <a
           className="w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
+          href="/exports"
           onClick={[Function]}
           role="tab"
         >
@@ -745,7 +749,7 @@ exports[`@mykeels/mee-karaoke components/SongCreator/components/LyricsTabView Wi
               </g>
             </g>
           </svg>
-        </button>
+        </a>
       </li>
       <li
         className="nav-item"

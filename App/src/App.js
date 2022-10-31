@@ -88,7 +88,6 @@ export const App = () => {
                 LyricsTabView={(props) => (
                   <LyricsTabView
                     {...props}
-                    id={state?.id}
                     defaults={{
                       active: "pretty",
                       text: state?.lyrics

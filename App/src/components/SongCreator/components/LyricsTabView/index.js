@@ -2,14 +2,13 @@ import "./LyricsTabView.css";
 
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { SongLine } from "../SongLine";
 import { SaveButton } from "./components";
 
 /**
  * @param {object} props
- * @param {string} [props.id]
  * @param {string} [props.title]
  * @param {{ text: string, active: string }} [props.defaults]
  * @param {number} [props.cursor]
@@ -21,7 +20,6 @@ import { SaveButton } from "./components";
  * @returns {JSX.Element}
  */
 export const LyricsTabView = ({
-  id,
   title,
   cursor,
   defaults,
@@ -31,7 +29,6 @@ export const LyricsTabView = ({
   onSave,
   onClear
 }) => {
-  const navigate = useNavigate();
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
   const starts = (durations) => {
@@ -91,16 +88,12 @@ export const LyricsTabView = ({
           role="tablist"
         >
           <li className="nav-item" role="presentation">
-            <button
+            <Link
+              to="/exports"
               className={classNames(
                 "w-full block text-xs leading-tight uppercase px-2 py-2 hover:bg-purple-100 hover:text-white"
               )}
               role="tab"
-              onClick={() => {
-                if (confirm("Are you ready to export this Karaoke video?")) {
-                  navigate(`/export/${id}`);
-                }
-              }}
             >
               <svg
                 version="1.1"
@@ -127,7 +120,7 @@ export const LyricsTabView = ({
                   </g>
                 </g>
               </svg>
-            </button>
+            </Link>
           </li>
           <li className="nav-item" role="presentation">
             <button

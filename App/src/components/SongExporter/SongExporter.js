@@ -1,6 +1,6 @@
 import "./SongExporter.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import { frames, Spinner } from "../../common";
@@ -12,6 +12,7 @@ import { getSongById } from "../../common/services";
  * @property {number} [duration]
  * @property {(id: string) => Promise<SongFileContent>} [getSongById]
  * @property {(id: string) => EventSource} [startExport]
+ * @property {(id: string) => EventSource} [listenToExport]
  * @property {(id: string) => Promise<void>} [stopExport]
  * @property {boolean} isActive
  */
@@ -23,6 +24,7 @@ export const SongExporter = ({
   record,
   duration,
   startExport,
+  listenToExport,
   stopExport,
   getSongById,
   isActive
@@ -42,11 +44,11 @@ export const SongExporter = ({
   /** @type {ReactState<EventSource>} */
   const [eventSource, setEventSource] = useState(null);
 
-  const start = async () => {
+  const start = async (fn = startExport) => {
     setIsExporting(true);
     const song = await getSongById(record.id);
-    setStatus((status) => ({ ...status, frames: frames(song.duration) }));
-    const evtSource = startExport(record.id);
+    setStatus((status) => ({ ...status, frames: frames(song.duration + 3) }));
+    const evtSource = fn(record.id);
     setEventSource(evtSource);
     evtSource.onmessage = function (event) {
       /** @type {{ output: string }} */
@@ -61,7 +63,7 @@ export const SongExporter = ({
           setStatus((status) => ({ ...status, rendered, encoded }));
         }
       } else if (data?.output?.includes("exit")) {
-        evtSource.close();
+        stop();
       } else if (data?.output?.includes("Output Filepath:")) {
         setFilepath(data.output.replace("Output Filepath: ", ""));
       } else if (data?.output?.includes("Muxing audio")) {
@@ -89,6 +91,11 @@ export const SongExporter = ({
       }
     }
   );
+  useEffect(() => {
+    if (isActive) {
+      start(listenToExport);
+    }
+  }, []);
 
   return (
     <div className="block w-full py-4">
@@ -165,6 +172,10 @@ SongExporter.defaultProps = {
   startExport: (id) => {
     const apiRootUrl = process.env.REACT_APP_API_ROOT;
     return new EventSource(`${apiRootUrl}/video-builds/${id}/start`);
+  },
+  listenToExport: (id) => {
+    const apiRootUrl = process.env.REACT_APP_API_ROOT;
+    return new EventSource(`${apiRootUrl}/video-builds/${id}`);
   },
   stopExport: async (id) => {
     const apiRootUrl = process.env.REACT_APP_API_ROOT;
