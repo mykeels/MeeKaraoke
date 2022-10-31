@@ -54,7 +54,7 @@ class Program
                     Console.WriteLine("Starting Server");
                     WebApp.Start(args);
                     Console.WriteLine("Server Started");
-                    var appUrl = IsDebugMode ? baseUrl : $"{baseUrl}/index.html";
+                    var appUrl = baseUrl;
                     window?.Load(appUrl);
                     Console.WriteLine(appUrl);
                 });
