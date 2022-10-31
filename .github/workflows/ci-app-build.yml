@@ -36,7 +36,7 @@ jobs:
       run: npx cross-env NODE_ENV=production PUBLIC_URL=/app/ npm run build
       working-directory: ${{ env.app-dir }}
     - name: Build Video Renderer Module
-      run: npm run build:renderer
+      run: npx cross-env PUBLIC_URL=/app/renderer npm run build:renderer
       working-directory: ${{ env.app-dir }}
     - name: Build Video Render Script
       run: npm run build:render-script
