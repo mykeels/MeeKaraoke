@@ -71,8 +71,8 @@ public class VideoBuilder
         this.OutputFilepath = outputFilepath;
         var karaokeUrl = $"{WebApp.Address}/Songs/{model.SongId}";
         int duration = Convert.ToInt32(Math.Floor(model.Song.Duration + 3));
-        this.Command = $"node {this.ScriptPath} --out=\"{outputFilepath}\" --duration={duration}" +
-            $" --karaokeUrl={karaokeUrl} --rendererUrl={VideoBuildModel.RendererUrl}";
+        this.Command = $"node \"{this.ScriptPath}\" --out=\"{outputFilepath}\" --duration={duration}" +
+            $" --karaokeUrl=\"{karaokeUrl}\" --rendererUrl=\"{VideoBuildModel.RendererUrl}\"";
 
         return await Task.Run(() =>
         {
