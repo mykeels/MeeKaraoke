@@ -13,7 +13,7 @@ import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView
 import { getSongById, saveSongFileContents } from "./common/services";
 import { SongCreatorScreen } from "./components/SongCreator";
 import { Redirect } from "./common";
-import { SongExporterScreen } from "./components/SongExporter/SongExporterScreen";
+import { SongExporterScreen } from "./components/SongExporter";
 
 /** @type {React.FC<{ Router?: React.FC<{ basename?: string, children: any }> }>} */
 export const App = () => {
@@ -140,7 +140,7 @@ export const App = () => {
             />
           }
         />
-        <Route path="/export/:id" element={<SongExporterScreen />} />
+        <Route path="/exports" element={<SongExporterScreen />} />
       </Routes>
     </>
   );

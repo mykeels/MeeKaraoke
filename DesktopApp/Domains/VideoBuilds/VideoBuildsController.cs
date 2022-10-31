@@ -16,8 +16,107 @@ public class VideoBuildsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("~/songs/{songId}/build-video")]
-    public async Task<IActionResult> BuildVideo([FromRoute] Guid songId)
+    [Route("~/video-builds")]
+    public IActionResult GetVideoBuilds()
+    {
+        return Ok(
+            VideoBuilder.Storage.Values.Select(build => new
+            {
+                Id = build.SongId,
+                OutputFilepath = build.OutputFilepath,
+                Duration = build.Duration,
+                Progress = build.Progress
+            }).ToList()
+        );
+    }
+
+    [HttpGet]
+    [Route("~/video-builds/{songId}")]
+    public async Task<IActionResult> ListenToVideoBuild([FromRoute] Guid songId)
+    {
+        if (!VideoBuilder.Storage.ContainsKey(songId))
+        {
+            return NotFound(new
+            {
+                Message = $"Build {songId} not found"
+            });
+        }
+        Response.ContentType = "text/event-stream";
+        var completion = new TaskCompletionSource<bool>();
+        var builder = VideoBuilder.Storage[songId];
+        builder.OnProgress = async (output) =>
+        {
+            if (output.Contains("exit"))
+            {
+                if (VideoBuilder.Storage.ContainsKey(songId))
+                {
+                    completion.SetResult(true);
+                    VideoBuilder.Storage.Remove(songId);
+                    if (builder?.Process?.ExitCode == 0)
+                    {
+                        Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+                    }
+                }
+            }
+            await Response.WriteAsync(
+                    string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output }))
+                );
+            await Response.Body.FlushAsync();
+        };
+        if (builder.Process != null)
+        {
+            if (!builder.Process.HasExited)
+            {
+                await builder.Process.WaitForExitAsync();
+            }
+            else
+            {
+                await Response.WriteAsync(
+                    string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output = "exit" }))
+                );
+                await Response.Body.FlushAsync();
+            }
+        }
+        await completion.Task;
+        return NoContent();
+    }
+
+    [HttpDelete]
+    [Route("~/video-builds/{songId}")]
+    public IActionResult StopVideoBuild([FromRoute] Guid songId)
+    {
+        if (!VideoBuilder.Storage.ContainsKey(songId))
+        {
+            return NotFound(new
+            {
+                Message = $"Build {songId} not found"
+            });
+        }
+        var build = VideoBuilder.Storage[songId];
+        if (build == null)
+        {
+            return NotFound(new
+            {
+                Message = $"Build {songId} not found"
+            });
+        }
+        Console.WriteLine($"Process Exited {build?.Process?.HasExited}");
+        if (build?.Process != null && !build.Process.HasExited)
+        {
+            Console.WriteLine("Process Killed");
+            build.Process.Kill(true);
+        }
+        VideoBuilder.Storage.Remove(songId);
+        return Ok(new
+        {
+            Id = build?.SongId,
+            ExitCode = build?.Process?.ExitCode
+        });
+    }
+
+    [HttpGet]
+    [Route("~/video-builds/{songId}/start")]
+    public async Task<IActionResult> StartVideoBuild([FromRoute] Guid songId)
     {
         var model = new VideoBuildModel()
         {
@@ -43,28 +142,7 @@ public class VideoBuildsController : ControllerBase
         VideoBuilder builder;
         if (VideoBuilder.Storage.ContainsKey(model.SongId))
         {
-            var completion = new TaskCompletionSource<bool>();
-            builder = VideoBuilder.Storage[model.SongId];
-            builder.OnProgress = async (output) =>
-            {
-                if (output.Contains("exit"))
-                {
-                    if (VideoBuilder.Storage.ContainsKey(model.SongId))
-                    {
-                        completion.SetResult(true);
-                        VideoBuilder.Storage.Remove(model.SongId);
-                        Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
-                    }
-                }
-                await httpResponse.WriteAsync(
-                        string.Format("data: {0}\n\n", Newtonsoft.Json.JsonConvert.SerializeObject(new { output }))
-                    );
-                await httpResponse.Body.FlushAsync();
-            };
-            if (builder.Process != null) {
-                await builder.Process.WaitForExitAsync();
-            }
-            await completion.Task;
+            return await this.ListenToVideoBuild(model.SongId);
         }
         else
         {
@@ -92,7 +170,10 @@ public class VideoBuildsController : ControllerBase
             {
                 VideoBuilder.Storage.Remove(model.SongId);
             }
-            Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+            if (builder?.Process?.ExitCode == 0)
+            {
+                Mykeels.Processes.Shell.Run(new List<string>() { builder.OutputFilepath });
+            }
         }
         return NoContent();
     }

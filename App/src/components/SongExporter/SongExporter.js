@@ -1,28 +1,32 @@
 import "./SongExporter.css";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "react-query";
-import { getSongById, getSystemCapabilities } from "../../common/services";
-import {
-  FfMpegInstructions,
-  NodeJSInstructions
-} from "./components/Instructions";
+import { useMutation } from "react-query";
 import { frames, Spinner } from "../../common";
+import { getSongById } from "../../common/services";
 
 /**
  * @typedef {object} SongExporterProps
- * @property {string} id
- * @property {() => Promise<import("../../common/services").SystemCapabilities>} [getCapabilities]
+ * @property {SongRecord} record
+ * @property {number} [duration]
  * @property {(id: string) => Promise<SongFileContent>} [getSongById]
+ * @property {(id: string) => EventSource} [startExport]
+ * @property {(id: string) => Promise<void>} [stopExport]
+ * @property {boolean} isActive
  */
 
 /**
  * @type {React.FC<SongExporterProps & { [key: string]: any }>}
  */
-export const SongExporter = ({ id, getCapabilities, getSongById }) => {
-  const { data: capabilities } = useQuery(["capabilities"], getCapabilities);
-  const { data: song } = useQuery(["songs", id], () => getSongById(id));
+export const SongExporter = ({
+  record,
+  duration,
+  startExport,
+  stopExport,
+  getSongById,
+  isActive
+}) => {
   const [outputs, setOutputs] = useState([]);
   /** @type {ReactState<string>} */
   const [filepath, setFilepath] = useState("");
@@ -30,129 +34,145 @@ export const SongExporter = ({ id, getCapabilities, getSongById }) => {
   const [status, setStatus] = useState({
     encoded: 0,
     rendered: 0,
-    frames: 0,
+    frames: frames(duration),
     audio: false,
     complete: false
   });
+  const [isExporting, setIsExporting] = useState(isActive);
+  /** @type {ReactState<EventSource>} */
+  const [eventSource, setEventSource] = useState(null);
 
-  useEffect(() => {
-    if (song) {
-      setStatus((status) => ({ ...status, frames: frames(song.duration + 3) }));
-    }
-  }, [song?.duration]);
-
-  useEffect(() => {
-    if (capabilities?.ffmpeg && capabilities?.nodeJS && song) {
-      const apiRootUrl = process.env.REACT_APP_API_ROOT;
-      const evtSource = new EventSource(
-        `${apiRootUrl}/songs/${id}/build-video`
-      );
-      evtSource.onmessage = function (event) {
-        /** @type {{ output: string }} */
-        var data = JSON.parse(event.data);
-        if (
-          ["encoded", "rendered"].every((chunk) => data?.output.includes(chunk))
-        ) {
-          const finds = data.output.match(/(\d+) rendered, (\d+) encoded/);
-          const rendered = Number(finds[1]);
-          const encoded = Number(finds[2]);
-          if (rendered && encoded) {
-            setStatus((status) => ({ ...status, rendered, encoded }));
-          }
-        } else if (data?.output?.includes("exit")) {
-          evtSource.close();
-        } else if (data?.output?.includes("Output Filepath:")) {
-          setFilepath(data.output.replace("Output Filepath: ", ""));
-        } else if (data?.output?.includes("Muxing audio")) {
-          setStatus((status) => ({ ...status, audio: true }));
-        } else if (
-          ["Rendered in ", "Encoded in "].some((chunk) =>
-            data?.output?.includes(chunk)
-          )
-        ) {
-          if (data.output.includes("Encoded in ")) {
-            setStatus((status) => ({ ...status, complete: true }));
-          }
-        } else {
-          setOutputs((outputs) => [data?.output, ...outputs]);
+  const start = async () => {
+    setIsExporting(true);
+    const song = await getSongById(record.id);
+    setStatus((status) => ({ ...status, frames: frames(song.duration) }));
+    const evtSource = startExport(record.id);
+    setEventSource(evtSource);
+    evtSource.onmessage = function (event) {
+      /** @type {{ output: string }} */
+      var data = JSON.parse(event.data);
+      if (
+        ["encoded", "rendered"].every((chunk) => data?.output.includes(chunk))
+      ) {
+        const finds = data.output.match(/(\d+) rendered, (\d+) encoded/);
+        const rendered = Number(finds[1]);
+        const encoded = Number(finds[2]);
+        if (rendered && encoded) {
+          setStatus((status) => ({ ...status, rendered, encoded }));
         }
-      };
+      } else if (data?.output?.includes("exit")) {
+        evtSource.close();
+      } else if (data?.output?.includes("Output Filepath:")) {
+        setFilepath(data.output.replace("Output Filepath: ", ""));
+      } else if (data?.output?.includes("Muxing audio")) {
+        setStatus((status) => ({ ...status, audio: true }));
+      } else if (
+        ["Rendered in ", "Encoded in "].some((chunk) =>
+          data?.output?.includes(chunk)
+        )
+      ) {
+        if (data.output.includes("Encoded in ")) {
+          setStatus((status) => ({ ...status, complete: true }));
+        }
+      } else {
+        setOutputs((outputs) => [data?.output, ...outputs]);
+      }
+    };
+  };
+  const { mutate: stop, isLoading: isStopLoading } = useMutation(
+    () => stopExport(record.id),
+    {
+      onSuccess: () => {
+        setIsExporting(false);
+        eventSource.close();
+        setEventSource(null);
+      }
     }
-  }, [capabilities?.ffmpeg, capabilities?.nodeJS, song?.id]);
+  );
 
   return (
-    <div className="block h-screen w-screen song-exporter relative">
-      <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-100 opacity-75"></div>
-      <div className="block w-full h-full items-center justify-center py-4 px-16 absolute top-0 left-0 text-white text-sm md:text-lg">
-        <div className="block w-full text-3xl py-8">
-          <div className="inline-block w-3/4">
-            Export &quot;{song?.title}&quot;
-          </div>
-          <div className="inline-block w-1/4 text-right">
-            <Link to="/">❎</Link>
-          </div>
-        </div>
-        <div className="block md:flex w-full py-4">
-          <div className="inline-block w-full md:w-1/4 px-2">
-            <div className="block w-full px-4 py-2 bg-purple-200 my-4">
-              1. Checking NodeJS is installed{" "}
-              {capabilities?.nodeJS ? "✅" : "❌"}
-            </div>
-
-            <div className="block w-full px-4 py-2 bg-purple-200 my-4">
-              2. Checking FFMpeg is installed{" "}
-              {capabilities?.ffmpeg ? "✅" : "❌"}
-            </div>
-
-            <div className="block w-full px-4 py-2 bg-purple-200 my-4">
-              3. Rendering Video{" "}
-              {capabilities?.nodeJS && capabilities?.ffmpeg ? (
-                status.complete ? (
-                  "✅"
-                ) : (
-                  <Spinner size={16} />
-                )
-              ) : null}
-            </div>
-          </div>
-          <div className="inline-block w-full md:w-3/4 px-2">
-            <div className="block w-full px-8 py-4 bg-black my-4 h-80v overflow-auto custom-scroller">
-              {!capabilities?.nodeJS ? (
-                <NodeJSInstructions />
-              ) : !capabilities?.ffmpeg ? (
-                <FfMpegInstructions />
-              ) : (
-                <div>
-                  <div className="text-pink font-bold">
-                    {filepath ? (
-                      <div className="py-2">Output: {filepath}</div>
-                    ) : null}
-                    {status?.complete ? (
-                      <div className="py-2">Rendering Video Complete: ✅</div>
-                    ) : null}
-                    {status?.encoded || status?.rendered ? (
-                      <div className="py-2">
-                        Encoded: {status?.encoded} / {status?.frames}, Rendered:{" "}
-                        {status?.rendered} / {status?.frames}
-                      </div>
-                    ) : null}
-                  </div>
-                  {outputs.map((output, i) => (
-                    <p key={`${output.slice(0, 32)}-${i}`} className="py-2">
-                      {output}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+    <div className="block w-full py-4">
+      <div className="flex w-full">
+        <Link
+          to={`/create/${record.id}`}
+          className="flex md:inline-block w-10/12 text-left bg-purple-100 bg-opacity-75 p-4 border border-purple-100 hover:border-white"
+        >
+          <div className="block w-full text-sm md:text-lg">{record.title}</div>
+        </Link>
+        {isExporting ? (
+          <button
+            onClick={() => stop()}
+            className="flex w-1/4 justify-center items-center text-center px-4 ml-1 bg-black border border-black hover:border-white text-white"
+          >
+            {isStopLoading ? <Spinner size={16} /> : "Stop"}
+          </button>
+        ) : (
+          <button
+            onClick={() => start()}
+            className="flex w-1/4 justify-center items-center text-center px-4 ml-1 text-purple-200 bg-pink border border-pink hover:border-purple-100"
+          >
+            Export
+          </button>
+        )}
       </div>
+      {isExporting ? (
+        <div className="block w-full bg-black p-2 my-2">
+          <div className="block w-full text-pink font-bold">
+            {filepath ? <div className="py-2">Output: {filepath}</div> : null}
+            {status?.complete ? (
+              <div className="py-2">Rendering Video Complete: ✅</div>
+            ) : null}
+            {status?.encoded ? (
+              <div className="flex w-full justify-center items-center py-2">
+                <span className="inline-block w-1/4">Encoded:</span>{" "}
+                <progress
+                  className="inline-block w-3/4"
+                  value={status.encoded}
+                  max={status.frames}
+                >
+                  {status.encoded} %
+                </progress>
+              </div>
+            ) : null}
+            {status?.rendered ? (
+              <div className="flex w-full justify-center items-center py-2">
+                <span className="inline-block w-1/4">Rendered:</span>{" "}
+                <progress
+                  className="inline-block w-3/4"
+                  value={status.rendered}
+                  max={status.frames}
+                >
+                  {status.rendered} %
+                </progress>
+              </div>
+            ) : null}
+          </div>
+          {outputs.map((output, i) => (
+            <p
+              key={`${output.slice(0, 32)}-${i}`}
+              className="block w-full py-2"
+            >
+              {output}
+            </p>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };
 
 SongExporter.defaultProps = {
-  getCapabilities: getSystemCapabilities,
-  getSongById
+  startExport: (id) => {
+    const apiRootUrl = process.env.REACT_APP_API_ROOT;
+    return new EventSource(`${apiRootUrl}/video-builds/${id}/start`);
+  },
+  stopExport: async (id) => {
+    const apiRootUrl = process.env.REACT_APP_API_ROOT;
+    return fetch(`${apiRootUrl}/video-builds/${id}`, {
+      method: "delete"
+    }).then(() => {});
+  },
+  getSongById,
+  isActive: false,
+  duration: 1
 };

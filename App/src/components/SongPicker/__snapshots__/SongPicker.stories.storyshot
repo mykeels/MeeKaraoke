@@ -20,14 +20,28 @@ exports[`@mykeels/mee-karaoke components/SongPicker Empty 1`] = `
         </div>
       </div>
       <div
-        className="block w-full md:flex md:w-1/6 md:h-full justify-center items-center px-4 md:px-2"
+        className="block w-full md:flex flex-col md:w-1/6 md:h-full justify-center items-center px-4 md:px-2"
       >
-        <button
-          className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
-          onClick={[Function]}
+        <div
+          className="py-2"
         >
-          New Song
-        </button>
+          <button
+            className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+            onClick={[Function]}
+          >
+            New Song
+          </button>
+        </div>
+        <div
+          className="py-2"
+        >
+          <button
+            className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+            onClick={[Function]}
+          >
+            Export Song
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -521,14 +535,28 @@ exports[`@mykeels/mee-karaoke components/SongPicker Index 1`] = `
         </div>
       </div>
       <div
-        className="block w-full md:flex md:w-1/6 md:h-full justify-center items-center px-4 md:px-2"
+        className="block w-full md:flex flex-col md:w-1/6 md:h-full justify-center items-center px-4 md:px-2"
       >
-        <button
-          className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
-          onClick={[Function]}
+        <div
+          className="py-2"
         >
-          New Song
-        </button>
+          <button
+            className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+            onClick={[Function]}
+          >
+            New Song
+          </button>
+        </div>
+        <div
+          className="py-2"
+        >
+          <button
+            className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+            onClick={[Function]}
+          >
+            Export Song
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -668,14 +696,28 @@ exports[`@mykeels/mee-karaoke components/SongPicker Only 3 Records 1`] = `
         </div>
       </div>
       <div
-        className="block w-full md:flex md:w-1/6 md:h-full justify-center items-center px-4 md:px-2"
+        className="block w-full md:flex flex-col md:w-1/6 md:h-full justify-center items-center px-4 md:px-2"
       >
-        <button
-          className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
-          onClick={[Function]}
+        <div
+          className="py-2"
         >
-          New Song
-        </button>
+          <button
+            className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+            onClick={[Function]}
+          >
+            New Song
+          </button>
+        </div>
+        <div
+          className="py-2"
+        >
+          <button
+            className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+            onClick={[Function]}
+          >
+            Export Song
+          </button>
+        </div>
       </div>
     </div>
   </div>

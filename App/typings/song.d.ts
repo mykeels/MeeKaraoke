@@ -25,3 +25,15 @@ type SongFileContent = {
   lines?: Song;
   duration: number;
 };
+
+type SongExport = {
+  id: string;
+  outputFilepath: string;
+  duration: number;
+  progress: {
+    encoded: number,
+    rendered: number,
+    muxingAudio: number,
+    complete: boolean
+  }
+}

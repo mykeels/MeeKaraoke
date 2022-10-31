@@ -1,0 +1,67 @@
+import React, { useEffect } from "react";
+import { useQuery } from "react-query";
+import { Spinner } from "../../../../common";
+import { getSystemCapabilities } from "../../../../common/services";
+import { FfMpegInstructions, NodeJSInstructions } from "../Instructions";
+
+/**
+ * @typedef {object} CapabilitiesProps
+ * @property {any} [className]
+ * @property {(hasCapabilities: boolean, capabilities: import("../../../../common/services").SystemCapabilities) => any} onCapabilitiesChanged
+ * @property {() => Promise<import("../../../../common/services").SystemCapabilities>} [getCapabilities]
+ */
+
+/**
+ * @type {React.FC<CapabilitiesProps & { [key: string]: any }>}
+ */
+export const Capabilities = ({ onCapabilitiesChanged, getCapabilities }) => {
+  const { data: capabilities, isLoading } = useQuery(
+    ["capabilities"],
+    getCapabilities
+  );
+  useEffect(() => {
+    onCapabilitiesChanged(
+      !!capabilities?.ffmpeg && !!capabilities?.nodeJS,
+      capabilities
+    );
+  }, [capabilities?.ffmpeg, capabilities?.nodeJS]);
+
+  return (
+    <div className="block md:flex w-full py-4 text-white">
+      <div className="inline-block w-full md:w-1/4 px-2 text-sm">
+        <div className="block w-full px-4 py-4 bg-purple-200 my-4">
+          1. Checking NodeJS is installed{" "}
+          {isLoading ? (
+            <Spinner size={26} />
+          ) : capabilities?.nodeJS ? (
+            "✅"
+          ) : (
+            "❌"
+          )}
+        </div>
+
+        <div className="block w-full px-4 py-4 bg-purple-200 my-4">
+          2. Checking FFMpeg is installed{" "}
+          {isLoading ? (
+            <Spinner size={26} />
+          ) : capabilities?.ffmpeg ? (
+            "✅"
+          ) : (
+            "❌"
+          )}
+        </div>
+      </div>
+      <div className="inline-block w-full md:w-3/4 px-2">
+        <div className="block w-full px-8 py-4 bg-purple-200 my-4 h-80v overflow-auto custom-scroller">
+          {!capabilities?.nodeJS ? <NodeJSInstructions /> : null}
+          {!capabilities?.ffmpeg ? <FfMpegInstructions /> : null}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+Capabilities.defaultProps = {
+  getCapabilities: getSystemCapabilities,
+  onCapabilitiesChanged: () => {}
+};

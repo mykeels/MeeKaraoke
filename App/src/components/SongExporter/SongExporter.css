@@ -6,3 +6,7 @@
 .h-80v {
     height: 80vh;
 }
+
+.min-h-80v {
+    min-height: 80vh;
+}

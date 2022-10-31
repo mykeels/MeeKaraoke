@@ -1,6 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { SongExporter } from "./SongExporter";
+import { SongExports } from "./SongExports";
 
 /**
  * @typedef {object} SongExporterScreenProps
@@ -11,8 +10,7 @@ import { SongExporter } from "./SongExporter";
  * @type {React.FC<SongExporterScreenProps & { [key: string]: any }>}
  */
 export const SongExporterScreen = () => {
-  const { id } = useParams();
-  return <SongExporter id={id} />;
+  return <SongExports />;
 };
 
 SongExporterScreen.defaultProps = {};

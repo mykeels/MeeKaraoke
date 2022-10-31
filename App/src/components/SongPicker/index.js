@@ -5,6 +5,8 @@ import React, { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { Spinner } from "../../common";
 import { DateTime } from "luxon";
+import { Link } from "react-router-dom";
+import { deleteSong, getSongRecords } from "../../common/services";
 
 /**
  * @typedef {object} SongPickerProps
@@ -125,13 +127,23 @@ export const SongPicker = ({
               <div className="text-xl">No songs saved</div>
             )}
           </div>
-          <div className="block w-full md:flex md:w-1/6 md:h-full justify-center items-center px-4 md:px-2">
-            <button
-              className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
-              onClick={() => onNewSong()}
-            >
-              New Song
-            </button>
+          <div className="block w-full md:flex flex-col md:w-1/6 md:h-full justify-center items-center px-4 md:px-2">
+            <div className="py-2">
+              <button
+                className="bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+                onClick={() => onNewSong()}
+              >
+                New Song
+              </button>
+            </div>
+            <div className="py-2">
+              <Link
+                to="/exports"
+                className="inline-block bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+              >
+                Export Song
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -140,14 +152,6 @@ export const SongPicker = ({
 };
 
 SongPicker.defaultProps = {
-  getSongRecords: async () => {
-    const apiRoot = process.env.REACT_APP_API_ROOT;
-    return fetch(`${apiRoot}/Songs`).then((res) => res.json());
-  },
-  deleteSong: async (id) => {
-    const apiRoot = process.env.REACT_APP_API_ROOT;
-    return fetch(`${apiRoot}/Songs/${id}`, {
-      method: "delete"
-    }).then((res) => res.json());
-  }
+  getSongRecords,
+  deleteSong
 };

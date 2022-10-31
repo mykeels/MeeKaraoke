@@ -3,8 +3,8 @@ const apiRootUrl = process.env.REACT_APP_API_ROOT;
 /** @param {string} id */
 export async function getSongById(id) {
   /** @type {SongFileContent} */
-  const song = await fetch(`${apiRootUrl}/songs/${id}`).then(
-    (res) => res.json()
+  const song = await fetch(`${apiRootUrl}/songs/${id}`).then((res) =>
+    res.json()
   );
   song["song"] = song["lines"] || song["song"];
   song.lyrics = song.lines.map((l) => l.text).join("\n");
@@ -75,4 +75,22 @@ async function uploadAudioFile(content) {
     method: "post",
     body: formData
   });
+}
+
+/** @returns {Promise<SongRecord[]>} */
+export async function getSongRecords() {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  return fetch(`${apiRoot}/Songs`).then((res) => res.json());
+}
+
+/**
+ *
+ * @param {string} id
+ * @returns {Promise<void>}
+ */
+export async function deleteSong(id) {
+  const apiRoot = process.env.REACT_APP_API_ROOT;
+  return fetch(`${apiRoot}/Songs/${id}`, {
+    method: "delete"
+  }).then((res) => res.json());
 }
