@@ -43,7 +43,7 @@
 
     <script type="text/javascript">
       // hot reload
-      if (location.host.startsWith("localhost")) {
+      if (location.host.startsWith("localhost") && !location.host.includes("localhost:5000")) {
         let count = 0;
         const ws = new WebSocket(`ws://${location.host}/ws`);
         ws.onmessage = (e) => {
