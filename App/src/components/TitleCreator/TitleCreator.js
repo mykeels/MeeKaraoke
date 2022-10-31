@@ -13,7 +13,6 @@ import { useDebounce } from "../../hooks";
  * @property {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
  * @property {(url: string) => Promise<string>} props.getLyrics
  * @property {(data: { title: string, lyrics: string }) => any} [props.onTitleChanged]
- * @property {() => any} [props.onFileUploadIntent]
  */
 
 /**
@@ -22,8 +21,7 @@ import { useDebounce } from "../../hooks";
 export const TitleCreator = ({
   getLyricsOptions,
   getLyrics,
-  onTitleChanged,
-  onFileUploadIntent
+  onTitleChanged
 }) => {
   const [manual, setManual] = useState(false);
   /** @type {ReactState<string>} */
@@ -111,22 +109,10 @@ export const TitleCreator = ({
                   )}
                 </div>
               </div>
-              <div className="block w-full py-8">
-                <div className="inline-block w-1/2">
+              <div className="block w-full py-4">
+                <div className="inline-block w-full py-2 text-right">
                   <button
-                    className="bg-purple-100 px-8 py-4 text-xl"
-                    onClick={() =>
-                      typeof onFileUploadIntent === "function" &&
-                      onFileUploadIntent()
-                    }
-                  >
-                    Upload
-                    <span className="hidden md:inline"> a File</span>
-                  </button>
-                </div>
-                <div className="inline-block w-1/2 text-right">
-                  <button
-                    className="bg-purple-100 px-8 py-4 text-xl"
+                    className="bg-purple-100 px-8 py-4 text-xl inline-block w-full sm:w-auto"
                     onClick={() => setManual(true)}
                   >
                     Type Lyrics
@@ -143,6 +129,5 @@ export const TitleCreator = ({
 };
 
 TitleCreator.defaultProps = {
-  onTitleChanged: () => {},
-  onFileUploadIntent: () => {},
+  onTitleChanged: () => {}
 };

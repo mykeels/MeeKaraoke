@@ -51,7 +51,6 @@ export const App = () => {
           path="/create/set-title"
           element={
             <TitleCreatorScreen
-              onFileUploadIntent={() => {}}
               onTitleChanged={(data) => {
                 setState((state) => ({ ...state, ...data }));
               }}

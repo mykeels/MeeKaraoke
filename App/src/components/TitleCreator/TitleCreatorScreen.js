@@ -9,21 +9,19 @@ import { TitleCreator } from "./TitleCreator";
  * @property {any} [className]
  * @property {(data: { title: string, lyrics: string }) => any} [onTitleChanged]
  * @property {() => any} [onFileUploadIntent]
- * @property {React.FC<Pick<import("./TitleCreator").TitleCreatorProps, "onFileUploadIntent" | "onTitleChanged">>} [TitleCreator]
+ * @property {React.FC<Pick<import("./TitleCreator").TitleCreatorProps, "onTitleChanged">>} [TitleCreator]
  */
 
 /**
  * @type {React.FC<TitleCreatorScreenProps & { [key: string]: any }>}
  */
 export const TitleCreatorScreen = ({
-  onFileUploadIntent,
   onTitleChanged,
   TitleCreator
 }) => {
   const navigate = useNavigate();
   return (
     <TitleCreator
-      onFileUploadIntent={onFileUploadIntent}
       onTitleChanged={(data) => {
         if (typeof onTitleChanged === "function") {
           onTitleChanged(data);
