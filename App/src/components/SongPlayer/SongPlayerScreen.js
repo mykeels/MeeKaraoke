@@ -18,7 +18,6 @@ export const SongPlayerScreen = ({ getSongById }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data: song } = useQuery(["songs", id], () => getSongById(id));
-  console.log(song);
 
   return song ? (
     <SongPlayer
