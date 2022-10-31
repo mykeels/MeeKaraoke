@@ -18,8 +18,9 @@ public class WebApp
         // Add services to the container.
 
         builder.WebHost.UseUrls(new string[] { Address });
-        builder.Services.AddControllers(options => {
-            
+        builder.Services.AddControllers(options =>
+        {
+
         });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -61,21 +62,27 @@ public class WebApp
         if (StartWwwRootServer)
         {
             Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
-            app.UseStaticFiles(new StaticFileOptions
+            var fileServerOptions = new FileServerOptions()
             {
+                EnableDirectoryBrowsing = true,
                 FileProvider = new PhysicalFileProvider(
-                System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot")
-            ),
-                RequestPath = "/app",
-                ServeUnknownFileTypes = true,
-                OnPrepareResponse = ctx =>
+                    System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot")
+                ),
+                EnableDefaultFiles = true,
+                RequestPath = "/app"
+            };
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames = new List<string>() { "index.html" };
+            fileServerOptions.StaticFileOptions.OnPrepareResponse = ctx =>
                 {
+                    Console.WriteLine(ctx.Context.Request.Path);
                     ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Origin", "*"));
                     ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Methods", "*"));
                     ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Headers",
                       "Origin, X-Requested-With, Content-Type, Accept"));
-                },
-            });
+
+                };
+            fileServerOptions.StaticFileOptions.ServeUnknownFileTypes = true;
+            app.UseFileServer(fileServerOptions);
         }
 
         app.Start();

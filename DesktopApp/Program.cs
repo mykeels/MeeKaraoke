@@ -7,7 +7,7 @@ namespace MeeKaraoke;
 
 class Program
 {
-    public static bool IsDebugMode = true;
+    public static bool IsDebugMode = String.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASSUME_RELEASE_CONFIGURATION"));
 
     static string StartReleaseServer(string[] args)
     {
