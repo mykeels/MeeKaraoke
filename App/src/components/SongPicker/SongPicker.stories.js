@@ -1,5 +1,6 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter } from "react-router-dom";
 
 import { SongPicker } from "./";
 
@@ -13,34 +14,40 @@ const queryClient = new QueryClient();
 
 export const Index = () => (
   <QueryClientProvider client={queryClient}>
-    <SongPicker
-      getSongRecords={async () => records}
-      deleteSong={async () => {}}
-      onNewSong={() => {}}
-      onSelectSong={console.log}
-    />
+    <BrowserRouter>
+      <SongPicker
+        getSongRecords={async () => records}
+        deleteSong={async () => {}}
+        onNewSong={() => {}}
+        onSelectSong={console.log}
+      />
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
 export const Only3Records = () => (
   <QueryClientProvider client={queryClient}>
-    <SongPicker
-      getSongRecords={async () => records.slice(0, 2)}
-      deleteSong={async () => {}}
-      onNewSong={() => {}}
-      onSelectSong={console.log}
-    />
+    <BrowserRouter>
+      <SongPicker
+        getSongRecords={async () => records.slice(0, 2)}
+        deleteSong={async () => {}}
+        onNewSong={() => {}}
+        onSelectSong={console.log}
+      />
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
 export const Empty = () => (
   <QueryClientProvider client={queryClient}>
-    <SongPicker
-      getSongRecords={async () => []}
-      deleteSong={async () => {}}
-      onNewSong={() => {}}
-      onSelectSong={console.log}
-    />
+    <BrowserRouter>
+      <SongPicker
+        getSongRecords={async () => []}
+        deleteSong={async () => {}}
+        onNewSong={() => {}}
+        onSelectSong={console.log}
+      />
+    </BrowserRouter>
   </QueryClientProvider>
 );
 

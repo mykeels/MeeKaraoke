@@ -57,10 +57,10 @@ export const SongExports = ({
                 ) : songRecords.length ? (
                   songRecords.map((record, i) => (
                     <SongExporter
-                      duration={exports[record.id]?.duration}
+                      duration={exports?.[record?.id]?.duration}
                       key={`${record.id}-${i}`}
                       record={record}
-                      isActive={!!exports[record.id]}
+                      isActive={!!exports?.[record.id]}
                     />
                   ))
                 ) : (
