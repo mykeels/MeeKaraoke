@@ -38,8 +38,8 @@ function build-self-contained($RUNTIME)
 }
 
 build-simple win-x64
-build-simple linux-x64
-build-simple osx-x64
+# build-simple linux-x64
+# build-simple osx-x64
 
 # build-self-contained win-x64
 # build-self-contained osx-x64
