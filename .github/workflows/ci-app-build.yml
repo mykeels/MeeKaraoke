@@ -33,7 +33,7 @@ jobs:
     - run: npm run build:tsc
       working-directory: ${{ env.app-dir }}
     - name: Build App
-      run: npx cross-env NODE_ENV=production npm run build
+      run: npx cross-env NODE_ENV=production PUBLIC_URL=/app/ npm run build
       working-directory: ${{ env.app-dir }}
     - name: Build Video Renderer Module
       run: npm run build:renderer
