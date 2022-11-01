@@ -30,16 +30,9 @@ function build-self-contained($RUNTIME)
     echo "Zip $RUNTIME-self-contained"
     cd $DIR/../bin/Release/net6.0/$RUNTIME-self-contained
     Compress-Archive -Path .\* -DestinationPath ../../$RUNTIME-self-contained.zip
-    if ([System.IO.File]::Exists("$DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke")) {
-        # chmod +x
-        attrib +s $DIR/../bin/Release/net6.0/$RUNTIME-self-contained/MeeKaraoke /s
-    }
     echo "---------------------------------------------------------------------"
 }
 
 build-simple win-x64
-# build-simple linux-x64
-# build-simple osx-x64
 
-# build-self-contained win-x64
-# build-self-contained osx-x64
+build-self-contained win-x64
