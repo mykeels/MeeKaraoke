@@ -8,4 +8,4 @@ function zip-self-contained($RUNTIME)
     echo "---------------------------------------------------------------------"
 }
 
-build-self-contained osx-x64
+zip-self-contained osx-x64
