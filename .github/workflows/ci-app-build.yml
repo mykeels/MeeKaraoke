@@ -43,8 +43,8 @@ jobs:
       working-directory: ${{ env.app-dir }}
 
     # build desktop app
-    - run: ./build-releases.ps1
-      working-directory: ${{env.desktop-dir}}/scripts
+    # - run: ./build-releases.ps1
+    #   working-directory: ${{env.desktop-dir}}/scripts
     - run: ./build-releases.sh
       working-directory: ${{env.desktop-dir}}/scripts
       shell: bash
