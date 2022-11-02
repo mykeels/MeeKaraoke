@@ -30,7 +30,14 @@ public class WebApp
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", policyBuilder => policyBuilder
-                        .AllowAnyOrigin()
+                        .SetIsOriginAllowed(origin =>
+                        {
+                            var allowedOrigins = new List<string>() {
+                                "localhost:5000",
+                                "localhost:3456"
+                            };
+                            return allowedOrigins.Any(o => origin.Contains(o));
+                        })
                         .AllowAnyMethod()
                         .AllowAnyHeader());
         });
