@@ -22,6 +22,10 @@
 		<PackageReference Include="Flurl.Http" Version="3.2.4" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.9" Condition=" '$(GenerateEmbeddedFilesManifest)' == 'true' " />
 		<PackageReference Include="Mykeels.Processes" Version="0.0.12" />
+		<PackageReference Include="NSubsys" Version="1.0.0">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="Photino.NET" Version="2.2.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	</ItemGroup>
