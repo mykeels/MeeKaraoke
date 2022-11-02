@@ -48,6 +48,8 @@ jobs:
     - run: ./build-releases.sh
       working-directory: ${{env.desktop-dir}}/scripts
       shell: bash
+    - run: ./zip-releases.ps1
+      working-directory: ${{env.desktop-dir}}/scripts
     - run: ls ./DesktopApp/bin/Release
 
     # release

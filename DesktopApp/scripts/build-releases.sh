@@ -33,10 +33,7 @@ function build-self-contained
 
     echo "Zip $RUNTIME-self-contained"
     cd $DIR/../bin/Release/net6.0/$RUNTIME-self-contained
-    #powershell.exe -NoLogo -ExecutionPolicy Bypass -Command "Compress-Archive -Path ./* -DestinationPath ../../$RUNTIME-self-contained.zip"
-    apt-get update
-    apt-get install zip -y
-    zip -r ../../$RUNTIME-self-contained.zip *
+    #zip -r ../../$RUNTIME-self-contained.zip *
     echo "---------------------------------------------------------------------"
 }
 
