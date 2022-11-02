@@ -1,8 +1,8 @@
+namespace MeeKaraoke.Info;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-
-namespace MeeKaraoke.Controllers;
+using MeeKaraoke.Songs;
 
 [ApiController]
 [Route("[controller]")]
@@ -23,6 +23,10 @@ public class InfoController : ControllerBase
 
         string NodeJS = await SystemInfo.GetNodeJSVersion();
         string Ffmpeg = await SystemInfo.GetFfmpegVersion();
-        return Ok(new { Address = WebApp.Address, AppDirectory = repo.AppDirectory, NodeJS, Ffmpeg });
+        string operatingSystem = OperatingSystem.IsWindows() ? "windows" : 
+            OperatingSystem.IsMacOS() ? "osx" : 
+            OperatingSystem.IsLinux() ? "linux" : 
+            "unknown";
+        return Ok(new { Address = WebApp.Address, AppDirectory = repo.AppDirectory, NodeJS, Ffmpeg, operatingSystem });
     }
 }

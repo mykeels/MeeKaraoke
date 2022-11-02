@@ -1,9 +1,9 @@
+namespace MeeKaraoke.Lyrics;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Flurl;
 using Flurl.Http;
-
-namespace MeeKaraoke.Controllers;
 
 [ApiController]
 [Route("[controller]")]

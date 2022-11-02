@@ -1,4 +1,4 @@
-namespace MeeKaraoke;
+namespace MeeKaraoke.Info;
 
 using System.Text.RegularExpressions;
 using Mykeels.Processes;

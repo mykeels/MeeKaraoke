@@ -1,8 +1,8 @@
+namespace MeeKaraoke.VideoBuilds;
+
 using System.IO;
 using System.Text.RegularExpressions;
 using Mykeels.Processes;
-
-namespace MeeKaraoke;
 
 public class VideoBuilder
 {
@@ -21,7 +21,8 @@ public class VideoBuilder
         {
             this.Progress.Complete = true;
         }
-        else if (Regex.IsMatch(output, @"(\d+) rendered, (\d+) encoded")) {
+        else if (Regex.IsMatch(output, @"(\d+) rendered, (\d+) encoded"))
+        {
             var match = Regex.Match(output, @"(\d+) rendered, (\d+) encoded");
             string rendered = match.Groups[1].Value;
             string encoded = match.Groups[2].Value;
@@ -51,7 +52,7 @@ public class VideoBuilder
             );
         }
     }
-    
+
 
     public async Task<string> Build(VideoBuildModel model)
     {
@@ -72,7 +73,7 @@ public class VideoBuilder
         var karaokeUrl = $"{WebApp.Address}/Songs/{model.SongId}";
         int duration = Convert.ToInt32(Math.Floor(model.Song.Duration + 3));
         this.Command = $"node \"{this.ScriptPath}\" --out=\"{outputFilepath}\" --duration={duration}" +
-            $" --karaokeUrl=\"{karaokeUrl}\" --rendererUrl=\"{VideoBuildModel.RendererUrl}\"";
+            $" --karaokeUrl=\"{karaokeUrl}\" --rendererUrl=\"{VideoBuilder.RendererUrl}\"";
 
         return await Task.Run(() =>
         {
@@ -108,6 +109,12 @@ public class VideoBuilder
         });
     }
 
+
+    public static string RendererUrl { get; set; } = String.Empty;
+    public static void SetRendererUrl(string baseUrl)
+    {
+        RendererUrl = Environment.GetEnvironmentVariable("REMOTION_RENDERER_URL") ?? $"{baseUrl}/renderer/";
+    }
     public static Dictionary<Guid, VideoBuilder> Storage = new Dictionary<Guid, VideoBuilder>();
 }
 

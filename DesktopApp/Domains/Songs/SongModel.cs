@@ -1,4 +1,4 @@
-namespace MeeKaraoke;
+namespace MeeKaraoke.Songs;
 
 using System.ComponentModel.DataAnnotations;
 

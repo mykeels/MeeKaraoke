@@ -1,5 +1,7 @@
-namespace MeeKaraoke;
+namespace MeeKaraoke.AudioFiles;
+
 using Mykeels.Processes;
+using MeeKaraoke.Songs;
 
 public class AudioDownloadModel
 {

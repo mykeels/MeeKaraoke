@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using PhotinoNET;
-using System;
-using System.IO;
+using MeeKaraoke.VideoBuilds;
 
 namespace MeeKaraoke;
 
@@ -28,7 +27,7 @@ class Program
         // Window title declared here for visibility
         string windowTitle = "MeeKaraoke - The Ultimate Karaoke Creator";
         string baseUrl = IsDebugMode ? Environment.GetEnvironmentVariable("APP_URL") ?? "http://localhost:3456" : StartReleaseServer(args);
-        VideoBuildModel.SetRendererUrl(baseUrl);
+        VideoBuilder.SetRendererUrl(baseUrl);
 
         // Creating a new PhotinoWindow instance with the fluent API
         var window = new PhotinoWindow()

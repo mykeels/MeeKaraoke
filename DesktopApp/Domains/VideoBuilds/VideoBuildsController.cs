@@ -1,16 +1,17 @@
+namespace MeeKaraoke.VideoBuilds;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-
-namespace MeeKaraoke.Controllers;
+using MeeKaraoke.Songs;
 
 [ApiController]
 [Route("[controller]")]
 public class VideoBuildsController : ControllerBase
 {
-    private readonly ILogger<InfoController> _logger;
+    private readonly ILogger<VideoBuildsController> _logger;
 
-    public VideoBuildsController(ILogger<InfoController> logger)
+    public VideoBuildsController(ILogger<VideoBuildsController> logger)
     {
         _logger = logger;
     }

@@ -1,7 +1,7 @@
+namespace MeeKaraoke.Songs;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-namespace MeeKaraoke.Controllers;
 
 [ApiController]
 [Route("[controller]")]
