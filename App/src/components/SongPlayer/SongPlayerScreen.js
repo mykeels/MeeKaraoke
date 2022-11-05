@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -19,12 +19,25 @@ export const SongPlayerScreen = ({ getSongById }) => {
   const { id } = useParams();
   const { data: song } = useQuery(["songs", id], () => getSongById(id));
 
+  useEffect(() => {
+    /** @param {KeyboardEvent} e */
+    const onEscapeKeyPressed = e => {
+      e.key === "Escape" && navigate("/");
+    };
+    window.addEventListener("keypress", onEscapeKeyPressed);
+    return () => {
+      window.removeEventListener("keypress", onEscapeKeyPressed);
+    };
+  }, []);
+
   return song ? (
     <SongPlayer
       audioUrl={song?.audioUrl}
       images={song?.images}
       lines={song?.lines}
       onPlayEnd={() => navigate("/")}
+      width={window?.innerWidth}
+      height={window?.innerHeight}
       isFullscreen
     />
   ) : null;
