@@ -50,6 +50,19 @@ public class WebApp
         app.MapControllers();
         var repo = new SongRepository();
 
+        Action<Microsoft.AspNetCore.StaticFiles.StaticFileResponseContext> AddCorsHeaders = ctx =>
+            {
+                ctx.Context.Response.Headers.Append(
+                    new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Origin", "*")
+                );
+                ctx.Context.Response.Headers.Append(
+                    new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Methods", "*")
+                );
+                ctx.Context.Response.Headers.Append(
+                    new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Headers", "*")
+                );
+            };
+
         app.UseCors("CorsPolicy");
         app.UseAuthorization();
         app.UseStaticFiles(new StaticFileOptions
@@ -59,13 +72,7 @@ public class WebApp
             ),
             RequestPath = "/Static",
             ServeUnknownFileTypes = true,
-            OnPrepareResponse = ctx =>
-            {
-                ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Origin", "*"));
-                ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Methods", "*"));
-                ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Headers",
-                  "Origin, X-Requested-With, Content-Type, Accept"));
-            },
+            OnPrepareResponse = AddCorsHeaders,
         });
 
         if (StartWwwRootServer)
@@ -82,15 +89,7 @@ public class WebApp
                 RequestPath = "/app"
             };
             fileServerOptions.DefaultFilesOptions.DefaultFileNames = new List<string>() { "index.html" };
-            fileServerOptions.StaticFileOptions.OnPrepareResponse = ctx =>
-                {
-                    Console.WriteLine(ctx.Context.Request.Path);
-                    ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Origin", "*"));
-                    ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Methods", "*"));
-                    ctx.Context.Response.Headers.Append(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("Access-Control-Allow-Headers",
-                      "Origin, X-Requested-With, Content-Type, Accept"));
-
-                };
+            fileServerOptions.StaticFileOptions.OnPrepareResponse = AddCorsHeaders;
             fileServerOptions.StaticFileOptions.ServeUnknownFileTypes = true;
             app.UseFileServer(fileServerOptions);
         }
