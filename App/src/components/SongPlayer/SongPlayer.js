@@ -26,7 +26,11 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
   }
   useEffect(() => {
     if (isFullscreen) {
-      ref.current?.requestFullscreen();
+      try {
+        ref.current?.requestFullscreen();
+      } catch (err) {
+        console.warn("Fullscreen mode unsupported", err);
+      }
       ref.current?.play();
     }
     const onFullScreenChange = (e) => {
