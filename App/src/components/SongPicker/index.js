@@ -139,7 +139,7 @@ export const SongPicker = ({
             <div className="py-2">
               <Link
                 to="/exports"
-                className="inline-block bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
+                className="inline-block text-center bg-purple-100 px-4 py-4 w-full md:w-auto text-lg border border-purple-100 hover:border-white"
               >
                 Export Song
               </Link>
