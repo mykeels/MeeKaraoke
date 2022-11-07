@@ -9,7 +9,6 @@ export default {
   decorators: []
 };
 
-const queryClient = new QueryClient();
 const SongUploaderComponent = (props) => {
   const [url, setUrl] = useState(null);
   return (
@@ -27,13 +26,13 @@ const SongUploaderComponent = (props) => {
 };
 
 export const Index = () => (
-  <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={new QueryClient()}>
     <SongUploaderComponent />
   </QueryClientProvider>
 );
 
 export const CanFetchFromYoutube = () => (
-  <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={new QueryClient()}>
     <SongUploaderComponent
       getCapabilities={async () => ({ nodeJS: "14.16.0" })}
     />
