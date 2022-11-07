@@ -20,7 +20,7 @@ public class AudioDownloader
         var outFileDir = Path.Combine(songRepo.AppDirectory, $"Temp");
         var outFileName = $"{model.Title ?? Guid.NewGuid().ToString()}.webm";
         var outFilePath = Path.Combine(outFileDir, outFileName);
-        string mp3Suffix = $"{(hasFfmpeg ? ".mp3" : "")}";
+        string mp3Suffix = hasFfmpeg && !outFileName.EndsWith(".mp3") ? ".mp3" : "";
         if (File.Exists($"{outFilePath}{mp3Suffix}"))
         {
             model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}{mp3Suffix}";
@@ -44,13 +44,13 @@ public class AudioDownloader
             });
             process.WaitForExit();
         });
-        if (hasFfmpeg)
+        if (hasFfmpeg && !String.IsNullOrEmpty(mp3Suffix))
         {
             await Task.Run(() =>
             {
                 var process = Shell.Run(new List<string>()
                 {
-                    $"ffmpeg -i \"{outFilePath}\" -vn -ab 128k -ar 44100 -y \"{outFilePath}.mp3\""
+                    $"ffmpeg -i \"{outFilePath}\" -vn -ab 128k -ar 44100 -y \"{outFilePath}{mp3Suffix}\""
                 },
                 outputHandler: (output) =>
                 {
