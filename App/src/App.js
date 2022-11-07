@@ -15,8 +15,15 @@ import { SongCreatorScreen } from "./components/SongCreator";
 import { Redirect } from "./common";
 import { SongExporterScreen } from "./components/SongExporter";
 
-/** @type {React.FC<{ Router?: React.FC<{ basename?: string, children: any }> }>} */
-export const App = () => {
+/**
+ * @typedef {object} AppProps
+ * @property {(id: string) => Promise<SongFileContent>} [getSongById]
+ * @property {(content: SongFileContent) => Promise<SongFileContent>} [saveSongFileContents]
+ * @property {React.FC<Pick<import("./components").SongPickerProps, "onNewSong" | "onSelectSong" | "onPlaySong">>} [SongPicker]
+ */
+
+/** @type {React.FC<AppProps>} */
+export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
   /** @type {ReactState<SongFileContent>} */
   const [state, setState] = useState(null);
   const navigate = useNavigate();
@@ -46,7 +53,10 @@ export const App = () => {
             />
           }
         />
-        <Route path="/play/:id" element={<SongPlayerScreen />} />
+        <Route
+          path="/play/:id"
+          element={<SongPlayerScreen getSongById={getSongById} />}
+        />
         <Route
           path="/create/set-title"
           element={
@@ -116,6 +126,7 @@ export const App = () => {
           path="/create/:id"
           element={
             <SongCreatorScreen
+              getSongById={getSongById}
               SongCreator={(props) => (
                 <SongCreator
                   {...props}
@@ -145,4 +156,8 @@ export const App = () => {
   );
 };
 
-App.defaultProps = {};
+App.defaultProps = {
+  getSongById,
+  saveSongFileContents,
+  SongPicker: (props) => <SongPicker {...props} />
+};

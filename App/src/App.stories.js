@@ -1,7 +1,10 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter } from "react-router-dom";
 
 import { App } from "./App";
+import { SongPicker } from "./components";
+import sampleSong from "./common/data/sample-song.json";
 
 export default {
   title: "App",
@@ -13,6 +16,40 @@ const queryClient = new QueryClient();
 
 export const Index = () => (
   <QueryClientProvider client={queryClient}>
-    <App />
+    <BrowserRouter basename="/iframe.html">
+      <App
+        getSongById={async (id) => ({
+          id,
+          title: "Hello World",
+          audioUrl: "/sounds/something-just-like-this.mp3",
+          lyrics: sampleSong.lines
+            .reduce((arr, line) => arr.concat(line.text), [])
+            .join("\n"),
+          song: sampleSong.lines,
+          ...sampleSong
+        })}
+        SongPicker={(props) => (
+          <SongPicker {...props} getSongRecords={async () => records} />
+        )}
+      />
+    </BrowserRouter>
   </QueryClientProvider>
 );
+
+var records = [
+  {
+    id: "1",
+    title: "Hello World",
+    updatedAt: "2016-05-25T01:00:00.123"
+  },
+  {
+    id: "2",
+    title: "Hello World",
+    updatedAt: "2016-05-25T01:00:00.123"
+  },
+  {
+    id: "3",
+    title: "Hello World",
+    updatedAt: "2016-05-25T01:00:00.123"
+  }
+];
