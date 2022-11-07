@@ -63,10 +63,7 @@ public class VideoBuilder
         }
         this.Duration = model.Song.Duration;
         var outputFilepath = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.MyVideos
-            ),
-            "MeeKaraoke",
+            ExportDirectory.GetExportDirectory(),
             $"{model.SongId.ToString()}.mp4"
         );
         this.OutputFilepath = outputFilepath;
