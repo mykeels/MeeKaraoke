@@ -13,6 +13,7 @@ import { PhotoSlideshow } from "../SongPlayer/components";
  * @type {React.FC<SongURLPlayerProps & { [key: string]: any }>}
  */
 export const SongURLPlayer = ({ url, onDurationChange }) => {
+  const [error, setError] = useState(null);
   /** @type {ReactState<SongFileContent>} */
   const [data, setData] = useState(null);
   const [handle] = useState(() => delayRender());
@@ -22,6 +23,10 @@ export const SongURLPlayer = ({ url, onDurationChange }) => {
       .then((data) => {
         setData(data);
         onDurationChange(data?.duration);
+      })
+      .catch((error) => {
+        console.error(error);
+        setError(error);
       });
 
     continueRender(handle);
@@ -30,7 +35,13 @@ export const SongURLPlayer = ({ url, onDurationChange }) => {
     fetchData();
   }, []);
 
-  return data ? (
+  return error ? (
+    <div>
+      This component is supposed to be loaded when the server is running. It
+      seems the server was not found, hence an error occurred while processing
+      this component
+    </div>
+  ) : data ? (
     <PhotoSlideshow
       audioUrl={data.audioUrl}
       images={data.images}
