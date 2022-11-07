@@ -20,7 +20,7 @@ export const Index = () => (
       <App
         getSongById={async (id) => ({
           id,
-          title: "Hello World",
+          ...(records.find(r => r.id === id)),
           audioUrl: "/sounds/something-just-like-this.mp3",
           lyrics: sampleSong.lines
             .reduce((arr, line) => arr.concat(line.text), [])
@@ -39,17 +39,7 @@ export const Index = () => (
 var records = [
   {
     id: "1",
-    title: "Hello World",
-    updatedAt: "2016-05-25T01:00:00.123"
-  },
-  {
-    id: "2",
-    title: "Hello World",
-    updatedAt: "2016-05-25T01:00:00.123"
-  },
-  {
-    id: "3",
-    title: "Hello World",
+    title: "Something just like this - The Chainsmokers & Coldplay",
     updatedAt: "2016-05-25T01:00:00.123"
   }
 ];
