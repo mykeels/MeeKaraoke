@@ -156,21 +156,37 @@ exports[`@mykeels/mee-karaoke components/SongExports No Capability 1`] = `
         className="block md:flex w-full py-4 text-white"
       >
         <div
-          className="inline-block w-full md:w-1/4 px-2 text-sm"
+          className="inline-block w-full px-2 text-sm md:w-1/4"
         >
           <div
             className="block w-full px-4 py-4 bg-purple-200 my-4"
           >
-            1. Checking NodeJS is installed
-             
-            ❌
+            <div
+              className="inline-block w-3/4"
+            >
+              1. Checking NodeJS is installed
+               
+            </div>
+            <div
+              className="inline-block w-1/4 text-right"
+            >
+              ❌
+            </div>
           </div>
           <div
             className="block w-full px-4 py-4 bg-purple-200 my-4"
           >
-            2. Checking FFMpeg is installed
-             
-            ❌
+            <div
+              className="inline-block w-3/4"
+            >
+              2. Checking FFMpeg is installed
+               
+            </div>
+            <div
+              className="inline-block w-1/4 text-right"
+            >
+              ❌
+            </div>
           </div>
         </div>
         <div
