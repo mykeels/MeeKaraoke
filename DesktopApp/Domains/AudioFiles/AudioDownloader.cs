@@ -14,15 +14,16 @@ public class AudioDownloadModel
 
 public class AudioDownloader
 {
-    public static async Task<AudioDownloadModel> GetAudio(AudioDownloadModel model)
+    public static async Task<AudioDownloadModel> GetAudio(AudioDownloadModel model, bool hasFfmpeg = false)
     {
         var songRepo = new SongRepository();
         var outFileDir = Path.Combine(songRepo.AppDirectory, $"Temp");
         var outFileName = $"{model.Title ?? Guid.NewGuid().ToString()}.webm";
         var outFilePath = Path.Combine(outFileDir, outFileName);
-        if (File.Exists(outFilePath))
+        string mp3Suffix = $"{(hasFfmpeg ? ".mp3" : "")}";
+        if (File.Exists($"{outFilePath}{mp3Suffix}"))
         {
-            model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}";
+            model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}{mp3Suffix}";
             return model;
         }
         if (!Directory.Exists(outFileDir))
@@ -43,7 +44,23 @@ public class AudioDownloader
             });
             process.WaitForExit();
         });
-        model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}";
+        if (hasFfmpeg)
+        {
+            await Task.Run(() =>
+            {
+                var process = Shell.Run(new List<string>()
+                {
+                    $"ffmpeg -i \"{outFilePath}\" -vn -ab 128k -ar 44100 -y \"{outFilePath}.mp3\""
+                },
+                outputHandler: (output) =>
+                {
+                    Console.WriteLine(output);
+                    model.Outputs.Add(output);
+                });
+                process.WaitForExit();
+            });
+        }
+        model.Url = $"{WebApp.Address}/Static/Temp/{outFileName}{mp3Suffix}";
         return model;
     }
 

@@ -67,8 +67,9 @@ public class AudioFilesController : ControllerBase
         }
         var model = new AudioDownloadModel();
         model.YoutubeUrl = url;
+        bool hasFfmpeg = !String.IsNullOrEmpty(await SystemInfo.GetFfmpegVersion());
         await AudioDownloader.GetAudioInfo(model);
-        await AudioDownloader.GetAudio(model);
+        await AudioDownloader.GetAudio(model, hasFfmpeg);
         return Ok(model);
     }
 }
