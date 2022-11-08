@@ -24,7 +24,7 @@ jobs:
     - run: npm ci
       working-directory: ${{ env.app-dir }}
     - name: Build Storybook
-      run: npm run build-storybook
+      run: npx cross-env STORYBOOK_PUBLIC_URL=/MeeKaraoke npm run build-storybook
       working-directory: ${{ env.app-dir }}
     - name: Build Video Renderer
       run: npx cross-env PUBLIC_URL=/renderer npm run build:renderer && cp -R ./build/renderer ./storybook-static

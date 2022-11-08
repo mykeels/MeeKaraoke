@@ -1,5 +1,6 @@
 const envConfig = {
-  REACT_APP_USE_HASH_ROUTER: "true"
+  REACT_APP_USE_HASH_ROUTER: "true",
+  STORYBOOK_PUBLIC_URL: process.env.STORYBOOK_PUBLIC_URL
 };
 
 module.exports = {

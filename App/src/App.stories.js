@@ -13,10 +13,13 @@ export default {
 };
 
 const queryClient = new QueryClient();
-const asset = url => {
-  const root = process.env.PUBLIC_URL === "." ? "" : process.env.PUBLIC_URL;
-  return `${root}${url}`.replace("//", "/");
-}
+const asset = (url) => {
+  const root =
+    process.env.STORYBOOK_PUBLIC_URL === "."
+      ? ""
+      : process.env.STORYBOOK_PUBLIC_URL;
+  return `${root || ""}${url}`.replace("//", "/");
+};
 
 console.log(asset(`/sounds/something-just-like-this.mp3`));
 
@@ -26,7 +29,7 @@ export const Index = () => (
       <App
         getSongById={async (id) => ({
           id,
-          ...(records.find(r => r.id === id)),
+          ...records.find((r) => r.id === id),
           audioUrl: asset(`/sounds/something-just-like-this.mp3`),
           lyrics: sampleSong.lines
             .reduce((arr, line) => arr.concat(line.text), [])
