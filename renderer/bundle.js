@@ -23,7 +23,7 @@ exports.getBundleMode = getBundleMode;
 
 /***/ }),
 
-/***/ 4814:
+/***/ 6423:
 /***/ (function(__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4877,6 +4877,7 @@ const starts = (durations) => {
 const sleep = (ms = 1e3) => new Promise((resolve) => setTimeout(resolve, ms));
 
 
+
 ;// CONCATENATED MODULE: ./src/common/index.js
 
 
@@ -5246,9 +5247,6 @@ const CenterFill = ({ children, className }) => {
 };
 CenterFill.defaultProps = {};
 
-// EXTERNAL MODULE: ./node_modules/classnames/index.js
-var classnames = __webpack_require__(4184);
-var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
 ;// CONCATENATED MODULE: ./src/animations/FadeOut/index.js
 
 
@@ -5268,6 +5266,75 @@ const FadeOut = ({ children, onChange }) => {
   }, children) : null;
 };
 FadeOut.defaultProps = {};
+
+// EXTERNAL MODULE: ./node_modules/classnames/index.js
+var classnames = __webpack_require__(4184);
+var classnames_default = /*#__PURE__*/__webpack_require__.n(classnames);
+;// CONCATENATED MODULE: ./src/components/SongPlayer/components/SlidingSubtitles/index.js
+var SlidingSubtitles_defProp = Object.defineProperty;
+var SlidingSubtitles_defProps = Object.defineProperties;
+var SlidingSubtitles_getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var SlidingSubtitles_getOwnPropSymbols = Object.getOwnPropertySymbols;
+var SlidingSubtitles_hasOwnProp = Object.prototype.hasOwnProperty;
+var SlidingSubtitles_propIsEnum = Object.prototype.propertyIsEnumerable;
+var SlidingSubtitles_defNormalProp = (obj, key, value) => key in obj ? SlidingSubtitles_defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var SlidingSubtitles_spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (SlidingSubtitles_hasOwnProp.call(b, prop))
+      SlidingSubtitles_defNormalProp(a, prop, b[prop]);
+  if (SlidingSubtitles_getOwnPropSymbols)
+    for (var prop of SlidingSubtitles_getOwnPropSymbols(b)) {
+      if (SlidingSubtitles_propIsEnum.call(b, prop))
+        SlidingSubtitles_defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var SlidingSubtitles_spreadProps = (a, b) => SlidingSubtitles_defProps(a, SlidingSubtitles_getOwnPropDescs(b));
+
+
+
+
+
+const SlidingSubtitles = ({ lines }) => {
+  const startTimes = starts(lines.map((l) => video_utils_frames(l.duration)));
+  const { width } = (0,dist.useVideoConfig)();
+  const bgColor = (i) => {
+    const colors = ["bg-purple-200", "bg-lavender-200"];
+    return colors[i % colors.length];
+  };
+  const fontSize = classnames_default()({
+    "text-xs": width <= 320,
+    "text-lg": width > 320 && width <= 640,
+    "text-xl": width > 640 && width <= 1024,
+    "text-4xl": width > 1024
+  });
+  return /* @__PURE__ */ react.createElement(react.Fragment, null, lines.map((line, i) => line.text ? /* @__PURE__ */ react.createElement(dist.Sequence, {
+    key: `${line.text}-${i}`,
+    from: line.from ? Math.max(video_utils_frames(line.from - 0.75), 0) : startTimes[i],
+    durationInFrames: video_utils_frames(line.duration + 1),
+    layout: "none"
+  }, /* @__PURE__ */ react.createElement(dist.AbsoluteFill, {
+    className: "items-center justify-center z-20"
+  }, /* @__PURE__ */ react.createElement(Lifecycle, {
+    className: "z-20",
+    ratio: `1:2:1`,
+    Entrance: (props) => /* @__PURE__ */ react.createElement(SlideIn, SlidingSubtitles_spreadProps(SlidingSubtitles_spreadValues({}, props), {
+      from: "left"
+    })),
+    Exit: (props) => /* @__PURE__ */ react.createElement(SlideOut, SlidingSubtitles_spreadProps(SlidingSubtitles_spreadValues({}, props), {
+      to: "right"
+    })),
+    Main: (props) => /* @__PURE__ */ react.createElement(Pulse, SlidingSubtitles_spreadValues({}, props)),
+    duration: line.duration + 1
+  }, /* @__PURE__ */ react.createElement("div", {
+    className: "h-24 relative w-full text-center flex items-center justify-center"
+  }, /* @__PURE__ */ react.createElement("div", {
+    className: classnames_default()("h-24 w-full z-0 opacity-75 rounded absolute top-0 left-0", bgColor(i))
+  }), /* @__PURE__ */ react.createElement("div", {
+    className: classnames_default()("z-10 relative text-white font-bold p-4", fontSize)
+  }, line.text))))) : null));
+};
+SlidingSubtitles.defaultProps = {};
 
 ;// CONCATENATED MODULE: ./src/components/SongPlayer/components/PhotoSlideshow/index.js
 var PhotoSlideshow_defProp = Object.defineProperty;
@@ -5297,30 +5364,11 @@ var PhotoSlideshow_spreadProps = (a, b) => PhotoSlideshow_defProps(a, PhotoSlide
 
 
 const apiRootURL = process.env.REACT_APP_API_ROOT;
-const mergeLinesWithImages = (lines, images, linesPerImage = 5) => {
-  return lines.map((line, i) => PhotoSlideshow_spreadProps(PhotoSlideshow_spreadValues({}, line), {
-    from: line.from,
-    duration: line.duration,
-    imageURL: images[Math.min(images.length - 1, (Math.floor(i) + linesPerImage - Math.floor(i) % 5) / 5 - 1)]
-  }));
-};
-const PhotoSlideshow = ({ lines, audioUrl, images }) => {
-  const startTimes = starts(lines.map((l) => video_utils_frames(l.duration)));
-  const linesWithImages = mergeLinesWithImages(lines, images);
+const PhotoSlideshow = ({ lines, audioUrl, images, Subtitles }) => {
   const { durationInFrames, width, height } = (0,dist.useVideoConfig)();
   const durationInSeconds = f2s(durationInFrames);
   const imageCount = Math.ceil(durationInSeconds / 5);
   const repeatedImages = new Array(imageCount).fill(0).map((_, i) => images[i % images.length]);
-  const bgColor = (i) => {
-    const colors = ["bg-purple-200", "bg-lavender-200"];
-    return colors[i % colors.length];
-  };
-  const fontSize = classnames_default()({
-    "text-xs": width <= 320,
-    "text-lg": width > 320 && width <= 640,
-    "text-xl": width > 640 && width <= 1024,
-    "text-4xl": width > 1024
-  });
   return /* @__PURE__ */ react.createElement(react.Fragment, null, /* @__PURE__ */ react.createElement(dist.Audio, {
     src: audioUrl.replace("~", apiRootURL)
   }), /* @__PURE__ */ react.createElement(CenterFill, null, repeatedImages.map((image, i) => /* @__PURE__ */ react.createElement(dist.Sequence, {
@@ -5343,33 +5391,13 @@ const PhotoSlideshow = ({ lines, audioUrl, images }) => {
     className: "h-full w-full block",
     src: image.replace("&w=1280", `&w=${width}`),
     style: { width, height }
-  }))))), linesWithImages.map((line, i) => line.text ? /* @__PURE__ */ react.createElement(dist.Sequence, {
-    key: `${line.text}-${i}`,
-    from: line.from ? Math.max(video_utils_frames(line.from - 0.75), 0) : startTimes[i],
-    durationInFrames: video_utils_frames(line.duration + 1),
-    layout: "none"
-  }, /* @__PURE__ */ react.createElement(dist.AbsoluteFill, {
-    className: "items-center justify-center z-20"
-  }, /* @__PURE__ */ react.createElement(Lifecycle, {
-    className: "z-20",
-    ratio: `1:2:1`,
-    Entrance: (props) => /* @__PURE__ */ react.createElement(SlideIn, PhotoSlideshow_spreadProps(PhotoSlideshow_spreadValues({}, props), {
-      from: "left"
-    })),
-    Exit: (props) => /* @__PURE__ */ react.createElement(SlideOut, PhotoSlideshow_spreadProps(PhotoSlideshow_spreadValues({}, props), {
-      to: "right"
-    })),
-    Main: (props) => /* @__PURE__ */ react.createElement(Pulse, PhotoSlideshow_spreadValues({}, props)),
-    duration: line.duration + 1
-  }, /* @__PURE__ */ react.createElement("div", {
-    className: "h-24 relative w-full text-center flex items-center justify-center"
-  }, /* @__PURE__ */ react.createElement("div", {
-    className: classnames_default()("h-24 w-full z-0 opacity-75 rounded absolute top-0 left-0", bgColor(i))
-  }), /* @__PURE__ */ react.createElement("div", {
-    className: classnames_default()("z-10 relative text-white font-bold p-4", fontSize)
-  }, line.text))))) : null));
+  }))))), /* @__PURE__ */ react.createElement(Subtitles, {
+    lines
+  }));
 };
-PhotoSlideshow.defaultProps = {};
+PhotoSlideshow.defaultProps = {
+  Subtitles: SlidingSubtitles
+};
 
 ;// CONCATENATED MODULE: ./src/components/SongPlayer/components/index.js
 
@@ -12148,7 +12176,7 @@ module.exports = styleTagTransform;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	__webpack_require__(2341);
-/******/ 	__webpack_require__(4814);
+/******/ 	__webpack_require__(6423);
 /******/ 	__webpack_require__(4896);
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__(3053);
