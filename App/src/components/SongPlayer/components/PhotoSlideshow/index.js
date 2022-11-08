@@ -1,27 +1,21 @@
 import React from "react";
-import { Audio, Sequence, Img, useVideoConfig } from "remotion";
+import { Sequence, Img, useVideoConfig } from "remotion";
 
 import { Lifecycle, ZoomIn } from "../../../../animations";
 import { CenterFill } from "../CenterFill";
 import { f2s, frames } from "../../../../common/utils";
 import { FadeOut } from "../../../../animations/FadeOut";
-import { SlidingSubtitles } from "../SlidingSubtitles";
-
-const apiRootURL = process.env.REACT_APP_API_ROOT;
 
 /**
  * @typedef {object} PhotoSlideshowProps
  * @property {any} [className]
- * @property {LyricLine[]} lines
- * @property {string} audioUrl
  * @property {string[]} images
- * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
  */
 
 /**
  * @type {React.FC<PhotoSlideshowProps & { [key: string]: any }>}
  */
-export const PhotoSlideshow = ({ lines, audioUrl, images, Subtitles }) => {
+export const PhotoSlideshow = ({ images }) => {
   const { durationInFrames, width, height } = useVideoConfig();
   const durationInSeconds = f2s(durationInFrames);
   const imageCount = Math.ceil(durationInSeconds / 5);
@@ -30,7 +24,6 @@ export const PhotoSlideshow = ({ lines, audioUrl, images, Subtitles }) => {
     .map((_, i) => images[i % images.length]);
   return (
     <>
-      <Audio src={audioUrl.replace("~", apiRootURL)} />
       <CenterFill>
         {repeatedImages.map((image, i) => (
           <Sequence
@@ -58,11 +51,8 @@ export const PhotoSlideshow = ({ lines, audioUrl, images, Subtitles }) => {
           </Sequence>
         ))}
       </CenterFill>
-      {<Subtitles lines={lines} />}
     </>
   );
 };
 
-PhotoSlideshow.defaultProps = {
-  Subtitles: SlidingSubtitles
-};
+PhotoSlideshow.defaultProps = {};

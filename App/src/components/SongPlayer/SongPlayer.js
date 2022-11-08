@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
 import { PhotoSlideshow } from "./components";
 import { frames } from "../../common/utils";
+import { SlidingSubtitles } from "./components/SlidingSubtitles";
+import { Audio } from "remotion";
+
+const apiRootURL = process.env.REACT_APP_API_ROOT;
 
 /**
  * @typedef {object} SongPlayerProps
@@ -12,13 +16,25 @@ import { frames } from "../../common/utils";
  * @property {number} [height]
  * @property {boolean} [isFullscreen]
  * @property {() => any} [onPlayEnd]
+ * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
+ * @property {React.FC<{ images: string[] }>} [Background]
  */
 
 /**
  * @type {React.FC<SongPlayerProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
  */
 export const SongPlayer = React.forwardRef(function SongPlayer(
-  { lines, audioUrl, images, width, height, isFullscreen, onPlayEnd },
+  {
+    lines,
+    audioUrl,
+    images,
+    width,
+    height,
+    isFullscreen,
+    onPlayEnd,
+    Background,
+    Subtitles
+  },
   ref
 ) {
   if (!ref) {
@@ -48,7 +64,11 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
     <Player
       ref={ref}
       component={() => (
-        <PhotoSlideshow audioUrl={audioUrl} images={images} lines={lines} />
+        <>
+          <Audio src={audioUrl.replace("~", apiRootURL)} />
+          <Background images={images} />
+          <Subtitles lines={lines} />
+        </>
       )}
       durationInFrames={frames(duration)}
       compositionWidth={width}
@@ -61,5 +81,7 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
 
 SongPlayer.defaultProps = {
   width: 1280,
-  height: 720
+  height: 720,
+  Subtitles: SlidingSubtitles,
+  Background: PhotoSlideshow
 };

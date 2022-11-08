@@ -1,6 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@mykeels/mee-karaoke components/SongPlayer Index 1`] = `
+exports[`@mykeels/mee-karaoke components/SongPlayer With Highlighted Verse Subtitles 1`] = `
+<div>
+  Player
+</div>
+`;
+
+exports[`@mykeels/mee-karaoke components/SongPlayer With Sliding Subtitles 1`] = `
+<div>
+  Player
+</div>
+`;
+
+exports[`@mykeels/mee-karaoke components/SongPlayer With Solid Background 1`] = `
 <div>
   Player
 </div>
