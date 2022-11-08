@@ -5381,19 +5381,23 @@ PhotoSlideshow.defaultProps = {};
 
 
 const SongURLPlayer = ({ url, onDurationChange }) => {
+  const [error, setError] = (0,react.useState)(null);
   const [data, setData] = (0,react.useState)(null);
   const [handle] = (0,react.useState)(() => (0,dist.delayRender)());
   const fetchData = (0,react.useCallback)(async () => {
     await fetch(url).then((res) => res.json()).then((data2) => {
       setData(data2);
       onDurationChange(data2 == null ? void 0 : data2.duration);
+    }).catch((error2) => {
+      console.error(error2);
+      setError(error2);
     });
     (0,dist.continueRender)(handle);
   }, [handle]);
   (0,react.useEffect)(() => {
     fetchData();
   }, []);
-  return data ? /* @__PURE__ */ react.createElement(PhotoSlideshow, {
+  return error ? /* @__PURE__ */ react.createElement("div", null, "This component is supposed to be loaded when the server is running. It seems the server was not found, hence an error occurred while processing this component") : data ? /* @__PURE__ */ react.createElement(PhotoSlideshow, {
     audioUrl: data.audioUrl,
     images: data.images,
     lines: data.lines
