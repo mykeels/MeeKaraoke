@@ -3,6 +3,11 @@ const envConfig = {
 };
 
 module.exports = {
+  managerHead: head => `
+    ${head}
+    <link rel="shortcut icon" href="/MeeKaraoke/favicon.svg">
+    <link rel="icon" type="image/svg" href="./MeeKaraoke/favicon.svg" sizes="192x192">
+  `,
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
