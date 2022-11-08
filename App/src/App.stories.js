@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 
 export const Index = () => (
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter basename="/iframe.html">
+    <BrowserRouter basename={location.pathname}>
       <App
         getSongById={async (id) => ({
           id,
