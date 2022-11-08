@@ -14,11 +14,9 @@ export default {
 
 const queryClient = new QueryClient();
 const asset = (url) => {
-  const root =
-    process.env.STORYBOOK_PUBLIC_URL === "."
-      ? ""
-      : process.env.STORYBOOK_PUBLIC_URL;
-  return `${root || ""}${url}`.replace("//", "/");
+  const publicUrl = `${process.env.STORYBOOK_PUBLIC_URL}`;
+  const root = publicUrl === "." ? "" : publicUrl;
+  return String(`${root || ""}${url}`).replace("//", "/").replace("//", "/");
 };
 
 console.log(asset(`/sounds/something-just-like-this.mp3`));
