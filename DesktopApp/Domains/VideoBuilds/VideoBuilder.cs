@@ -69,7 +69,7 @@ public class VideoBuilder
         this.OutputFilepath = outputFilepath;
         var karaokeUrl = $"{WebApp.Address}/Songs/{model.SongId}";
         int duration = Convert.ToInt32(
-            Environment.GetEnvironmentVariable("REMOTION_VIDEO_DURATION") ?? Convert.ToString(Math.Floor(model.Song.Duration + 3))
+            Environment.GetEnvironmentVariable("REMOTION_VIDEO_DURATION_OVERRIDE") ?? Convert.ToString(Math.Floor(model.Song.Duration + 3))
         );
         this.Command = $"node \"{this.ScriptPath}\" --out=\"{outputFilepath}\" --duration={duration}" +
             $" --karaokeUrl=\"{karaokeUrl}\" --rendererUrl=\"{VideoBuilder.RendererUrl}\"";
