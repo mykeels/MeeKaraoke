@@ -45,6 +45,6 @@ const ColorTransitionsComponent = ({ colors }) => (
 
 export const Index = () => (
   <ColorTransitionsComponent
-    colors={[`#00aaff`, `#ffaa00`, `0000ff`, `00ff00`, `ff0000`, `#00aaff`]}
+    colors={[`#00aaff`, `#ffaa00`, `#0000ff`, `#00ff00`, `#ff0000`, `#00aaff`]}
   />
 );

@@ -3,6 +3,7 @@ import { Player } from "@remotion/player";
 import { CenterFill, HighlightedVerseSubtitles } from "./components";
 import { frames } from "../../common/utils";
 import { Audio } from "remotion";
+import { ColorTransitions } from "../../animations";
 
 const apiRootURL = process.env.REACT_APP_API_ROOT;
 
@@ -40,7 +41,15 @@ export const SongVideo = ({
 
 SongVideo.defaultProps = {
   Subtitles: HighlightedVerseSubtitles,
-  Background: () => <CenterFill className="bg-pink z-10" />
+  Background: () => (
+    <ColorTransitions
+      colors={[`#00aaff`, `#ffaa00`, `#0000ff`, `#00ff00`, `#ff0000`, `#00aaff`]}
+    >
+      {({ style }) => (
+        <CenterFill className="z-10" style={{ backgroundColor: style.color }} />
+      )}
+    </ColorTransitions>
+  )
 };
 
 /**

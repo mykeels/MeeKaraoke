@@ -10,7 +10,7 @@ import { f2s, frames } from "../../../../common";
  * @typedef {object} ColorTransitionsProps
  * @property {any} children
  * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- * @property {`#{string}`[]} colors
+ * @property {string[]} colors
  */
 
 /**

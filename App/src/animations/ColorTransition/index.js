@@ -3,7 +3,7 @@ import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 
 /**
  *
- * @param {`#{string}`} hex
+ * @param {string} hex
  * @returns {{ r: number, g: number, b: number } | null}
  */
 function hexToRgb(hex) {
@@ -17,17 +17,22 @@ function hexToRgb(hex) {
     : null;
 }
 
-function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  }
+/**
+ *
+ * @param {number} n
+ * @returns {string}
+ */
+function numToHex(n) {
+  var hex = n.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
 
 /**
  * @typedef {object} ColorTransitionProps
  * @property {any} children
  * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- * @property {`#{string}`} from
- * @property {`#{string}`} to
+ * @property {string} from
+ * @property {string} to
  */
 
 /**
@@ -41,9 +46,21 @@ export const ColorTransition = ({ children, onChange, from, to }) => {
   const toRgb = hexToRgb(to);
 
   const color = `#${[
-    componentToHex(Math.floor(interpolate(frame, [0, durationInFrames], [fromRgb.r, toRgb.r]))),
-    componentToHex(Math.floor(interpolate(frame, [0, durationInFrames], [fromRgb.g, toRgb.g]))),
-    componentToHex(Math.floor(interpolate(frame, [0, durationInFrames], [fromRgb.b, toRgb.b])))
+    numToHex(
+      Math.floor(
+        interpolate(frame, [0, durationInFrames], [fromRgb.r, toRgb.r])
+      )
+    ),
+    numToHex(
+      Math.floor(
+        interpolate(frame, [0, durationInFrames], [fromRgb.g, toRgb.g])
+      )
+    ),
+    numToHex(
+      Math.floor(
+        interpolate(frame, [0, durationInFrames], [fromRgb.b, toRgb.b])
+      )
+    )
   ].join("")}`;
 
   useEffect(() => {
