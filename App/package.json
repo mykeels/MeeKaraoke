@@ -16,8 +16,9 @@
         "build-storybook": "build-storybook -s public",
         "analyze": "webpack-bundle-analyzer build/stats.json",
         "build:renderer": "node ./scripts/build-video-renderer.script.js",
+        "watch:renderer": "npx nodemon -e js ./scripts/build-video-renderer.script.js",
+        "serve:renderer": "npx live-server ./build/renderer",
         "build:render-script": "webpack build --config ./scripts/render-media-webpack.config.js",
-        "host:renderer": "npm run build:renderer && npx live-server ./build/renderer",
         "render:video": "node ./scripts/render-media.script.js"
     },
     "dependencies": {
