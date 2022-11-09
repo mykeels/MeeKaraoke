@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { continueRender, delayRender } from "remotion";
-import { PhotoSlideshow } from "../SongPlayer/components";
+import { SongVideo } from "../SongPlayer";
+import { CenterFill } from "../SongPlayer/components";
 
 /**
  * @typedef {object} SongURLPlayerProps
@@ -28,7 +29,6 @@ export const SongURLPlayer = ({ url, onDurationChange }) => {
         console.error(error);
         setError(error);
       });
-
     continueRender(handle);
   }, [handle]);
   useEffect(() => {
@@ -36,13 +36,20 @@ export const SongURLPlayer = ({ url, onDurationChange }) => {
   }, []);
 
   return error ? (
-    <div>
-      This component is supposed to be loaded when the server is running. It
-      seems the server was not found, hence an error occurred while processing
-      this component
-    </div>
+    <CenterFill className="bg-pink">
+      <>
+        <div className="p-4">
+          This component is supposed to be loaded when the server is running. It
+          seems the server was not found, hence an error occurred while
+          processing this component
+        </div>
+        <div className="p-4">{error.toString()}</div>
+        <div className="p-4">{url}</div>
+        <div className="p-4">{location.href}</div>
+      </>
+    </CenterFill>
   ) : data ? (
-    <PhotoSlideshow
+    <SongVideo
       audioUrl={data.audioUrl}
       images={data.images}
       lines={data.lines}

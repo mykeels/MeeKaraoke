@@ -24,7 +24,7 @@ export const PhotoSlideshow = ({ images }) => {
     .map((_, i) => images[i % images.length]);
   return (
     <>
-      <CenterFill>
+      <CenterFill className="bg-pink">
         {repeatedImages.map((image, i) => (
           <Sequence
             key={`${image}-${i}`}

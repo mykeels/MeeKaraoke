@@ -2,7 +2,7 @@
 
 exports[`@mykeels/mee-karaoke components/SongPlayer/components/CenterFill Index 1`] = `
 <div
-  className="bg-pink items-center justify-center"
+  className="items-center justify-center"
   style={
     Object {
       "bottom": 0,

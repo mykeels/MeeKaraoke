@@ -5,16 +5,18 @@ import { AbsoluteFill } from "remotion";
 /**
  * @typedef {object} CenterFillProps
  * @property {any} [className]
- * @property {any} children
+ * @property {React.CSSProperties} [style]
+ * @property {any} [children]
  */
 
 /**
  * @type {React.FC<CenterFillProps & { [key: string]: any }>}
  */
-export const CenterFill = ({ children, className }) => {
+export const CenterFill = ({ children, className, style }) => {
   return (
     <AbsoluteFill
-      className={classNames("bg-pink items-center justify-center", className)}
+      className={classNames("items-center justify-center", className)}
+      style={style}
     >
       {children}
     </AbsoluteFill>

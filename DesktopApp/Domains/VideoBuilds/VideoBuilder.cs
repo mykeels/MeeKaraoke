@@ -46,7 +46,7 @@ public class VideoBuilder
     {
         get
         {
-            return Path.Combine(
+            return Environment.GetEnvironmentVariable("REMOTION_RENDER_SCRIPT") ?? Path.Combine(
                 Directory.GetCurrentDirectory(),
                 "wwwroot/scripts/render-media.script.js"
             );
@@ -68,7 +68,9 @@ public class VideoBuilder
         );
         this.OutputFilepath = outputFilepath;
         var karaokeUrl = $"{WebApp.Address}/Songs/{model.SongId}";
-        int duration = Convert.ToInt32(Math.Floor(model.Song.Duration + 3));
+        int duration = Convert.ToInt32(
+            Environment.GetEnvironmentVariable("REMOTION_VIDEO_DURATION") ?? Convert.ToString(Math.Floor(model.Song.Duration + 3))
+        );
         this.Command = $"node \"{this.ScriptPath}\" --out=\"{outputFilepath}\" --duration={duration}" +
             $" --karaokeUrl=\"{karaokeUrl}\" --rendererUrl=\"{VideoBuilder.RendererUrl}\"";
 
@@ -80,6 +82,7 @@ public class VideoBuilder
                 },
                 outputHandler: (output) =>
                 {
+                    Console.WriteLine(output);
                     var notAllowed = new List<string>() { String.Empty, "Error: " };
                     if (!notAllowed.Contains(output))
                     {

@@ -1,11 +1,47 @@
 import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
-import { PhotoSlideshow } from "./components";
+import { CenterFill, HighlightedVerseSubtitles } from "./components";
 import { frames } from "../../common/utils";
-import { SlidingSubtitles } from "./components/SlidingSubtitles";
 import { Audio } from "remotion";
 
 const apiRootURL = process.env.REACT_APP_API_ROOT;
+
+/**
+ * @typedef {object} SongVideoProps
+ * @property {LyricLine[]} lines
+ * @property {string} audioUrl
+ * @property {string[]} images
+ * @property {number} [width]
+ * @property {number} [height]
+ * @property {boolean} [isFullscreen]
+ * @property {() => any} [onPlayEnd]
+ * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
+ * @property {React.FC<{ images: string[] }>} [Background]
+ */
+
+/**
+ * @type {React.FC<SongVideoProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
+ */
+export const SongVideo = ({
+  lines,
+  audioUrl,
+  images,
+  Background,
+  Subtitles
+}) => {
+  return (
+    <>
+      <Audio src={audioUrl.replace("~", apiRootURL)} />
+      <Background images={images} />
+      <Subtitles lines={lines} />
+    </>
+  );
+};
+
+SongVideo.defaultProps = {
+  Subtitles: HighlightedVerseSubtitles,
+  Background: () => <CenterFill className="bg-pink z-10" />
+};
 
 /**
  * @typedef {object} SongPlayerProps
@@ -64,11 +100,13 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
     <Player
       ref={ref}
       component={() => (
-        <>
-          <Audio src={audioUrl.replace("~", apiRootURL)} />
-          <Background images={images} />
-          <Subtitles lines={lines} />
-        </>
+        <SongVideo
+          audioUrl={audioUrl}
+          images={images}
+          lines={lines}
+          Background={Background}
+          Subtitles={Subtitles}
+        />
       )}
       durationInFrames={frames(duration)}
       compositionWidth={width}
@@ -81,7 +119,5 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
 
 SongPlayer.defaultProps = {
   width: 1280,
-  height: 720,
-  Subtitles: SlidingSubtitles,
-  Background: PhotoSlideshow
+  height: 720
 };

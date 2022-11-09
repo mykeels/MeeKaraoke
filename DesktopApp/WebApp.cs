@@ -34,7 +34,8 @@ public class WebApp
                         {
                             var allowedOrigins = new List<string>() {
                                 "localhost:5000",
-                                "localhost:3456"
+                                "localhost:3456",
+                                "localhost:8080"
                             };
                             return allowedOrigins.Any(o => origin.Contains(o));
                         })
