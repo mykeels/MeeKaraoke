@@ -66,6 +66,11 @@ export const SongExporter = ({
         stop();
       } else if (data?.output?.includes("Output Filepath:")) {
         setFilepath(data.output.replace("Output Filepath: ", ""));
+      } else if (data?.output?.includes("Duration:")) {
+        const finds = data.output.match(/Duration: (\d+)s/);
+        const duration = Number(finds[1]);
+        setStatus((status) => ({ ...status, frames: frames(duration + 3) }));
+        setOutputs((outputs) => [data?.output, ...outputs]);
       } else if (data?.output?.includes("Muxing audio")) {
         setStatus((status) => ({ ...status, audio: true }));
       } else if (
