@@ -43,7 +43,14 @@ SongVideo.defaultProps = {
   Subtitles: HighlightedVerseSubtitles,
   Background: () => (
     <ColorTransitions
-      colors={[`#00aaff`, `#ffaa00`, `#0000ff`, `#00ff00`, `#ff0000`, `#00aaff`]}
+      colors={[
+        `#75dddd`,
+        `#84c7d0`,
+        `#9297c4`,
+        `#9368b7`,
+        `#7ED0EE`,
+        `#f5bf69`
+      ]}
     >
       {({ style }) => (
         <CenterFill className="z-10" style={{ backgroundColor: style.color }} />

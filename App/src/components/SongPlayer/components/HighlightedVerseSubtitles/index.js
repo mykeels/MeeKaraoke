@@ -1,11 +1,13 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   AbsoluteFill,
   Sequence,
   useCurrentFrame,
   useVideoConfig
 } from "remotion";
+import * as transformParser from "transform-parser";
+
 import { Pulse } from "../../../../animations";
 import { frames, starts, isFrameWithin } from "../../../../common";
 
@@ -57,8 +59,27 @@ export const HighlightedVerseSubtitles = ({ lines, count }) => {
     "text-xl": width > 640 && width <= 1024,
     "text-4xl": width > 1024
   });
+  /** @type {ReactState<React.CSSProperties>} */
+  const [style, setStyle] = useState({});
+  const updateStyle = useCallback((s) => {
+    setStyle({
+      ...style,
+      ...s,
+      ...(s?.transform || style?.transform
+        ? {
+            transform: transformParser.stringify({
+              ...(style?.transform
+                ? transformParser.parse(style?.transform)
+                : {}),
+              ...(s?.transform ? transformParser.parse(s?.transform) : {})
+            })
+          }
+        : {})
+    });
+  }, []);
   return (
     <div>
+      <Pulse onChange={updateStyle} />
       {groups.map((group, i) => {
         return (
           <Sequence
@@ -82,30 +103,21 @@ export const HighlightedVerseSubtitles = ({ lines, count }) => {
                       frames(line.from),
                       frames(line.duration)
                     );
-                    const Animation = isActive
-                      ? Pulse
-                      : ({ children: Component }) => <Component />;
-                    return (
-                      <Animation key={`${line.text}-${i}`}>
-                        {({ style }) =>
-                          line.text ? (
-                            <div className="block">
-                              <span
-                                className={classNames(
-                                  "inline-block p-2 px-4 rounded my-1",
-                                  {
-                                    "bg-purple-100": isActive
-                                  }
-                                )}
-                                style={style}
-                              >
-                                {line.text}
-                              </span>
-                            </div>
-                          ) : null
-                        }
-                      </Animation>
-                    );
+                    return line.text ? (
+                      <div className="block" key={`${line.text}-${i}`}>
+                        <span
+                          className={classNames(
+                            "inline-block p-2 px-4 rounded my-1",
+                            {
+                              "bg-black text-5xl": isActive
+                            }
+                          )}
+                          style={isActive ? style : null}
+                        >
+                          {line.text}
+                        </span>
+                      </div>
+                    ) : null;
                   })}
                 </div>
               </div>
