@@ -6,6 +6,8 @@ import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
 import classNames from "classnames";
+import { SongPlayer } from "../SongPlayer";
+import { frames } from "../../common";
 
 /**
  * @param {Song} song
@@ -87,8 +89,6 @@ export const SongCreator = ({
   const [images, setImages] = useState(defaults?.images || []);
   /** @type {ReactState<number>} */
   const [cursor, setCursor] = useState(0);
-  /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
-  const audioRef = useRef();
 
   /** @type {ReactState<number>} */
   const [recordCursor, setRecordCursor] = useState(0);
@@ -105,6 +105,15 @@ export const SongCreator = ({
     }
   }, [defaults?.song, defaults?.images]);
 
+  /** @type {import("react").MutableRefObject<import("@remotion/player").PlayerRef>} */
+  const songPlayerRef = useRef();
+  useEffect(() => {
+    if (songPlayerRef.current) {
+      songPlayerRef.current.getContainerNode().style.width = "100%";
+      songPlayerRef.current.getContainerNode().style.height = "100%";
+    }
+  }, []);
+
   return (
     <div
       className={classNames(
@@ -116,14 +125,14 @@ export const SongCreator = ({
       <div className="block lg:flex w-full">
         <div className="inline-block w-full lg:w-5/12">
           <div className="lg:px-4 sticky top-0">
-            <audio ref={audioRef}>
-              <source src={url} type="audio/mpeg" />
-            </audio>
             <div className="block w-full bg-pink rounded border-2 border-purple-100">
               <TimeKeeper
                 value={timeReset}
                 onTick={(seconds) => {
-                  setCursor(getCurrentLineIndex(song, seconds));
+                  const newCursor = getCurrentLineIndex(song, seconds);
+                  if (newCursor !== cursor) {
+                    setCursor(newCursor);
+                  }
                 }}
                 onRecordTick={(duration) => {
                   setSong((lines) =>
@@ -136,18 +145,18 @@ export const SongCreator = ({
                   setRecordCursor(recordCursor + 1);
                 }}
                 onStart={() => {
-                  audioRef.current.play();
+                  songPlayerRef.current.play();
                 }}
                 onStop={(isRecording) => {
-                  audioRef.current.pause();
+                  songPlayerRef.current.pause();
                   if (!isRecording) {
-                    audioRef.current.currentTime = 0;
+                    songPlayerRef.current.seekTo(0);
                     setCursor(0);
                     setRecordCursor(0);
                   } else {
                     const seconds = getLineTime(song, currentLine);
                     setTimeReset(seconds);
-                    audioRef.current.currentTime = seconds;
+                    songPlayerRef.current.seekTo(frames(seconds));
                     setCursor(getCurrentLineIndex(song, seconds));
                     setRecordCursor(recordCursor);
                   }
@@ -155,11 +164,24 @@ export const SongCreator = ({
               />
             </div>
             <div className="block py-2"></div>
+
             <ImageGallery
               cursor={Math.max(recordCursor, cursor)}
               images={images}
               line={currentLine}
-            />
+            >
+              {song?.length ? (
+                <SongPlayer
+                  audioUrl={url}
+                  images={images}
+                  lines={song}
+                  width={640}
+                  height={480}
+                  ref={songPlayerRef}
+                  controls={false}
+                ></SongPlayer>
+              ) : null}
+            </ImageGallery>
           </div>
         </div>
         <div className="py-2 block lg:hidden"></div>
@@ -176,7 +198,7 @@ export const SongCreator = ({
             onLineClick={(line, i) => {
               const seconds = getLineTime(song, song[i]);
               setTimeReset(seconds);
-              audioRef.current.currentTime = seconds;
+              songPlayerRef.current.seekTo(frames(seconds));
               setRecordCursor(getCurrentLineIndex(song, seconds));
               setCursor(getCurrentLineIndex(song, seconds));
             }}

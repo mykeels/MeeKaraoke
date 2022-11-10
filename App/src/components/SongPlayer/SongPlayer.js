@@ -12,10 +12,6 @@ const apiRootURL = process.env.REACT_APP_API_ROOT;
  * @property {LyricLine[]} lines
  * @property {string} audioUrl
  * @property {string[]} images
- * @property {number} [width]
- * @property {number} [height]
- * @property {boolean} [isFullscreen]
- * @property {() => any} [onPlayEnd]
  * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
  * @property {React.FC<{ images: string[] }>} [Background]
  */
@@ -64,6 +60,7 @@ SongVideo.defaultProps = {
  * @property {LyricLine[]} lines
  * @property {string} audioUrl
  * @property {string[]} images
+ * @property {boolean} [controls]
  * @property {number} [width]
  * @property {number} [height]
  * @property {boolean} [isFullscreen]
@@ -83,6 +80,7 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
     width,
     height,
     isFullscreen,
+    controls,
     onPlayEnd,
     Background,
     Subtitles
@@ -128,12 +126,13 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
       compositionWidth={width}
       compositionHeight={height}
       fps={frames(1)}
-      controls
+      controls={controls}
     />
   );
 });
 
 SongPlayer.defaultProps = {
   width: 1280,
-  height: 720
+  height: 720,
+  controls: true
 };

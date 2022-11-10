@@ -14,14 +14,20 @@ export const NoDurations = () => (
   <BrowserRouter>
     <SongCreator
       url={"./sounds/something-just-like-this.mp3"}
+      defaults={{
+        song: sampleSong.lines.map((line, i) => ({ ...line, duration: 1, from: i })),
+        images: sampleSong.images
+      }}
       LyricsTabView={(props) => (
         <LyricsTabView
           {...props}
+          song={sampleSong.lines.map((line, i) => ({ ...line, duration: 1, from: i }))}
           title="Something just like this"
           defaults={{
             text: sampleSong.lines.map((line) => line.text).join("\n"),
             active: "pretty"
           }}
+          onSave={() => {}}
         />
       )}
     />
