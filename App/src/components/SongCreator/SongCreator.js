@@ -8,6 +8,7 @@ import { ImageGallery } from "./components/ImageGallery";
 import classNames from "classnames";
 import { SongPlayer } from "../SongPlayer";
 import { frames } from "../../common";
+import { BackgroundSelect } from "./components/BackgroundSelect";
 
 /**
  * @param {Song} song
@@ -95,6 +96,8 @@ export const SongCreator = ({
   const currentLine = song[Math.max(cursor, recordCursor)];
 
   const [timeReset, setTimeReset] = useState(0);
+  /** @type {ReactState<import("./components/BackgroundSelect").BackgroundOption>} */
+  const [background, setBackground] = useState("photo-gallery");
 
   useEffect(() => {
     if (defaults?.song?.length) {
@@ -165,23 +168,28 @@ export const SongCreator = ({
             </div>
             <div className="block py-2"></div>
 
-            <ImageGallery
-              cursor={Math.max(recordCursor, cursor)}
-              images={images}
-              line={currentLine}
-            >
-              {song?.length ? (
-                <SongPlayer
-                  audioUrl={url}
+            <>
+              <div className="flex lg:block w-full bg-pink border-2 border-purple-100 p-2 justify-center items-center">
+                <BackgroundSelect value={background} onChange={setBackground} />
+                <ImageGallery
+                  cursor={Math.max(recordCursor, cursor)}
                   images={images}
-                  lines={song}
-                  width={640}
-                  height={480}
-                  ref={songPlayerRef}
-                  controls={false}
-                ></SongPlayer>
-              ) : null}
-            </ImageGallery>
+                  line={currentLine}
+                >
+                  {song?.length ? (
+                    <SongPlayer
+                      audioUrl={url}
+                      images={images}
+                      lines={song}
+                      width={640}
+                      height={480}
+                      ref={songPlayerRef}
+                      controls={false}
+                    ></SongPlayer>
+                  ) : null}
+                </ImageGallery>
+              </div>
+            </>
           </div>
         </div>
         <div className="py-2 block lg:hidden"></div>

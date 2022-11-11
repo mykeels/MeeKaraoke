@@ -38,7 +38,7 @@ export const ImageGallery = ({ cursor, images, line, children }) => {
   const Component = useCallback(() => children, []);
 
   return (
-    <div className="flex lg:block w-full bg-pink border-2 border-purple-100 p-2 justify-center items-center">
+    <>
       <div className="inline-block lg:flex bg-pink preview relative w-5/12 lg:w-full">
         {children ? (
           <Component />
@@ -93,6 +93,6 @@ export const ImageGallery = ({ cursor, images, line, children }) => {
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 };
