@@ -15,6 +15,17 @@ Array [
   <div
     className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0"
   >
+    <button
+      className="inline-block px-2 py-1 rouded border hover:border-white shadow text-white  bg-purple-100 absolute right-2 lg:right-6 bottom-0 text-xs hover:bg-purple-200"
+      onClick={[Function]}
+      style={
+        Object {
+          "bottom": 4,
+        }
+      }
+    >
+      Add
+    </button>
     <div
       className="block image-slider"
       style={
@@ -46,6 +57,17 @@ Array [
   <div
     className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0"
   >
+    <button
+      className="inline-block px-2 py-1 rouded border hover:border-white shadow text-white  bg-purple-100 absolute right-2 lg:right-6 bottom-0 text-xs hover:bg-purple-200"
+      onClick={[Function]}
+      style={
+        Object {
+          "bottom": 4,
+        }
+      }
+    >
+      Add
+    </button>
     <div
       className="block image-slider"
       style={
@@ -94,6 +116,17 @@ Array [
   <div
     className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0"
   >
+    <button
+      className="inline-block px-2 py-1 rouded border hover:border-white shadow text-white  bg-purple-100 absolute right-2 lg:right-6 bottom-0 text-xs hover:bg-purple-200"
+      onClick={[Function]}
+      style={
+        Object {
+          "bottom": 4,
+        }
+      }
+    >
+      Add
+    </button>
     <div
       className="block image-slider"
       style={
@@ -108,10 +141,24 @@ Array [
         <li
           className="inline-block py-1 px-1"
         >
-          <img
-            className="shadow rouded border-2 gallery-image-0 border-white"
-            src="https://images.unsplash.com/photo-1522008342704-6b265b543c37?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=480&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rc3x8fHx8fDE2NjUzMjQ4Njk&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=640"
-          />
+          <div
+            className="relative gallery-image-0"
+          >
+            <button
+              onClick={[Function]}
+            >
+              <img
+                className="shadow rouded border-2 border-white"
+                src="https://images.unsplash.com/photo-1522008342704-6b265b543c37?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=480&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rc3x8fHx8fDE2NjUzMjQ4Njk&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=640"
+              />
+            </button>
+            <button
+              className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-white bg-purple-200"
+              onClick={[Function]}
+            >
+              x
+            </button>
+          </div>
         </li>
       </ul>
     </div>

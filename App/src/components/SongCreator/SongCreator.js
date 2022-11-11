@@ -175,6 +175,7 @@ export const SongCreator = ({
                   cursor={Math.max(recordCursor, cursor)}
                   images={images}
                   line={currentLine}
+                  onChange={setImages}
                 >
                   {song?.length ? (
                     <SongPlayer

@@ -105,6 +105,17 @@ exports[`@mykeels/mee-karaoke components/SongCreator No Durations 1`] = `
           <div
             className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0"
           >
+            <button
+              className="inline-block px-2 py-1 rouded border hover:border-white shadow text-white  bg-purple-100 absolute right-2 lg:right-6 bottom-0 text-xs hover:bg-purple-200"
+              onClick={[Function]}
+              style={
+                Object {
+                  "bottom": 4,
+                }
+              }
+            >
+              Add
+            </button>
             <div
               className="block image-slider"
               style={
@@ -119,122 +130,332 @@ exports[`@mykeels/mee-karaoke components/SongCreator No Durations 1`] = `
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-0 border-white"
-                    src="https://images.unsplash.com/photo-1608659597669-b45511779f93?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rcyBteXRocyBhY2hpbGxlc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-0"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-white"
+                        src="https://images.unsplash.com/photo-1608659597669-b45511779f93?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rcyBteXRocyBhY2hpbGxlc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-white bg-purple-200"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-1 border-purple-100"
-                    src="https://images.unsplash.com/photo-1582560474992-385ebb9b29a4?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ28gd2FubmEgcmlzayBzcGlkZXJtYW4ncyBjb250cm9sfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-1"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1582560474992-385ebb9b29a4?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ28gd2FubmEgcmlzayBzcGlkZXJtYW4ncyBjb250cm9sfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-2 border-purple-100"
-                    src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-2"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-3 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-3"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-4 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651613432638-fa96887ce033?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-4"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651613432638-fa96887ce033?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-5 border-purple-100"
-                    src="https://images.unsplash.com/photo-1565843248736-8c41e6db117b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-5"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1565843248736-8c41e6db117b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-6 border-purple-100"
-                    src="https://images.unsplash.com/photo-1493988577905-2fa4018652be?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJtYW4gdW5yb2xscyB0b2xkIHRlc3RhbWVudHN8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-6"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1493988577905-2fa4018652be?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJtYW4gdW5yb2xscyB0b2xkIHRlc3RhbWVudHN8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-7 border-purple-100"
-                    src="https://images.unsplash.com/photo-1566825106709-f28d3417b15f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-7"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1566825106709-f28d3417b15f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-8 border-purple-100"
-                    src="https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmFpcnl0YWxlIGJsaXNzfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-8"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmFpcnl0YWxlIGJsaXNzfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-9 border-purple-100"
-                    src="https://images.unsplash.com/photo-1581711190374-2f5dab086636?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8b2h8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-9"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1581711190374-2f5dab086636?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8b2h8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-10 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-10"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-11 border-purple-100"
-                    src="https://images.unsplash.com/photo-1616988760321-919bcedc76aa?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb28gZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-11"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1616988760321-919bcedc76aa?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb28gZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-12 border-purple-100"
-                    src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-12"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-13 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-13"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-14 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-14"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -2437,6 +2658,17 @@ exports[`@mykeels/mee-karaoke components/SongCreator With Durations 1`] = `
           <div
             className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0"
           >
+            <button
+              className="inline-block px-2 py-1 rouded border hover:border-white shadow text-white  bg-purple-100 absolute right-2 lg:right-6 bottom-0 text-xs hover:bg-purple-200"
+              onClick={[Function]}
+              style={
+                Object {
+                  "bottom": 4,
+                }
+              }
+            >
+              Add
+            </button>
             <div
               className="block image-slider"
               style={
@@ -2451,122 +2683,332 @@ exports[`@mykeels/mee-karaoke components/SongCreator With Durations 1`] = `
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-0 border-white"
-                    src="https://images.unsplash.com/photo-1608659597669-b45511779f93?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rcyBteXRocyBhY2hpbGxlc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-0"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-white"
+                        src="https://images.unsplash.com/photo-1608659597669-b45511779f93?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rcyBteXRocyBhY2hpbGxlc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-white bg-purple-200"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-1 border-purple-100"
-                    src="https://images.unsplash.com/photo-1582560474992-385ebb9b29a4?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ28gd2FubmEgcmlzayBzcGlkZXJtYW4ncyBjb250cm9sfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-1"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1582560474992-385ebb9b29a4?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ28gd2FubmEgcmlzayBzcGlkZXJtYW4ncyBjb250cm9sfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-2 border-purple-100"
-                    src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-2"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-3 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-3"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-4 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651613432638-fa96887ce033?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-4"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651613432638-fa96887ce033?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-5 border-purple-100"
-                    src="https://images.unsplash.com/photo-1565843248736-8c41e6db117b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-5"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1565843248736-8c41e6db117b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8cmVhZGluZyBib29rc3x8fHx8fDE2NjUzMzY1NDg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-6 border-purple-100"
-                    src="https://images.unsplash.com/photo-1493988577905-2fa4018652be?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJtYW4gdW5yb2xscyB0b2xkIHRlc3RhbWVudHN8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-6"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1493988577905-2fa4018652be?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJtYW4gdW5yb2xscyB0b2xkIHRlc3RhbWVudHN8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-7 border-purple-100"
-                    src="https://images.unsplash.com/photo-1566825106709-f28d3417b15f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-7"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1566825106709-f28d3417b15f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-8 border-purple-100"
-                    src="https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmFpcnl0YWxlIGJsaXNzfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-8"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmFpcnl0YWxlIGJsaXNzfHx8fHx8MTY2NTMzNjU0OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-9 border-purple-100"
-                    src="https://images.unsplash.com/photo-1581711190374-2f5dab086636?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8b2h8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-9"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1581711190374-2f5dab086636?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8b2h8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-10 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-10"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-11 border-purple-100"
-                    src="https://images.unsplash.com/photo-1616988760321-919bcedc76aa?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb28gZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-11"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1616988760321-919bcedc76aa?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb28gZCd5b3Ugd2FubmEgZ298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-12 border-purple-100"
-                    src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-12"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1511895307821-692dc4ad27c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8c3VwZXJodW1hbiBnaWZ0cyBmYWlyeXRhbGUgYmxpc3N8fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-13 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-13"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
                 <li
                   className="inline-block py-1 px-1"
                 >
-                  <img
-                    className="shadow rouded border-2 gallery-image-14 border-purple-100"
-                    src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
-                  />
+                  <div
+                    className="relative gallery-image-14"
+                  >
+                    <button
+                      onClick={[Function]}
+                    >
+                      <img
+                        className="shadow rouded border-2 border-purple-100"
+                        src="https://images.unsplash.com/photo-1651609948145-2750a57f3433?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=720&ixid=MnwxfDB8MXxyYW5kb218MHx8ZG9vIGRvbyBkb298fHx8fHwxNjY1MzM2NTQ4&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1280"
+                      />
+                    </button>
+                    <button
+                      className="w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200 border-purple-100 bg-purple-100"
+                      onClick={[Function]}
+                    >
+                      x
+                    </button>
+                  </div>
                 </li>
               </ul>
             </div>

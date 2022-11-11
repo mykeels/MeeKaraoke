@@ -5,14 +5,26 @@ import React, { useCallback, useEffect } from "react";
 import { useMedia } from "../../../../hooks";
 
 /**
- * @param {object} props
- * @param {number} props.cursor
- * @param {string[]} props.images
- * @param {LyricLine} props.line
- * @param {JSX.Element} [props.children]
- * @returns {JSX.Element}
+ * @typedef {object} ImageGalleryProps
+ * @property {number} cursor
+ * @property {string[]} images
+ * @property {LyricLine} line
+ * @property {JSX.Element} [children]
+ * @property {(image: string, index: number) => any} [onClick]
+ * @property {(images: string[]) => any} [onChange]
  */
-export const ImageGallery = ({ cursor, images, line, children }) => {
+
+/**
+ * @type {React.FC<ImageGalleryProps & { [key: string]: any }>}
+ */
+export const ImageGallery = ({
+  cursor,
+  images,
+  line,
+  children,
+  onClick,
+  onChange
+}) => {
   const index = Math.min(
     images.length - 1,
     (Math.floor(cursor) + 5 - (Math.floor(cursor) % 5)) / 5 - 1
@@ -36,6 +48,13 @@ export const ImageGallery = ({ cursor, images, line, children }) => {
 
   const isLgScreen = useMedia(["(min-width: 1024px)"], [true], false);
   const Component = useCallback(() => children, []);
+
+  /** @param {string} image */
+  const removeImage = (image) => {
+    if (typeof onChange === "function") {
+      onChange(images.filter((i) => i !== image));
+    }
+  };
 
   return (
     <>
@@ -66,6 +85,16 @@ export const ImageGallery = ({ cursor, images, line, children }) => {
       </div>
       <div className="px-2 lg:py-2 inline-block"></div>
       <div className="inline-block lg:block rounded overflow-auto image-slider-wrapper w-7/12 lg:w-full px-4 lg:px-0">
+        <button
+          className="inline-block px-2 py-1 rouded border hover:border-white shadow text-white 
+          bg-purple-100 absolute right-2 lg:right-6 bottom-0 text-xs hover:bg-purple-200"
+          style={{
+            bottom: 4
+          }}
+          onClick={() => {}}
+        >
+          Add
+        </button>
         <div
           className="block image-slider"
           style={{
@@ -77,17 +106,33 @@ export const ImageGallery = ({ cursor, images, line, children }) => {
           <ul className="list-none">
             {images.map((image, i) => (
               <li key={`${image}-${i}`} className="inline-block py-1 px-1">
-                <img
-                  className={classNames(
-                    "shadow rouded border-2",
-                    `gallery-image-${i}`,
-                    {
-                      "border-purple-100": i !== index,
-                      "border-white": i === index
+                <div className={classNames("relative", `gallery-image-${i}`)}>
+                  <button
+                    onClick={() =>
+                      typeof onClick === "function" && onClick(image, i)
                     }
-                  )}
-                  src={image}
-                />
+                  >
+                    <img
+                      className={classNames("shadow rouded border-2", {
+                        "border-purple-100": i !== index,
+                        "border-white": i === index
+                      })}
+                      src={image}
+                    />
+                  </button>
+                  <button
+                    className={classNames(
+                      "w-8 h-8 rounded border text-white absolute right-0 top-0 text-xs hover:bg-purple-200",
+                      {
+                        "border-purple-100 bg-purple-100": i !== index,
+                        "border-white bg-purple-200": i === index
+                      }
+                    )}
+                    onClick={() => removeImage(image)}
+                  >
+                    x
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
