@@ -1,6 +1,6 @@
 import "./SongCreator.css";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LyricsTabView } from "./components/LyricsTabView";
 import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
@@ -9,6 +9,7 @@ import classNames from "classnames";
 import { SongPlayer } from "../SongPlayer";
 import { frames } from "../../common";
 import { BackgroundSelect } from "./components/BackgroundSelect";
+import { ColorGallery } from "./components/ColorGallery";
 
 /**
  * @param {Song} song
@@ -115,7 +116,42 @@ export const SongCreator = ({
       songPlayerRef.current.getContainerNode().style.width = "100%";
       songPlayerRef.current.getContainerNode().style.height = "100%";
     }
-  }, []);
+  }, [background]);
+
+  /** @type {React.FC<{ children: any }>} */
+  const Background = useCallback(
+    ({ children }) => {
+      return {
+        "photo-gallery": (
+          <ImageGallery
+            cursor={Math.max(recordCursor, cursor)}
+            images={images}
+            line={currentLine}
+            onChange={setImages}
+          >
+            {children}
+          </ImageGallery>
+        ),
+        "solid-colors": (
+          <ColorGallery
+            cursor={Math.max(recordCursor, cursor)}
+            colors={[
+              `#00aaff`,
+              `#ffaa00`,
+              `#0000ff`,
+              `#00ff00`,
+              `#ff0000`,
+              `#00aaff`
+            ]}
+            onChange={setImages}
+          >
+            {children}
+          </ColorGallery>
+        )
+      }[background];
+    },
+    [background]
+  );
 
   return (
     <div
@@ -171,12 +207,7 @@ export const SongCreator = ({
             <>
               <div className="flex lg:block w-full bg-pink border-2 border-purple-100 p-2 justify-center items-center">
                 <BackgroundSelect value={background} onChange={setBackground} />
-                <ImageGallery
-                  cursor={Math.max(recordCursor, cursor)}
-                  images={images}
-                  line={currentLine}
-                  onChange={setImages}
-                >
+                <Background>
                   {song?.length ? (
                     <SongPlayer
                       audioUrl={url}
@@ -188,7 +219,7 @@ export const SongCreator = ({
                       controls={false}
                     ></SongPlayer>
                   ) : null}
-                </ImageGallery>
+                </Background>
               </div>
             </>
           </div>
