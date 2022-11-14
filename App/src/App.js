@@ -86,14 +86,14 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
             state?.audioUrl ? (
               <SongCreator
                 title={state?.title}
-                url={state?.audioUrl}
+                audioUrl={state?.audioUrl}
                 onReset={() => {
                   setState(null);
                   navigate("/");
                 }}
                 defaults={{
                   lines: state?.song,
-                  images: state?.images
+                  images: state?.background?.images
                 }}
                 LyricsTabView={(props) => (
                   <LyricsTabView

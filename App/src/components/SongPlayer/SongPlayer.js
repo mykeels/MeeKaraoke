@@ -13,39 +13,35 @@ const apiRootURL = process.env.REACT_APP_API_ROOT;
 
 /**
  * @typedef {object} SongVideoProps
- * @property {LyricLine[]} lines
- * @property {string} audioUrl
- * @property {string[]} images
+ * @property {Pick<SongFileContent, "audioUrl" | "background" | "lines">} song
  * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
- * @property {React.FC<{ images: string[] }>} [Background]
+ * @property {React.FC<SongBackground<"colors" | "images">>} [Background]
  */
 
 /**
  * @type {React.FC<SongVideoProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
  */
-export const SongVideo = ({
-  lines,
-  audioUrl,
-  images,
-  Background,
-  Subtitles
-}) => {
+export const SongVideo = ({ song, Background, Subtitles }) => {
   return (
     <>
-      <Audio src={audioUrl.replace("~", apiRootURL)} />
-      <Background images={images} />
-      <Subtitles lines={lines} />
+      <Audio src={song.audioUrl.replace("~", apiRootURL)} />
+      <Background {...song.background} />
+      <Subtitles lines={song.lines} />
     </>
   );
 };
 
 SongVideo.defaultProps = {
   Subtitles: HighlightedVerseSubtitles,
-  Background: ({ images }) => {
-    const isColors = images.length && images[0].startsWith("colors://");
+  /**
+   * 
+   * @type {React.FC<SongBackground<"colors" | "images">>}
+   */
+  Background: ({ type, images, colors }) => {
+    const isColors = type === "colors";
     return isColors ? (
       <ColorTransitions
-        colors={images.map((color) => color.replace("color://", ""))}
+        colors={colors}
       >
         {({ style }) => (
           <CenterFill
@@ -62,9 +58,7 @@ SongVideo.defaultProps = {
 
 /**
  * @typedef {object} SongPlayerProps
- * @property {LyricLine[]} lines
- * @property {string} audioUrl
- * @property {string[]} images
+ * @property {Pick<SongFileContent, "audioUrl" | "background" | "lines">} song
  * @property {boolean} [controls]
  * @property {number} [width]
  * @property {number} [height]
@@ -79,9 +73,7 @@ SongVideo.defaultProps = {
  */
 export const SongPlayer = React.forwardRef(function SongPlayer(
   {
-    lines,
-    audioUrl,
-    images,
+    song,
     width,
     height,
     isFullscreen,
@@ -114,18 +106,12 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
       ref.current?.removeEventListener("fullscreenchange", onFullScreenChange);
     };
   }, []);
-  const duration = lines.reduce((sum, line) => sum + line.duration, 0);
+  const duration = song.lines.reduce((sum, line) => sum + line.duration, 0);
   return (
     <Player
       ref={ref}
       component={() => (
-        <SongVideo
-          audioUrl={audioUrl}
-          images={images}
-          lines={lines}
-          Background={Background}
-          Subtitles={Subtitles}
-        />
+        <SongVideo song={song} Background={Background} Subtitles={Subtitles} />
       )}
       durationInFrames={frames(duration)}
       compositionWidth={width}

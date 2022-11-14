@@ -15,16 +15,16 @@ type SongRecord = {
   updatedAt: string;
 };
 
-type SongBackground<TBackgroundType extends string> = {
-  type: TBackgroundType;
-} & Record<TBackgroundType, string[]>;
+type SongBackground<TBackgroundOptions extends string> = {
+  type: TBackgroundOptions;
+} & Record<TBackgroundOptions, string[]>;
 
 type SongFileContent = {
   id?: string;
   title: string;
   lyrics: string;
   audioUrl: string;
-  background: SongBackground<"colors"> | SongBackground<"images">;
+  background: SongBackground<"colors" | "images">;
   song?: LyricLine[];
   lines?: LyricLine[];
   duration: number;
@@ -35,9 +35,9 @@ type SongExport = {
   outputFilepath: string;
   duration: number;
   progress: {
-    encoded: number,
-    rendered: number,
-    muxingAudio: number,
-    complete: boolean
-  }
-}
+    encoded: number;
+    rendered: number;
+    muxingAudio: number;
+    complete: boolean;
+  };
+};

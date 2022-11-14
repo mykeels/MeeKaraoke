@@ -17,9 +17,7 @@ export default {
 
 export const WithSlidingSubtitles = () => (
   <SongPlayer
-    images={sampleSong.images}
-    audioUrl="./sounds/something-just-like-this.mp3"
-    lines={sampleSong.lines}
+    song={sampleSong}
     width={640}
     height={320}
     Subtitles={SlidingSubtitles}
@@ -28,9 +26,7 @@ export const WithSlidingSubtitles = () => (
 
 export const WithHighlightedVerseSubtitles = () => (
   <SongPlayer
-    images={sampleSong.images}
-    audioUrl="./sounds/something-just-like-this.mp3"
-    lines={sampleSong.lines}
+    song={sampleSong}
     width={640}
     height={320}
     Subtitles={HighlightedVerseSubtitles}
@@ -39,9 +35,7 @@ export const WithHighlightedVerseSubtitles = () => (
 
 export const WithSolidBackground = () => (
   <SongPlayer
-    images={sampleSong.images}
-    audioUrl="./sounds/something-just-like-this.mp3"
-    lines={sampleSong.lines}
+    song={sampleSong}
     width={640}
     height={320}
     Subtitles={HighlightedVerseSubtitles}
@@ -55,9 +49,7 @@ export const WithSolidBackground = () => (
 
 export const WithBackgroundColorTransitions = () => (
   <SongPlayer
-    images={sampleSong.images}
-    audioUrl="./sounds/something-just-like-this.mp3"
-    lines={sampleSong.lines}
+    song={sampleSong}
     width={640}
     height={320}
     Subtitles={HighlightedVerseSubtitles}

@@ -63,9 +63,9 @@ const transformSongLines = (lines) => {
  * @property {string} [className]
  * @property {string} [id]
  * @property {string} [title]
- * @property {string} url
+ * @property {string} audioUrl
  * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
- * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"song"> & { lines: Song }) => Promise<any>} [onSave]
+ * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"song">) => Promise<any>} [onSave]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
  * @property {() => any} [onReset]
  * @property {{ lines: LyricLine[], images: string[] }} [defaults]
@@ -77,7 +77,7 @@ const transformSongLines = (lines) => {
 export const SongCreator = ({
   id,
   title,
-  url,
+  audioUrl,
   className,
   getImages,
   LyricsTabView,
@@ -87,8 +87,6 @@ export const SongCreator = ({
 }) => {
   /** @type {ReactState<LyricLine[]>} */
   const [lines, setLines] = useState(defaults?.lines || []);
-  /** @type {ReactState<string[]>} */
-  const [images, setImages] = useState(defaults?.images || []);
   /** @type {ReactState<number>} */
   const [cursor, setCursor] = useState(0);
 
@@ -97,15 +95,26 @@ export const SongCreator = ({
   const currentLine = lines[Math.max(cursor, recordCursor)];
 
   const [timeReset, setTimeReset] = useState(0);
-  /** @type {ReactState<import("./components/BackgroundSelect").BackgroundOption>} */
-  const [background, setBackground] = useState("photo-gallery");
+  /** @type {ReactState<SongBackground<"colors" | "images">>} */
+  const [background, setBackground] = useState({
+    type: "images",
+    images: defaults.images,
+    colors: [
+      `#00aaff`,
+      `#ffaa00`,
+      `#0000ff`,
+      `#00ff00`,
+      `#ff0000`,
+      `#00aaff`
+    ]
+  });
 
   useEffect(() => {
     if (defaults?.lines?.length) {
       setLines(defaults?.lines || []);
     }
     if (defaults?.images?.length) {
-      setImages(defaults?.images || []);
+      setBackground({ ...background, images: defaults?.images || [] });
     }
   }, [defaults?.lines, defaults?.images]);
 
@@ -116,43 +125,38 @@ export const SongCreator = ({
       songPlayerRef.current.getContainerNode().style.width = "100%";
       songPlayerRef.current.getContainerNode().style.height = "100%";
     }
-  }, [background, images]);
+  }, [background.type]);
 
   /** @type {React.FC<{ children: any }>} */
   const Background = useCallback(
     ({ children }) => {
       return {
-        "photo-gallery": (
+        images: (
           <ImageGallery
             cursor={Math.max(recordCursor, cursor)}
-            images={images}
+            images={background.images}
             line={currentLine}
-            onChange={setImages}
+            onChange={(images) =>
+              setBackground({ ...background, images, type: "images" })
+            }
           >
             {children}
           </ImageGallery>
         ),
-        "solid-colors": (
+        colors: (
           <ColorGallery
             cursor={Math.max(recordCursor, cursor)}
-            colors={[
-              `#00aaff`,
-              `#ffaa00`,
-              `#0000ff`,
-              `#00ff00`,
-              `#ff0000`,
-              `#00aaff`
-            ]}
+            colors={background.colors}
             onChange={(colors) =>
-              setImages(colors.map((color) => `color://${color}`))
+              setBackground({ ...background, colors, type: "colors" })
             }
           >
             {children}
           </ColorGallery>
         )
-      }[background];
+      }[background.type];
     },
-    [background]
+    [background.type]
   );
 
   return (
@@ -208,13 +212,19 @@ export const SongCreator = ({
 
             <>
               <div className="flex lg:block w-full bg-pink border-2 border-purple-100 p-2 justify-center items-center">
-                <BackgroundSelect value={background} onChange={setBackground} />
+                <BackgroundSelect
+                  value={background.type}
+                  // @ts-ignore
+                  onChange={(type) => setBackground({ ...background, type })}
+                />
                 <Background>
                   {lines?.length ? (
                     <SongPlayer
-                      audioUrl={url}
-                      images={images}
-                      lines={lines}
+                      song={{
+                        audioUrl,
+                        background,
+                        lines
+                      }}
                       width={640}
                       height={480}
                       ref={songPlayerRef}
@@ -234,7 +244,9 @@ export const SongCreator = ({
             onLinesChanged={(lines) => {
               setLines(lines);
               if (lines.length !== lines.length) {
-                getImages(lines).then(setImages);
+                getImages(lines).then((images) =>
+                  setBackground({ ...background, images })
+                );
               }
             }}
             onLineClick={(line, i) => {
@@ -245,13 +257,15 @@ export const SongCreator = ({
               setCursor(getCurrentLineIndex(lines, seconds));
             }}
             onSave={() => {
+              /** @type {SongFileContent} */
               const data = {
                 id,
                 title,
                 lines: lines,
-                images,
+                background,
                 duration: lines.reduce((sum, line) => sum + line.duration, 0),
-                audioUrl: url
+                lyrics: lines.map((line) => line.text).join("\n"),
+                audioUrl
               };
               onSave(data);
             }}

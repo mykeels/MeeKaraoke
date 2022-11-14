@@ -13,10 +13,10 @@ export default {
 export const NoDurations = () => (
   <BrowserRouter>
     <SongCreator
-      url={"./sounds/something-just-like-this.mp3"}
+      audioUrl={"./sounds/something-just-like-this.mp3"}
       defaults={{
         lines: sampleSong.lines.map((line, i) => ({ ...line, duration: 1, from: i })),
-        images: sampleSong.images
+        images: sampleSong.background.images
       }}
       LyricsTabView={(props) => (
         <LyricsTabView
@@ -37,10 +37,10 @@ export const NoDurations = () => (
 export const WithDurations = () => (
   <BrowserRouter>
     <SongCreator
-      url={"./sounds/something-just-like-this.mp3"}
+      audioUrl={"./sounds/something-just-like-this.mp3"}
       defaults={{
         lines: sampleSong.lines,
-        images: sampleSong.images
+        images: sampleSong.background.images
       }}
       LyricsTabView={(props) => (
         <LyricsTabView

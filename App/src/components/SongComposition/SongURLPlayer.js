@@ -49,11 +49,7 @@ export const SongURLPlayer = ({ url, onDurationChange }) => {
       </>
     </CenterFill>
   ) : data ? (
-    <SongVideo
-      audioUrl={data.audioUrl}
-      images={data.images}
-      lines={data.lines}
-    />
+    <SongVideo song={data} />
   ) : null;
 };
 

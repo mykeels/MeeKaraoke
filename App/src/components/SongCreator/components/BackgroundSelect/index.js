@@ -2,7 +2,7 @@ import classNames from "classnames/dedupe";
 import React from "react";
 
 /**
- * @typedef {OneOf<"photo-gallery" | "solid-colors">} BackgroundOption
+ * @typedef {OneOf<"images" | "colors">} BackgroundOption
  * @typedef {object} BackgroundSelectProps
  * @property {any} [className]
  * @property {BackgroundOption} [value]
@@ -57,16 +57,16 @@ export const BackgroundSelect = ({ className, onChange, options, value }) => {
 };
 
 BackgroundSelect.defaultProps = {
-  value: "photo-gallery",
+  value: "images",
   options: [
     {
       label: "Photo Gallery",
-      value: "photo-gallery",
+      value: "images",
       emoji: "📸"
     },
     {
       label: "Solid Color(s)",
-      value: "solid-colors",
+      value: "colors",
       emoji: "🏳️‍🌈"
     }
   ]

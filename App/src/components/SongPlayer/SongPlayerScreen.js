@@ -21,7 +21,7 @@ export const SongPlayerScreen = ({ getSongById }) => {
 
   useEffect(() => {
     /** @param {KeyboardEvent} e */
-    const onEscapeKeyPressed = e => {
+    const onEscapeKeyPressed = (e) => {
       e.key === "Escape" && navigate("/");
     };
     window.addEventListener("keypress", onEscapeKeyPressed);
@@ -32,9 +32,7 @@ export const SongPlayerScreen = ({ getSongById }) => {
 
   return song ? (
     <SongPlayer
-      audioUrl={song?.audioUrl}
-      images={song?.images}
-      lines={song?.lines}
+      song={song}
       onPlayEnd={() => navigate("/")}
       width={window?.innerWidth}
       height={window?.innerHeight}

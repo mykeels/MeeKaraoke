@@ -21,11 +21,11 @@ export const SongCreatorScreen = ({ SongCreator, getSongById }) => {
   const { data: song } = useQuery(["songs", id], () => getSongById(id));
   return song ? (
     <SongCreator
-      url={song.audioUrl}
+      audioUrl={song.audioUrl}
       title={song.title}
       defaults={{
         lines: song?.lines,
-        images: song?.images
+        images: song?.background?.images
       }}
       LyricsTabView={(props) => (
         <LyricsTabView
