@@ -27,13 +27,12 @@ export const Index = () => (
       <App
         getSongById={async (id) => ({
           id,
+          ...sampleSong,
           ...records.find((r) => r.id === id),
           audioUrl: asset(`/sounds/something-just-like-this.mp3`),
           lyrics: sampleSong.lines
             .reduce((arr, line) => arr.concat(line.text), [])
-            .join("\n"),
-          song: sampleSong.lines,
-          ...sampleSong
+            .join("\n")
         })}
         SongPicker={(props) => (
           <SongPicker {...props} getSongRecords={async () => records} />

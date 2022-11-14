@@ -93,7 +93,7 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
                 }}
                 defaults={{
                   lines: state?.song,
-                  images: state?.background?.images
+                  background: state?.background
                 }}
                 LyricsTabView={(props) => (
                   <LyricsTabView

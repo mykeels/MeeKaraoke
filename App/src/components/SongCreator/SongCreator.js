@@ -68,7 +68,7 @@ const transformSongLines = (lines) => {
  * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"song">) => Promise<any>} [onSave]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
  * @property {() => any} [onReset]
- * @property {{ lines: LyricLine[], images: string[] }} [defaults]
+ * @property {{ lines: LyricLine[], background: SongBackground<"colors" | "images"> }} [defaults]
  */
 
 /**
@@ -97,9 +97,9 @@ export const SongCreator = ({
   const [timeReset, setTimeReset] = useState(0);
   /** @type {ReactState<SongBackground<"colors" | "images">>} */
   const [background, setBackground] = useState({
-    type: "images",
-    images: defaults.images,
-    colors: [
+    type: defaults.background.type || "images",
+    images: defaults.background.images || [],
+    colors: defaults.background.colors || [
       `#00aaff`,
       `#ffaa00`,
       `#0000ff`,
@@ -113,10 +113,23 @@ export const SongCreator = ({
     if (defaults?.lines?.length) {
       setLines(defaults?.lines || []);
     }
-    if (defaults?.images?.length) {
-      setBackground({ ...background, images: defaults?.images || [] });
+    if (defaults?.background.images?.length) {
+      setBackground({
+        ...background,
+        images: defaults?.background.images || []
+      });
     }
-  }, [defaults?.lines, defaults?.images]);
+    if (defaults?.background.colors?.length) {
+      setBackground({
+        ...background,
+        colors: defaults?.background.colors || []
+      });
+    }
+  }, [
+    defaults?.lines,
+    defaults?.background.images,
+    defaults?.background.colors
+  ]);
 
   /** @type {import("react").MutableRefObject<import("@remotion/player").PlayerRef>} */
   const songPlayerRef = useRef();
@@ -289,7 +302,11 @@ SongCreator.defaultProps = {
   LyricsTabView,
   onReset: () => {},
   defaults: {
-    images: [],
+    background: {
+      type: "images",
+      images: [],
+      colors: []
+    },
     lines: []
   }
 };

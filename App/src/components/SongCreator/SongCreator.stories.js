@@ -16,7 +16,7 @@ export const NoDurations = () => (
       audioUrl={"./sounds/something-just-like-this.mp3"}
       defaults={{
         lines: sampleSong.lines.map((line, i) => ({ ...line, duration: 1, from: i })),
-        images: sampleSong.background.images
+        background: sampleSong.background
       }}
       LyricsTabView={(props) => (
         <LyricsTabView
@@ -40,7 +40,7 @@ export const WithDurations = () => (
       audioUrl={"./sounds/something-just-like-this.mp3"}
       defaults={{
         lines: sampleSong.lines,
-        images: sampleSong.background.images
+        background: sampleSong.background
       }}
       LyricsTabView={(props) => (
         <LyricsTabView

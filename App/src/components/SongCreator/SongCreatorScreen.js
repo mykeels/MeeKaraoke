@@ -25,7 +25,7 @@ export const SongCreatorScreen = ({ SongCreator, getSongById }) => {
       title={song.title}
       defaults={{
         lines: song?.lines,
-        images: song?.background?.images
+        background: song?.background
       }}
       LyricsTabView={(props) => (
         <LyricsTabView
