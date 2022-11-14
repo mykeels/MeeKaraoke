@@ -10,7 +10,7 @@ public class SongContentModel
     public string? Title { get; set; }
     public double Duration { get; set; }
     public string? AudioUrl { get; set; }
-    public List<string> Images { get; set; } = new List<string>();
+    public BackgroundModel Background { get; set; } = new BackgroundModel();
     public List<LyricLineModel> Lines { get; set; } = new List<LyricLineModel>();
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
@@ -35,6 +35,12 @@ public class SongContentModel
         public string Text { get; set; } = String.Empty;
         public double Duration { get; set; }
         public double From { get; set; }
+    }
+    public class BackgroundModel
+    {
+        public List<string> Images { get; set; } = new List<string>();
+        public List<string> Colors { get; set; } = new List<string>();
+        public string Type { get; set; } = String.Empty;
     }
 }
 
