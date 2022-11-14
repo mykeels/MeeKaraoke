@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useMedia } from "../../../../hooks";
 
 /**
@@ -20,16 +20,17 @@ export const ColorGallery = ({
   onChange,
   onClick
 }) => {
+  const [_colors, setColors] = useState(colors || []);
   const index = Math.min(
-    colors.length - 1,
+    _colors.length - 1,
     (Math.floor(cursor) + 5 - (Math.floor(cursor) % 5)) / 5 - 1
   );
 
   useEffect(() => {
-    if (typeof onChange === "function" && colors?.length) {
-      onChange(colors);
+    if (typeof onChange === "function" && _colors?.length) {
+      onChange(_colors);
     }
-  }, []);
+  }, [_colors]);
 
   useEffect(() => {
     /** @type {HTMLDivElement} */
@@ -52,7 +53,7 @@ export const ColorGallery = ({
   /** @param {string} color */
   const removeImage = (color) => {
     if (typeof onChange === "function") {
-      onChange(colors.filter((i) => i !== color));
+      setColors(_colors.filter((i) => i !== color));
     }
   };
 
@@ -77,12 +78,12 @@ export const ColorGallery = ({
           className="block image-slider"
           style={{
             width: isLgScreen
-              ? `${colors.length * 176}px`
-              : `${colors.length * 80}px`
+              ? `${_colors.length * 176}px`
+              : `${_colors.length * 80}px`
           }}
         >
           <ul className="list-none">
-            {colors.map((color, i) => (
+            {_colors.map((color, i) => (
               <li key={`${color}-${i}`} className="inline-block py-1 px-1">
                 <div className={classNames("relative", `gallery-image-${i}`)}>
                   <button

@@ -1,7 +1,7 @@
 import "./ImageGallery.css";
 
 import classNames from "classnames";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useMedia } from "../../../../hooks";
 
 /**
@@ -25,17 +25,18 @@ export const ImageGallery = ({
   onClick,
   onChange
 }) => {
+  const [photos, setPhotos] = useState(images || []);
   const index = Math.min(
-    images.length - 1,
+    photos.length - 1,
     (Math.floor(cursor) + 5 - (Math.floor(cursor) % 5)) / 5 - 1
   );
-  const current = images[index];
+  const current = photos[index];
 
   useEffect(() => {
-    if (typeof onChange === "function" && images?.length) {
-      onChange(images);
+    if (typeof onChange === "function" && photos?.length) {
+      onChange(photos);
     }
-  }, []);
+  }, [photos.length]);
 
   useEffect(() => {
     /** @type {HTMLDivElement} */
@@ -58,7 +59,7 @@ export const ImageGallery = ({
   /** @param {string} image */
   const removeImage = (image) => {
     if (typeof onChange === "function") {
-      onChange(images.filter((i) => i !== image));
+      setPhotos(photos.filter((i) => i !== image));
     }
   };
 
@@ -105,12 +106,12 @@ export const ImageGallery = ({
           className="block image-slider"
           style={{
             width: isLgScreen
-              ? `${images.length * 176}px`
-              : `${images.length * 80}px`
+              ? `${photos.length * 176}px`
+              : `${photos.length * 80}px`
           }}
         >
           <ul className="list-none">
-            {images.map((image, i) => (
+            {photos.map((image, i) => (
               <li key={`${image}-${i}`} className="inline-block py-1 px-1">
                 <div className={classNames("relative", `gallery-image-${i}`)}>
                   <button

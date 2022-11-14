@@ -23,7 +23,8 @@ export async function saveSongFileContents(content) {
       },
       body: JSON.stringify({
         Title: content.title,
-        Id: content.id
+        Id: content.id,
+        Background: content.background
       })
     }).then((res) => res.json());
   } else {
@@ -35,7 +36,8 @@ export async function saveSongFileContents(content) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        Title: content.title
+        Title: content.title,
+        Background: content.background
       })
     }).then((res) => res.json());
     content.id = record.id;

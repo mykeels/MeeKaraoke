@@ -65,7 +65,7 @@ const transformSongLines = (lines) => {
  * @property {string} [title]
  * @property {string} audioUrl
  * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
- * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"song">) => Promise<any>} [onSave]
+ * @property {(song: SongFileContent) => Promise<any>} [onSave]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
  * @property {() => any} [onReset]
  * @property {{ lines: LyricLine[], background: SongBackground<"colors" | "images"> }} [defaults]
@@ -172,7 +172,7 @@ export const SongCreator = ({
         )
       }[background.type];
     },
-    [background.type, background.images.length, background.colors.length]
+    [background.type]
   );
 
   return (
@@ -277,7 +277,7 @@ export const SongCreator = ({
               const data = {
                 id,
                 title,
-                lines: lines,
+                lines,
                 background,
                 duration: lines.reduce((sum, line) => sum + line.duration, 0),
                 lyrics: lines.map((line) => line.text).join("\n"),

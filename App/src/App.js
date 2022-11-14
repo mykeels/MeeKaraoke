@@ -92,7 +92,7 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
                   navigate("/");
                 }}
                 defaults={{
-                  lines: state?.song,
+                  lines: state?.lines,
                   background: state?.background
                 }}
                 LyricsTabView={(props) => (
@@ -133,17 +133,6 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
                   onReset={() => {
                     setState(null);
                     navigate("/");
-                  }}
-                  onSave={(content) => {
-                    content["id"] = state?.id;
-                    return saveSongFileContents({
-                      ...content,
-                      id: state?.id,
-                      audioUrl: content.audioUrl || state?.audioUrl,
-                      lyrics: ""
-                    }).then((content) =>
-                      setState({ ...state, id: content.id })
-                    );
                   }}
                 />
               )}

@@ -25,7 +25,6 @@ type SongFileContent = {
   lyrics: string;
   audioUrl: string;
   background: SongBackground<"colors" | "images">;
-  song?: LyricLine[];
   lines?: LyricLine[];
   duration: number;
 };
