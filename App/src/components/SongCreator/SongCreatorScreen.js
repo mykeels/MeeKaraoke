@@ -24,7 +24,7 @@ export const SongCreatorScreen = ({ SongCreator, getSongById }) => {
       url={song.audioUrl}
       title={song.title}
       defaults={{
-        song: song?.lines,
+        lines: song?.lines,
         images: song?.images
       }}
       LyricsTabView={(props) => (

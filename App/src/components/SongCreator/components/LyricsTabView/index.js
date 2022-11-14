@@ -12,8 +12,8 @@ import { SaveButton } from "./components";
  * @param {string} [props.title]
  * @param {{ text: string, active: string }} [props.defaults]
  * @param {number} [props.cursor]
- * @param {Song} [props.song]
- * @param {(lines: Song) => any} [props.onSongChanged]
+ * @param {LyricLine[]} [props.lines]
+ * @param {(lines: LyricLine[]) => any} [props.onLinesChanged]
  * @param {(line: LyricLine, index: number) => any} [props.onLineClick]
  * @param {() => any} [props.onSave]
  * @param {() => any} [props.onClear]
@@ -23,8 +23,8 @@ export const LyricsTabView = ({
   title,
   cursor,
   defaults,
-  song,
-  onSongChanged,
+  lines,
+  onLinesChanged,
   onLineClick,
   onSave,
   onClear
@@ -40,27 +40,26 @@ export const LyricsTabView = ({
     }
     return arr;
   };
-  /** @param {Song} lines */
+  /** @param {LyricLine[]} lines */
   const updateSongLines = (lines) => {
     const startTimes = starts(lines.map((l) => l.duration));
     const linesWithFrom = lines.map((line, i) => ({
       ...line,
       from: startTimes[i]
     }));
-    onSongChanged(linesWithFrom);
+    onLinesChanged(linesWithFrom);
   };
   /** @param {string} text */
   const updateSongLyrics = (text) => {
-    const lines = text
+    updateSongLines(text
       .replace(/\n\n+/g, "\n\n")
       .split("\n")
       .map((line) => line.trim())
       .map((text, i) => ({
         text,
-        duration: song[i]?.duration || 1,
-        from: song[i]?.duration || 0
-      }));
-    updateSongLines(lines);
+        duration: lines[i]?.duration || 1,
+        from: lines[i]?.duration || 0
+      })));
   };
 
   useEffect(() => {
@@ -181,7 +180,7 @@ export const LyricsTabView = ({
         {active === "pretty" ? (
           <div>
             {text ? (
-              song.map((line, i) => (
+              lines.map((line, i) => (
                 <SongLine
                   key={`${line}-${i}`}
                   isActive={cursor === i}
@@ -211,7 +210,7 @@ export const LyricsTabView = ({
 
 LyricsTabView.defaultProps = {
   cursor: 0,
-  onSongChanged: () => {},
+  onLinesChanged: () => {},
   onLineClick: () => {},
   onSave: () => {},
   onClear: () => {}

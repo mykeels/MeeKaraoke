@@ -10,28 +10,30 @@ export default {
 };
 
 export const Index = () => {
-  const [song, setSong] = useState([]);
+  /** @type {ReactState<LyricLine[]>} */
+  const [lines, setLines] = useState([]);
 
   return (
     <BrowserRouter>
       <LyricsTabView
         defaults={{ text: somethingJustLikeThisLyrics }}
-        song={song}
-        onSongChanged={setSong}
+        lines={lines}
+        onLinesChanged={setLines}
       />
     </BrowserRouter>
   );
 };
 
 export const Cursor5 = () => {
-  const [song, setSong] = useState([]);
+  /** @type {ReactState<LyricLine[]>} */
+  const [lines, setLines] = useState([]);
 
   return (
     <BrowserRouter>
       <LyricsTabView
         defaults={{ text: somethingJustLikeThisLyrics, active: "pretty" }}
-        song={song}
-        onSongChanged={setSong}
+        lines={lines}
+        onLinesChanged={setLines}
         cursor={5}
       />
     </BrowserRouter>
@@ -39,14 +41,15 @@ export const Cursor5 = () => {
 };
 
 export const Empty = () => {
-  const [song, setSong] = useState([]);
+  /** @type {ReactState<LyricLine[]>} */
+  const [lines, setLines] = useState([]);
 
   return (
     <BrowserRouter>
       <LyricsTabView
         defaults={{ text: "" }}
-        song={song}
-        onSongChanged={setSong}
+        lines={lines}
+        onLinesChanged={setLines}
         cursor={5}
       />
     </BrowserRouter>
@@ -54,15 +57,16 @@ export const Empty = () => {
 };
 
 export const WithTitle = () => {
-  const [song, setSong] = useState([]);
+  /** @type {ReactState<LyricLine[]>} */
+  const [lines, setLines] = useState([]);
 
   return (
     <BrowserRouter>
       <LyricsTabView
         title="Something just like this"
         defaults={{ text: somethingJustLikeThisLyrics }}
-        song={song}
-        onSongChanged={setSong}
+        lines={lines}
+        onLinesChanged={setLines}
       />
     </BrowserRouter>
   );

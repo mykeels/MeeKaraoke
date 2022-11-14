@@ -26,6 +26,12 @@ export const ColorGallery = ({
   );
 
   useEffect(() => {
+    if (typeof onChange === "function" && colors?.length) {
+      onChange(colors);
+    }
+  }, []);
+
+  useEffect(() => {
     /** @type {HTMLDivElement} */
     const parentElem = document.querySelector(".image-slider-wrapper");
     /** @type {HTMLDivElement} */
@@ -85,10 +91,13 @@ export const ColorGallery = ({
                     }
                   >
                     <div
-                      className={classNames("shadow rouded border-2 w-16 h-16 lg:w-40 lg:h-24", {
-                        "border-purple-100": i !== index,
-                        "border-white": i === index
-                      })}
+                      className={classNames(
+                        "shadow rouded border-2 w-16 h-16 lg:w-40 lg:h-24",
+                        {
+                          "border-purple-100": i !== index,
+                          "border-white": i === index
+                        }
+                      )}
                       style={{ backgroundColor: color }}
                     ></div>
                   </button>

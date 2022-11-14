@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
-import { CenterFill, HighlightedVerseSubtitles } from "./components";
+import {
+  CenterFill,
+  HighlightedVerseSubtitles,
+  PhotoSlideshow
+} from "./components";
 import { frames } from "../../common/utils";
 import { Audio } from "remotion";
 import { ColorTransitions } from "../../animations";
@@ -37,22 +41,23 @@ export const SongVideo = ({
 
 SongVideo.defaultProps = {
   Subtitles: HighlightedVerseSubtitles,
-  Background: () => (
-    <ColorTransitions
-      colors={[
-        `#75dddd`,
-        `#84c7d0`,
-        `#9297c4`,
-        `#9368b7`,
-        `#7ED0EE`,
-        `#f5bf69`
-      ]}
-    >
-      {({ style }) => (
-        <CenterFill className="z-10" style={{ backgroundColor: style.color }} />
-      )}
-    </ColorTransitions>
-  )
+  Background: ({ images }) => {
+    const isColors = images.length && images[0].startsWith("colors://");
+    return isColors ? (
+      <ColorTransitions
+        colors={images.map((color) => color.replace("color://", ""))}
+      >
+        {({ style }) => (
+          <CenterFill
+            className="z-10"
+            style={{ backgroundColor: style.color }}
+          />
+        )}
+      </ColorTransitions>
+    ) : (
+      <PhotoSlideshow images={images} />
+    );
+  }
 };
 
 /**

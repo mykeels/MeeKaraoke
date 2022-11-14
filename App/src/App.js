@@ -92,7 +92,7 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
                   navigate("/");
                 }}
                 defaults={{
-                  song: state?.song,
+                  lines: state?.song,
                   images: state?.images
                 }}
                 LyricsTabView={(props) => (

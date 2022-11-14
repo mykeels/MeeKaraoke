@@ -32,6 +32,12 @@ export const ImageGallery = ({
   const current = images[index];
 
   useEffect(() => {
+    if (typeof onChange === "function" && images?.length) {
+      onChange(images);
+    }
+  }, []);
+
+  useEffect(() => {
     /** @type {HTMLDivElement} */
     const parentElem = document.querySelector(".image-slider-wrapper");
     /** @type {HTMLDivElement} */

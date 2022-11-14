@@ -40,7 +40,7 @@ const getLineTime = (song, currentLine) => {
   return sum;
 };
 
-/** @param {Song} lines */
+/** @param {LyricLine[]} lines */
 const transformSongLines = (lines) => {
   const starts = (durations) => {
     let sum = 0;
@@ -68,7 +68,7 @@ const transformSongLines = (lines) => {
  * @property {(song: Omit<SongFileContent, "id"|"lyrics"|"song"> & { lines: Song }) => Promise<any>} [onSave]
  * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
  * @property {() => any} [onReset]
- * @property {{ song: Song, images: string[] }} [defaults]
+ * @property {{ lines: LyricLine[], images: string[] }} [defaults]
  */
 
 /**
@@ -85,8 +85,8 @@ export const SongCreator = ({
   defaults,
   onSave
 }) => {
-  /** @type {ReactState<Song>} */
-  const [song, setSong] = useState(defaults?.song || []);
+  /** @type {ReactState<LyricLine[]>} */
+  const [lines, setLines] = useState(defaults?.lines || []);
   /** @type {ReactState<string[]>} */
   const [images, setImages] = useState(defaults?.images || []);
   /** @type {ReactState<number>} */
@@ -94,20 +94,20 @@ export const SongCreator = ({
 
   /** @type {ReactState<number>} */
   const [recordCursor, setRecordCursor] = useState(0);
-  const currentLine = song[Math.max(cursor, recordCursor)];
+  const currentLine = lines[Math.max(cursor, recordCursor)];
 
   const [timeReset, setTimeReset] = useState(0);
   /** @type {ReactState<import("./components/BackgroundSelect").BackgroundOption>} */
   const [background, setBackground] = useState("photo-gallery");
 
   useEffect(() => {
-    if (defaults?.song?.length) {
-      setSong(defaults?.song || []);
+    if (defaults?.lines?.length) {
+      setLines(defaults?.lines || []);
     }
     if (defaults?.images?.length) {
       setImages(defaults?.images || []);
     }
-  }, [defaults?.song, defaults?.images]);
+  }, [defaults?.lines, defaults?.images]);
 
   /** @type {import("react").MutableRefObject<import("@remotion/player").PlayerRef>} */
   const songPlayerRef = useRef();
@@ -116,7 +116,7 @@ export const SongCreator = ({
       songPlayerRef.current.getContainerNode().style.width = "100%";
       songPlayerRef.current.getContainerNode().style.height = "100%";
     }
-  }, [background]);
+  }, [background, images]);
 
   /** @type {React.FC<{ children: any }>} */
   const Background = useCallback(
@@ -143,7 +143,9 @@ export const SongCreator = ({
               `#ff0000`,
               `#00aaff`
             ]}
-            onChange={setImages}
+            onChange={(colors) =>
+              setImages(colors.map((color) => `color://${color}`))
+            }
           >
             {children}
           </ColorGallery>
@@ -168,13 +170,13 @@ export const SongCreator = ({
               <TimeKeeper
                 value={timeReset}
                 onTick={(seconds) => {
-                  const newCursor = getCurrentLineIndex(song, seconds);
+                  const newCursor = getCurrentLineIndex(lines, seconds);
                   if (newCursor !== cursor) {
                     setCursor(newCursor);
                   }
                 }}
                 onRecordTick={(duration) => {
-                  setSong((lines) =>
+                  setLines((lines) =>
                     transformSongLines(
                       lines.map((line) =>
                         line === currentLine ? { ...line, duration } : line
@@ -193,10 +195,10 @@ export const SongCreator = ({
                     setCursor(0);
                     setRecordCursor(0);
                   } else {
-                    const seconds = getLineTime(song, currentLine);
+                    const seconds = getLineTime(lines, currentLine);
                     setTimeReset(seconds);
                     songPlayerRef.current.seekTo(frames(seconds));
-                    setCursor(getCurrentLineIndex(song, seconds));
+                    setCursor(getCurrentLineIndex(lines, seconds));
                     setRecordCursor(recordCursor);
                   }
                 }}
@@ -208,11 +210,11 @@ export const SongCreator = ({
               <div className="flex lg:block w-full bg-pink border-2 border-purple-100 p-2 justify-center items-center">
                 <BackgroundSelect value={background} onChange={setBackground} />
                 <Background>
-                  {song?.length ? (
+                  {lines?.length ? (
                     <SongPlayer
                       audioUrl={url}
                       images={images}
-                      lines={song}
+                      lines={lines}
                       width={640}
                       height={480}
                       ref={songPlayerRef}
@@ -228,33 +230,33 @@ export const SongCreator = ({
         <div className="inline-block w-full lg:w-7/12 p-4 bg-pink rounded border-2 border-purple-100">
           <LyricsTabView
             cursor={Math.max(recordCursor, cursor)}
-            song={song}
-            onSongChanged={(lines) => {
-              setSong(lines);
-              if (lines.length !== song.length) {
+            lines={lines}
+            onLinesChanged={(lines) => {
+              setLines(lines);
+              if (lines.length !== lines.length) {
                 getImages(lines).then(setImages);
               }
             }}
             onLineClick={(line, i) => {
-              const seconds = getLineTime(song, song[i]);
+              const seconds = getLineTime(lines, lines[i]);
               setTimeReset(seconds);
               songPlayerRef.current.seekTo(frames(seconds));
-              setRecordCursor(getCurrentLineIndex(song, seconds));
-              setCursor(getCurrentLineIndex(song, seconds));
+              setRecordCursor(getCurrentLineIndex(lines, seconds));
+              setCursor(getCurrentLineIndex(lines, seconds));
             }}
             onSave={() => {
               const data = {
                 id,
                 title,
-                lines: song,
+                lines: lines,
                 images,
-                duration: song.reduce((sum, line) => sum + line.duration, 0),
+                duration: lines.reduce((sum, line) => sum + line.duration, 0),
                 audioUrl: url
               };
               onSave(data);
             }}
             onClear={() => {
-              setSong([]);
+              setLines([]);
               setCursor(0);
               setRecordCursor(0);
               setTimeReset(0);
@@ -274,7 +276,7 @@ SongCreator.defaultProps = {
   onReset: () => {},
   defaults: {
     images: [],
-    song: []
+    lines: []
   }
 };
 

@@ -15,14 +15,18 @@ type SongRecord = {
   updatedAt: string;
 };
 
+type SongBackground<TBackgroundType extends string> = {
+  type: TBackgroundType;
+} & Record<TBackgroundType, string[]>;
+
 type SongFileContent = {
   id?: string;
   title: string;
   lyrics: string;
   audioUrl: string;
-  images: string[];
-  song?: Song;
-  lines?: Song;
+  background: SongBackground<"colors"> | SongBackground<"images">;
+  song?: LyricLine[];
+  lines?: LyricLine[];
   duration: number;
 };
 
