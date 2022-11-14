@@ -138,7 +138,7 @@ export const SongCreator = ({
       songPlayerRef.current.getContainerNode().style.width = "100%";
       songPlayerRef.current.getContainerNode().style.height = "100%";
     }
-  }, [background.type]);
+  }, [background.type, background.images.length, background.colors.length]);
 
   /** @type {React.FC<{ children: any }>} */
   const Background = useCallback(
@@ -150,7 +150,10 @@ export const SongCreator = ({
             images={background.images}
             line={currentLine}
             onChange={(images) =>
-              setBackground({ ...background, images, type: "images" })
+              {
+                console.log(images);
+                setBackground({ ...background, images, type: "images" });
+              }
             }
           >
             {children}
@@ -169,7 +172,7 @@ export const SongCreator = ({
         )
       }[background.type];
     },
-    [background.type]
+    [background.type, background.images.length, background.colors.length]
   );
 
   return (
