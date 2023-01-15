@@ -15,7 +15,7 @@ export const Index = () => (
   <Player
     component={() => (
       <PhotoSlideshow
-        images={sampleSong.images}
+        images={sampleSong.background.images}
       ></PhotoSlideshow>
     )}
     durationInFrames={Math.ceil(frames(sampleSong.duration))}
