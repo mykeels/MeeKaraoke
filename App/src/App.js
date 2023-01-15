@@ -72,7 +72,22 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
           element={
             <SongUploaderScreen
               onAudioFileReceived={(audioUrl) => {
-                setState((state) => ({ ...state, audioUrl }));
+                setState((state) => ({
+                  ...state,
+                  audioUrl,
+                  background: {
+                    type: "images",
+                    colors: [
+                      `#00aaff`,
+                      `#ffaa00`,
+                      `#0000ff`,
+                      `#00ff00`,
+                      `#ff0000`,
+                      `#00aaff`
+                    ],
+                    images: []
+                  }
+                }));
               }}
               SongUploader={(props) => (
                 <SongUploader {...props} title={state?.title} />

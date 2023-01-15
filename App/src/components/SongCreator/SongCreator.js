@@ -110,6 +110,17 @@ export const SongCreator = ({
   });
 
   useEffect(() => {
+    if (!defaults?.background.images?.length) {
+      getImages(lines).then((images) =>
+        setBackground({
+          ...background,
+          images
+        })
+      );
+    }
+  }, [lines]);
+
+  useEffect(() => {
     if (defaults?.lines?.length) {
       setLines(defaults?.lines || []);
     }
@@ -149,12 +160,9 @@ export const SongCreator = ({
             cursor={Math.max(recordCursor, cursor)}
             images={background.images}
             line={currentLine}
-            onChange={(images) =>
-              {
-                console.log(images);
-                setBackground({ ...background, images, type: "images" });
-              }
-            }
+            onChange={(images) => {
+              setBackground({ ...background, images, type: "images" });
+            }}
           >
             {children}
           </ImageGallery>
@@ -172,7 +180,7 @@ export const SongCreator = ({
         )
       }[background.type];
     },
-    [background.type]
+    [background.type, background.images, background.colors]
   );
 
   return (

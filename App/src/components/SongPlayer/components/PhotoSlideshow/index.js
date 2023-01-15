@@ -10,26 +10,27 @@ import { FadeOut } from "../../../../animations/FadeOut";
  * @typedef {object} PhotoSlideshowProps
  * @property {any} [className]
  * @property {string[]} images
+ * @property {number} interval
  */
 
 /**
  * @type {React.FC<PhotoSlideshowProps & { [key: string]: any }>}
  */
-export const PhotoSlideshow = ({ images }) => {
+export const PhotoSlideshow = ({ images, interval }) => {
   const { durationInFrames, width, height } = useVideoConfig();
   const durationInSeconds = f2s(durationInFrames);
-  const imageCount = Math.ceil(durationInSeconds / 5);
+  const imageCount = Math.ceil(durationInSeconds / interval);
   const repeatedImages = new Array(imageCount)
     .fill(0)
     .map((_, i) => images[i % images.length]);
   return (
     <>
       <CenterFill className="bg-pink">
-        {repeatedImages.map((image, i) => (
+        {repeatedImages.filter(Boolean).map((image, i) => (
           <Sequence
             key={`${image}-${i}`}
-            from={i * frames(5)}
-            durationInFrames={frames(7)}
+            from={i * frames(interval)}
+            durationInFrames={frames(interval + 2)}
             layout="none"
           >
             <Lifecycle
@@ -55,4 +56,6 @@ export const PhotoSlideshow = ({ images }) => {
   );
 };
 
-PhotoSlideshow.defaultProps = {};
+PhotoSlideshow.defaultProps = {
+  interval: 15
+};
