@@ -1,60 +1,8 @@
 import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
-import {
-  CenterFill,
-  HighlightedVerseSubtitles,
-  PhotoSlideshow
-} from "./components";
+
 import { frames } from "../../common/utils";
-import { Audio } from "remotion";
-import { ColorTransitions } from "../../animations";
-
-const apiRootURL = process.env.REACT_APP_API_ROOT;
-
-/**
- * @typedef {object} SongVideoProps
- * @property {Pick<SongFileContent, "audioUrl" | "background" | "lines">} song
- * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
- * @property {React.FC<SongBackground<"colors" | "images">>} [Background]
- */
-
-/**
- * @type {React.FC<SongVideoProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
- */
-export const SongVideo = ({ song, Background, Subtitles }) => {
-  return (
-    <>
-      <Audio src={song.audioUrl.replace("~", apiRootURL)} />
-      <Background {...song.background} />
-      <Subtitles lines={song.lines} />
-    </>
-  );
-};
-
-SongVideo.defaultProps = {
-  Subtitles: HighlightedVerseSubtitles,
-  /**
-   * 
-   * @type {React.FC<SongBackground<"colors" | "images">>}
-   */
-  Background: ({ type, images, colors }) => {
-    const isColors = type === "colors";
-    return isColors ? (
-      <ColorTransitions
-        colors={colors}
-      >
-        {({ style }) => (
-          <CenterFill
-            className="z-10"
-            style={{ backgroundColor: style.color }}
-          />
-        )}
-      </ColorTransitions>
-    ) : (
-      <PhotoSlideshow images={images} />
-    );
-  }
-};
+import { SongVideo } from "./components";
 
 /**
  * @typedef {object} SongPlayerProps
@@ -80,7 +28,8 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
     controls,
     onPlayEnd,
     Background,
-    Subtitles
+    Subtitles,
+    className
   },
   ref
 ) {
@@ -118,6 +67,7 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
       compositionHeight={height}
       fps={frames(1)}
       controls={controls}
+      className={className}
     />
   );
 });

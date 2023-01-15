@@ -92,11 +92,68 @@ exports[`@mykeels/mee-karaoke components/SongCreator No Durations 1`] = `
               </button>
             </div>
           </div>
+          <audio
+            src="./sounds/something-just-like-this.mp3"
+          />
           <div
             className="inline-block lg:flex bg-pink preview relative w-5/12 lg:w-full"
           >
             <div>
-              Player
+              <div
+                className="items-center justify-center z-20"
+                style={
+                  Object {
+                    "bottom": 0,
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "height": "100%",
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                    "width": "100%",
+                  }
+                }
+              >
+                <div
+                  className="h-24 relative w-full text-center flex items-center justify-center"
+                >
+                  <div
+                    className="h-24 w-full z-0 opacity-75 rounded absolute top-0 left-0"
+                  />
+                  <div
+                    className="z-10 relative font-bold p-4"
+                  >
+                    <div
+                      className="block"
+                    >
+                      <span
+                        className="inline-block p-2 px-4 rounded my-1 text-lg text-purple-100"
+                      >
+                        I've been reading books of old
+                      </span>
+                    </div>
+                    <div
+                      className="block"
+                    >
+                      <span
+                        className="inline-block p-2 px-4 rounded my-1 text-lg text-purple-100"
+                      >
+                        The legends and the myths
+                      </span>
+                    </div>
+                    <div
+                      className="block"
+                    >
+                      <span
+                        className="inline-block p-2 px-4 rounded my-1 text-lg text-purple-100"
+                      >
+                        Achilles and his gold
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -2645,11 +2702,68 @@ exports[`@mykeels/mee-karaoke components/SongCreator With Durations 1`] = `
               </button>
             </div>
           </div>
+          <audio
+            src="./sounds/something-just-like-this.mp3"
+          />
           <div
             className="inline-block lg:flex bg-pink preview relative w-5/12 lg:w-full"
           >
             <div>
-              Player
+              <div
+                className="items-center justify-center z-20"
+                style={
+                  Object {
+                    "bottom": 0,
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "height": "100%",
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                    "width": "100%",
+                  }
+                }
+              >
+                <div
+                  className="h-24 relative w-full text-center flex items-center justify-center"
+                >
+                  <div
+                    className="h-24 w-full z-0 opacity-75 rounded absolute top-0 left-0"
+                  />
+                  <div
+                    className="z-10 relative font-bold p-4"
+                  >
+                    <div
+                      className="block"
+                    >
+                      <span
+                        className="inline-block p-2 px-4 rounded my-1 text-lg text-purple-100"
+                      >
+                        I've been reading books of old
+                      </span>
+                    </div>
+                    <div
+                      className="block"
+                    >
+                      <span
+                        className="inline-block p-2 px-4 rounded my-1 text-lg text-purple-100"
+                      >
+                        The legends and the myths
+                      </span>
+                    </div>
+                    <div
+                      className="block"
+                    >
+                      <span
+                        className="inline-block p-2 px-4 rounded my-1 text-lg text-purple-100"
+                      >
+                        Achilles and his gold
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div

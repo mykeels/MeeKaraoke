@@ -10,7 +10,7 @@ import { FadeOut } from "../../../../animations/FadeOut";
  * @typedef {object} PhotoSlideshowProps
  * @property {any} [className]
  * @property {string[]} images
- * @property {number} interval
+ * @property {number} [interval]
  */
 
 /**

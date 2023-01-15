@@ -6,10 +6,11 @@ import rake from "rake-js";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
 import classNames from "classnames";
-import { SongPlayer } from "../SongPlayer";
-import { frames } from "../../common";
 import { BackgroundSelect } from "./components/BackgroundSelect";
 import { ColorGallery } from "./components/ColorGallery";
+import { StillHighlightedVerseSubtitles } from "../SongPlayer";
+
+const apiRootURL = process.env.REACT_APP_API_ROOT;
 
 /**
  * @param {Song} song
@@ -142,14 +143,15 @@ export const SongCreator = ({
     defaults?.background.colors
   ]);
 
-  /** @type {import("react").MutableRefObject<import("@remotion/player").PlayerRef>} */
+  /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
   const songPlayerRef = useRef();
-  useEffect(() => {
-    if (songPlayerRef.current) {
-      songPlayerRef.current.getContainerNode().style.width = "100%";
-      songPlayerRef.current.getContainerNode().style.height = "100%";
-    }
-  }, [background.type, background.images.length, background.colors.length]);
+  /**
+   *
+   * @param {number} time
+   */
+  const seek = (time) => {
+    songPlayerRef.current.currentTime = time;
+  };
 
   /** @type {React.FC<{ children: any }>} */
   const Background = useCallback(
@@ -180,7 +182,13 @@ export const SongCreator = ({
         )
       }[background.type];
     },
-    [background.type, background.images, background.colors]
+    [
+      background.type,
+      background.images,
+      background.colors,
+      recordCursor,
+      cursor
+    ]
   );
 
   return (
@@ -219,13 +227,13 @@ export const SongCreator = ({
                 onStop={(isRecording) => {
                   songPlayerRef.current.pause();
                   if (!isRecording) {
-                    songPlayerRef.current.seekTo(0);
+                    seek(0);
                     setCursor(0);
                     setRecordCursor(0);
                   } else {
                     const seconds = getLineTime(lines, currentLine);
                     setTimeReset(seconds);
-                    songPlayerRef.current.seekTo(frames(seconds));
+                    seek(seconds);
                     setCursor(getCurrentLineIndex(lines, seconds));
                     setRecordCursor(recordCursor);
                   }
@@ -241,19 +249,17 @@ export const SongCreator = ({
                   // @ts-ignore
                   onChange={(type) => setBackground({ ...background, type })}
                 />
+                <audio
+                  key={audioUrl}
+                  src={audioUrl.replace("~", apiRootURL)}
+                  ref={songPlayerRef}
+                ></audio>
                 <Background>
                   {lines?.length ? (
-                    <SongPlayer
-                      song={{
-                        audioUrl,
-                        background,
-                        lines
-                      }}
-                      width={640}
-                      height={480}
-                      ref={songPlayerRef}
-                      controls={false}
-                    ></SongPlayer>
+                    <StillHighlightedVerseSubtitles
+                      cursor={Math.max(recordCursor, cursor)}
+                      lines={lines}
+                    />
                   ) : null}
                 </Background>
               </div>
@@ -276,7 +282,7 @@ export const SongCreator = ({
             onLineClick={(line, i) => {
               const seconds = getLineTime(lines, lines[i]);
               setTimeReset(seconds);
-              songPlayerRef.current.seekTo(frames(seconds));
+              seek(seconds);
               setRecordCursor(getCurrentLineIndex(lines, seconds));
               setCursor(getCurrentLineIndex(lines, seconds));
             }}
