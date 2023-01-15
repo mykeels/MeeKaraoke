@@ -528,6 +528,15 @@ video {
 .left-0 {
   left: 0px;
 }
+.right-2 {
+  right: 0.5rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.right-0 {
+  right: 0px;
+}
 .z-10 {
   z-index: 10;
 }
@@ -597,14 +606,17 @@ video {
 .h-6 {
   height: 1.5rem;
 }
+.h-16 {
+  height: 4rem;
+}
+.h-8 {
+  height: 2rem;
+}
 .h-24 {
   height: 6rem;
 }
 .h-64 {
   height: 16rem;
-}
-.h-8 {
-  height: 2rem;
 }
 .max-h-full {
   max-height: 100%;
@@ -638,6 +650,12 @@ video {
 }
 .w-7\/12 {
   width: 58.333333%;
+}
+.w-16 {
+  width: 4rem;
+}
+.w-8 {
+  width: 2rem;
 }
 .w-5\/6 {
   width: 83.333333%;
@@ -709,13 +727,13 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(252 197 252 / var(--tw-border-opacity));
 }
-.border-purple-200 {
-  --tw-border-opacity: 1;
-  border-color: rgb(82 31 73 / var(--tw-border-opacity));
-}
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+.border-purple-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(82 31 73 / var(--tw-border-opacity));
 }
 .bg-black {
   --tw-bg-opacity: 1;
@@ -936,14 +954,14 @@ video {
   border-color: rgb(149 104 168 / var(--tw-border-opacity));
 }
 
-.hover\:bg-purple-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(149 104 168 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-purple-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(82 31 73 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-purple-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(149 104 168 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-lavender-200:hover {
@@ -1050,6 +1068,10 @@ video {
 
 @media (min-width: 1024px) {
 
+  .lg\:right-6 {
+    right: 1.5rem;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -1060,6 +1082,10 @@ video {
 
   .lg\:hidden {
     display: none;
+  }
+
+  .lg\:h-24 {
+    height: 6rem;
   }
 
   .lg\:w-5\/12 {
@@ -1076,6 +1102,10 @@ video {
 
   .lg\:w-full {
     width: 100%;
+  }
+
+  .lg\:w-40 {
+    width: 10rem;
   }
 
   .lg\:px-16 {
@@ -1307,4 +1337,4 @@ input.file-upload {
     min-height: 80vh;
 }
 
-/*# sourceMappingURL=main.c5dc237a.css.map*/
+/*# sourceMappingURL=main.18d2b2f4.css.map*/
