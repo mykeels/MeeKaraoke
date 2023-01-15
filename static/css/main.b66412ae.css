@@ -898,6 +898,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(178 149 245 / var(--tw-text-opacity));
 }
+.text-purple-100 {
+  --tw-text-opacity: 1;
+  color: rgb(149 104 168 / var(--tw-text-opacity));
+}
 .underline {
   text-decoration-line: underline;
 }
@@ -1337,4 +1341,4 @@ input.file-upload {
     min-height: 80vh;
 }
 
-/*# sourceMappingURL=main.18d2b2f4.css.map*/
+/*# sourceMappingURL=main.b66412ae.css.map*/
