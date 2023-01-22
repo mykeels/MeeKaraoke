@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { assert } from "../../common";
 
-/**
- * @typedef {object} ZoomOutProps
- * @property {any} children
- * @property {number} [size]
- * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- */
+type ZoomInProps = {
+  children?: any;
+  size?: number;
+  onChange?: (props: { transform: string }) => any;
+};
 
-/**
- * @type {React.FC<ZoomOutProps & { [key: string]: any }>}
- */
-export const ZoomOut = ({ children, size, onChange }) => {
+export const ZoomIn = ({ children, size, onChange }: ZoomInProps) => {
   const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 
-  const zoom = 1 - interpolate(frame, [0, durationInFrames], [0, size]);
+  const zoom = 1 + interpolate(frame, [0, durationInFrames], [0, assert(size)]);
 
   const transform = `scale(${zoom})`;
 
@@ -36,6 +33,6 @@ export const ZoomOut = ({ children, size, onChange }) => {
   ) : null;
 };
 
-ZoomOut.defaultProps = {
+ZoomIn.defaultProps = {
   size: 0.1
 };

@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 
-/**
- * @template TValue
- * @param {TValue} value
- * @param {number} [delay]
- * @returns {TValue}
- */
-export function useDebounce(value, delay = 500) {
+export function useDebounce<TValue>(value: TValue, delay = 500) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {

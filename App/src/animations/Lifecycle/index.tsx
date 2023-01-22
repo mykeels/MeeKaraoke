@@ -1,22 +1,28 @@
 import classNames from "classnames/dedupe";
 import React, { useCallback, useState } from "react";
 import { Sequence, useVideoConfig } from "remotion";
-import { starts } from "../../common/utils";
+import { assert, starts } from "../../common/utils";
 import * as transformParser from "transform-parser";
 
-/**React.FC<{ duration: number }>
- * @typedef {object} LifecycleProps
- * @property {any} [className]
- * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Entrance]
- * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Exit]
- * @property {React.FC<{ onChange: (style: React.CSSProperties) => any }>} [Main]
- * @property {number} [duration]
- * @property {(`${number}:${number}:${number}` | `${number}:${number}`) | (string & {})} ratio
- */
+type LifecycleProps = {
+  children?: any;
+  className?: any;
+  style?: React.CSSProperties;
+  Entrance?: React.FC<{
+    onChange: (style: Pick<React.CSSProperties, "transform">) => any;
+  }>;
+  Exit?: React.FC<{
+    onChange: (style: Pick<React.CSSProperties, "transform">) => any;
+  }>;
+  Main?: React.FC<{
+    onChange: (style: Pick<React.CSSProperties, "transform">) => any;
+  }>;
+  duration?: number;
+  ratio:
+    | (`${number}:${number}:${number}` | `${number}:${number}`)
+    | (string & {});
+};
 
-/**
- * @type {React.FC<LifecycleProps & { [key: string]: any }>}
- */
 export const Lifecycle = ({
   className,
   Entrance,
@@ -26,7 +32,7 @@ export const Lifecycle = ({
   children,
   duration,
   ...props
-}) => {
+}: LifecycleProps) => {
   const stages = ratio.split(":").map((n) => Number(n));
   const total = stages.reduce((sum, n) => sum + n, 0);
   const { fps, durationInFrames } = useVideoConfig();
@@ -38,30 +44,30 @@ export const Lifecycle = ({
   const mainDuration = 1 - entranceDuration - exitDuration;
 
   const durations = [entranceDuration, mainDuration, exitDuration].map((n) =>
-    Math.round(n * fps * duration)
+    Math.round(n * fps * assert(duration))
   );
   const startPoints = starts(durations);
 
-  /** @type {ReactState<React.CSSProperties>} */
-  const [style, setStyle] = useState({});
+  const [style, setStyle] = useState<Pick<React.CSSProperties, "transform">>(
+    {}
+  );
   const updateStyle = useCallback(
-    (s) =>
-      {
-        setStyle({
-          ...style,
-          ...s,
-          ...(s?.transform || style?.transform
-            ? {
-                transform: transformParser.stringify({
-                  ...(style?.transform
-                    ? transformParser.parse(style?.transform)
-                    : {}),
-                  ...(s?.transform ? transformParser.parse(s?.transform) : {})
-                })
-              }
-            : {})
-        })
-      },
+    (s: Pick<React.CSSProperties, "transform">) => {
+      setStyle({
+        ...style,
+        ...s,
+        ...(s?.transform || style?.transform
+          ? {
+              transform: transformParser.stringify({
+                ...(style?.transform
+                  ? transformParser.parse(style?.transform)
+                  : {}),
+                ...(s?.transform ? transformParser.parse(s?.transform) : {})
+              })
+            }
+          : {})
+      });
+    },
     []
   );
 
@@ -91,7 +97,9 @@ export const Lifecycle = ({
           durationInFrames={durations[2]}
           layout="none"
         >
-          <Exit onChange={updateStyle}></Exit>
+          {typeof Exit === "function" ? (
+            <Exit onChange={updateStyle}></Exit>
+          ) : null}
         </Sequence>
       ) : null}
       <div

@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
     'text-white'
   );
  */
-export const useMedia = (queries, values, defaultValue) => {
+export const useMedia = <TValue>(queries: string[], values: TValue[], defaultValue: TValue) => {
   if (typeof window === "undefined") return defaultValue;
   // Array containing a media query list for each query
   const mediaQueryLists = queries.map(q => window.matchMedia(q));

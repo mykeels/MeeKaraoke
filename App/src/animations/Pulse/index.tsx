@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
+import { assert, setDefaultProps } from "../../common";
 
-/**
- * @typedef {object} PulseProps
- * @property {any} children
- * @property {number} [size]
- * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- */
+type PulseProps = {
+  children?: any;
+  size?: number;
+  onChange?: (props: { transform: string }) => any;
+};
 
-/**
- * @type {React.FC<PulseProps & { [key: string]: any }>}
- */
-export const Pulse = ({ children, size, onChange }) => {
+export const Pulse = ({ children, size, onChange }: PulseProps) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
 
-  const wave = 1 + size * Math.sin(frame / Math.floor(fps / 4));
+  const wave = 1 + assert(size) * Math.sin(frame / Math.floor(fps / 4));
 
   const transform = `scale(${wave})`;
 
@@ -36,6 +33,6 @@ export const Pulse = ({ children, size, onChange }) => {
   ) : null;
 };
 
-Pulse.defaultProps = {
+setDefaultProps(Pulse, {
   size: 0.1
-};
+});

@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { assert } from "../../common";
 
-/**
- * @typedef {object} SlideInProps
- * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- * @property {"top"|"bottom"|"left"|"right"} [from]
- * @property {number} [durationInFrames]
- * @property {(style: React.CSSProperties) => any} [onChange]
- */
+type SlideOutProps = {
+  children?: any;
+  to?: "top" | "bottom" | "left" | "right";
+  durationInFrames?: number;
+  onChange?: (props: { transform: string }) => any;
+};
 
-/**
- * @type {React.FC<SlideInProps & { [key: string]: any }>}
- */
-export const SlideIn = ({ children, from, onChange, ...props }) => {
+export const SlideOut = ({
+  children,
+  to,
+  onChange,
+  ...props
+}: SlideOutProps) => {
   const frame = useCurrentFrame();
   const { width, height, fps, durationInFrames } = useVideoConfig();
 
@@ -25,17 +27,17 @@ export const SlideIn = ({ children, from, onChange, ...props }) => {
     durationInFrames: props?.durationInFrames || durationInFrames
   });
   const outputRange = {
-    bottom: [height, 0],
-    right: [width, 0],
-    top: [-height, 0],
-    left: [-width, 0]
-  }[from];
+    bottom: [0, height / 1.5],
+    right: [0, width / 1.5],
+    top: [0, -height / 1.5],
+    left: [0, -width / 1.5]
+  }[assert(to)];
 
-  const entranceOffset = interpolate(entrance, [0, 1], outputRange);
+  const exitOffset = interpolate(entrance, [0, 1], outputRange);
 
-  const wave = Math.cos(frame / Math.floor(fps / 4)) * 10 + entranceOffset;
+  const wave = exitOffset;
 
-  const transform = ["top", "bottom"].includes(from)
+  const transform = ["top", "bottom"].includes(assert(to))
     ? `translateY(${wave}px)`
     : `translateX(${wave}px)`;
 
@@ -56,6 +58,7 @@ export const SlideIn = ({ children, from, onChange, ...props }) => {
   ) : null;
 };
 
-SlideIn.defaultProps = {
-  from: "bottom"
+SlideOut.defaultProps = {
+  duration: 1,
+  to: "bottom"
 };

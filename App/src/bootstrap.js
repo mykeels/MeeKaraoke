@@ -6,6 +6,7 @@ import { HashRouter, MemoryRouter, BrowserRouter } from "react-router-dom";
 
 import { App } from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { assert } from "./common";
 
 const queryClient = new QueryClient();
 const Router = process.env.REACT_APP_USE_HASH_ROUTER
@@ -14,7 +15,7 @@ const Router = process.env.REACT_APP_USE_HASH_ROUTER
   ? MemoryRouter
   : BrowserRouter;
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(assert(document.getElementById("root")));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>

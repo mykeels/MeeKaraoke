@@ -1,16 +1,12 @@
 import React, { useEffect } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 
-/**
- * @typedef {object} FadeOutProps
- * @property {any} children
- * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- */
+type FadeOutProps = {
+  children?: any;
+  onChange: (style: Pick<React.CSSProperties, "transform" | "opacity">) => any;
+};
 
-/**
- * @type {React.FC<FadeOutProps & { [key: string]: any }>}
- */
-export const FadeOut = ({ children, onChange }) => {
+export const FadeOut = ({ children, onChange }: FadeOutProps) => {
   const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 

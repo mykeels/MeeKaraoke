@@ -12,28 +12,35 @@ import {
 import { LyricsTabView } from "./components/SongCreator/components/LyricsTabView";
 import { getSongById, saveSongFileContents } from "./common/services";
 import { SongCreatorScreen } from "./components/SongCreator";
-import { Redirect } from "./common";
+import { assert, Redirect, setDefaultProps } from "./common";
 import { SongExporterScreen } from "./components/SongExporter";
 
-/**
- * @typedef {object} AppProps
- * @property {(id: string) => Promise<SongFileContent>} [getSongById]
- * @property {(content: SongFileContent) => Promise<SongFileContent>} [saveSongFileContents]
- * @property {React.FC<Pick<import("./components").SongPickerProps, "onNewSong" | "onSelectSong" | "onPlaySong">>} [SongPicker]
- */
+type AppProps = {
+  getSongById?: (id: string) => Promise<SongFileContent>;
+  saveSongFileContents?: (content: SongFileContent) => Promise<SongFileContent>;
+  SongPicker?: React.FC<
+    Pick<
+      Parameters<typeof SongPicker>[0],
+      "onNewSong" | "onSelectSong" | "onPlaySong"
+    >
+  >;
+};
 
-/** @type {React.FC<AppProps>} */
-export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
+export const App = ({
+  getSongById,
+  saveSongFileContents,
+  SongPicker
+}: AppProps) => {
   /** @type {ReactState<SongFileContent>} */
-  const [state, setState] = useState(null);
+  const [state, setState] = useState<SongFileContent | null>(null);
   const navigate = useNavigate();
-  const selectSong = async (record) => {
-    const song = await getSongById(record.id);
+  const selectSong = async (record: { id: string }) => {
+    const song = await assert(getSongById)(record.id);
     setState(song);
     navigate(`/create/${song.id}`);
   };
-  const playSong = async (record) => {
-    const song = await getSongById(record.id);
+  const playSong = async (record: { id: string }) => {
+    const song = await assert(getSongById)(record.id);
     setState(song);
 
     navigate(`/play/${song.id}`);
@@ -44,13 +51,15 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
         <Route
           path="/"
           element={
-            <SongPicker
-              onNewSong={() => {
-                navigate("/create/set-title");
-              }}
-              onSelectSong={selectSong}
-              onPlaySong={playSong}
-            />
+            SongPicker && (
+              <SongPicker
+                onNewSong={() => {
+                  navigate("/create/set-title");
+                }}
+                onSelectSong={selectSong}
+                onPlaySong={playSong}
+              />
+            )
           }
         />
         <Route
@@ -62,7 +71,10 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
           element={
             <TitleCreatorScreen
               onTitleChanged={(data) => {
-                setState((state) => ({ ...state, ...data }));
+                setState((state) => ({
+                  ...((state || {}) as any),
+                  ...data
+                }));
               }}
             />
           }
@@ -73,7 +85,7 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
             <SongUploaderScreen
               onAudioFileReceived={(audioUrl) => {
                 setState((state) => ({
-                  ...state,
+                  ...((state || {}) as any),
                   audioUrl,
                   background: {
                     type: "images",
@@ -107,7 +119,7 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
                   navigate("/");
                 }}
                 defaults={{
-                  lines: state?.lines,
+                  lines: state?.lines || [],
                   background: state?.background
                 }}
                 LyricsTabView={(props) => (
@@ -119,9 +131,9 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
                     }}
                   />
                 )}
-                onSave={(content) => {
+                onSave={async (content) => {
                   content["id"] = state?.id;
-                  return saveSongFileContents({
+                  return assert(saveSongFileContents)({
                     ...content,
                     id: state?.id,
                     audioUrl: state?.audioUrl,
@@ -160,8 +172,8 @@ export const App = ({ getSongById, saveSongFileContents, SongPicker }) => {
   );
 };
 
-App.defaultProps = {
+setDefaultProps(App, {
   getSongById,
   saveSongFileContents,
   SongPicker: (props) => <SongPicker {...props} />
-};
+});
