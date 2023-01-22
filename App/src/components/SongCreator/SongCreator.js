@@ -199,7 +199,16 @@ export const SongCreator = ({
       )}
     >
       <div className="block w-full text-right"></div>
-      <div className="block lg:flex w-full">
+      <div className="block lg:flex w-full relative">
+        <button
+          className="z-10 absolute top-0 right-0 px-2 rounded bg-pink hover:bg-purple-200 hover:text-white text-purple-200 
+        text-lg border-2 border-purple-100" style={{
+          marginTop: "-16px",
+          marginRight: "-16px",
+        }}
+        >
+          x
+        </button>
         <div className="inline-block w-full lg:w-5/12">
           <div className="lg:px-4 sticky top-0">
             <div className="block w-full bg-pink rounded border-2 border-purple-100">
