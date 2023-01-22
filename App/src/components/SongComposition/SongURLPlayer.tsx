@@ -3,18 +3,14 @@ import { continueRender, delayRender } from "remotion";
 import { SongVideo } from "../SongPlayer";
 import { CenterFill } from "../SongPlayer/components";
 
-/**
- * @typedef {object} SongURLPlayerProps
- * @property {any} [className]
- * @property {string} url
- * @property {(duration: number) => any} onDurationChange
- */
+type SongURLPlayerProps = {
+  className?: any;
+  url: string;
+  onDurationChange: (duration: number) => any;
+};
 
-/**
- * @type {React.FC<SongURLPlayerProps & { [key: string]: any }>}
- */
-export const SongURLPlayer = ({ url, onDurationChange }) => {
-  const [error, setError] = useState(null);
+export const SongURLPlayer = ({ url, onDurationChange }: SongURLPlayerProps) => {
+  const [error, setError] = useState<Error | null>(null);
   /** @type {ReactState<SongFileContent>} */
   const [data, setData] = useState(null);
   const [handle] = useState(() => delayRender());

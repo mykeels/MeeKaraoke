@@ -3,34 +3,38 @@ import "./SavedFileUploader.css";
 import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 
-/**
- * @typedef {object} SavedFileUploaderProps
- * @property {(karaoke: { title: string, song: LyricLine, images: string[] }) => any} onKaraokeFileReceived
- * @property {any} [className]
- * @property {boolean | "open"} [open] immediately opens the File Dialog when set to "open"
- */
+type SavedFileUploaderProps = {
+  onKaraokeFileReceived: (karaoke: {
+      title: string;
+      song: LyricLine;
+      images: string[];
+  }) => any;
+  className?: any;
+  /**
+   * immediately opens the File Dialog when set to "open"
+   */
+  open?: boolean | "open";
+};
 
-/**
- * @type {React.FC<SavedFileUploaderProps & { [key: string]: any }>}
- */
 export const SavedFileUploader = ({
   onKaraokeFileReceived,
   className,
   open,
   ...props
-}) => {
-  /**
-   * @param {HTMLInputElement} input
-   * @returns {Promise<string>}
-   */
-  const grabFileURL = async (input) => {
+}: SavedFileUploaderProps) => {
+  const grabFileURL = async (input: HTMLInputElement): Promise<string> => {
     return new Promise((resolve, reject) => {
       try {
+        if (!input.files) {
+          throw new Error("No files found");
+        }
         const file = input.files[0];
         const reader = new FileReader();
         reader.addEventListener("load", (event) => {
-          /** @type {string} */
-          const text = event.target.result.toString();
+          const text = event.target?.result?.toString();
+          if (!text) {
+            throw new Error("No text found in uploaded file");
+          }
           resolve(text);
         });
         reader.readAsText(file);
@@ -40,15 +44,14 @@ export const SavedFileUploader = ({
     });
   };
 
-  /** @type {React.MutableRefObject<HTMLInputElement>} */
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement & { alreadyOpened?: boolean }>();
 
   useEffect(() => {
     if (open === "open") {
-      if (inputRef.current["alreadyOpened"]) {
+      if (!inputRef.current || inputRef.current?.["alreadyOpened"]) {
         return;
       }
-      inputRef.current.click();
+      inputRef.current?.click();
       inputRef.current["alreadyOpened"] = true;
     }
   }, []);
@@ -74,7 +77,7 @@ export const SavedFileUploader = ({
         </div>
       </div>
       <input
-        ref={inputRef}
+        ref={inputRef as React.MutableRefObject<HTMLInputElement>}
         type="file"
         accept=".mee.json"
         className="file-upload fixed top-0 left-0 h-screen w-screen cursor-pointer"

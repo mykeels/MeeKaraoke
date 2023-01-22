@@ -1,33 +1,25 @@
 import "./SongCreator.css";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { LyricsTabView } from "./components/LyricsTabView";
 import rake from "rake-js";
+import classNames from "classnames";
+
+import { LyricsTabView } from "./components/LyricsTabView";
 import { TimeKeeper } from "./components/TimeKeeper";
 import { ImageGallery } from "./components/ImageGallery";
-import classNames from "classnames";
 import { BackgroundSelect } from "./components/BackgroundSelect";
 import { ColorGallery } from "./components/ColorGallery";
 import { StillHighlightedVerseSubtitles } from "../SongPlayer";
+import { assert, assertRef, setDefaultProps } from "../../common/utils";
 
-const apiRootURL = process.env.REACT_APP_API_ROOT;
-
-/**
- * @param {Song} song
- * @param {number} timeInSeconds
- */
-const getCurrentLineIndex = (song, timeInSeconds) => {
+const getCurrentLineIndex = (song: LyricLine[], timeInSeconds: number) => {
   return song.findIndex(
     (line) =>
       timeInSeconds > line.from && timeInSeconds <= line.from + line.duration
   );
 };
 
-/**
- * @param {Song} song
- * @param {LyricLine} currentLine
- */
-const getLineTime = (song, currentLine) => {
+const getLineTime = (song: LyricLine[], currentLine: LyricLine) => {
   let sum = 0.01;
   for (let line of song) {
     if (
@@ -41,9 +33,8 @@ const getLineTime = (song, currentLine) => {
   return sum;
 };
 
-/** @param {LyricLine[]} lines */
-const transformSongLines = (lines) => {
-  const starts = (durations) => {
+const transformSongLines = (lines: LyricLine[]) => {
+  const starts = (durations: number[]) => {
     let sum = 0;
     const arr = [];
     for (let i = 0; i < durations.length; i++) {
@@ -59,22 +50,22 @@ const transformSongLines = (lines) => {
   }));
 };
 
-/**
- * @typedef {object} SongCreatorProps
- * @property {string} [className]
- * @property {string} [id]
- * @property {string} [title]
- * @property {string} audioUrl
- * @property {(lines: Song, interval?: number) => Promise<string[]>} [getImages]
- * @property {(song: SongFileContent) => Promise<any>} [onSave]
- * @property {React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>} LyricsTabView
- * @property {() => any} [onReset]
- * @property {{ lines: LyricLine[], background: SongBackground<"colors" | "images"> }} [defaults]
- */
+type SongCreatorProps = {
+  className?: string;
+  id?: string;
+  title?: string;
+  audioUrl: string;
+  getImages: (lines: LyricLine[], interval?: number) => Promise<string[]>;
+  onSave?: (song: SongFileContent) => Promise<any>;
+  LyricsTabView: React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>;
+  onReset?: () => any;
+  defaults?: {
+    lines: LyricLine[];
+    background: SongBackground<"colors" | "images">;
+  };
+  getAbsoluteAudioUrl: (relativeAudioUrl: string) => string;
+};
 
-/**
- * @type {React.FC<SongCreatorProps>}
- */
 export const SongCreator = ({
   id,
   title,
@@ -84,23 +75,22 @@ export const SongCreator = ({
   LyricsTabView,
   onReset,
   defaults,
-  onSave
-}) => {
-  /** @type {ReactState<LyricLine[]>} */
-  const [lines, setLines] = useState(defaults?.lines || []);
-  /** @type {ReactState<number>} */
+  onSave,
+  getAbsoluteAudioUrl
+}: SongCreatorProps) => {
+  const [lines, setLines] = useState<LyricLine[]>(defaults?.lines || []);
   const [cursor, setCursor] = useState(0);
-
-  /** @type {ReactState<number>} */
   const [recordCursor, setRecordCursor] = useState(0);
+  const [timeReset, setTimeReset] = useState(0);
+
   const currentLine = lines[Math.max(cursor, recordCursor)];
 
-  const [timeReset, setTimeReset] = useState(0);
-  /** @type {ReactState<SongBackground<"colors" | "images">>} */
-  const [background, setBackground] = useState({
-    type: defaults.background.type || "images",
-    images: defaults.background.images || [],
-    colors: defaults.background.colors || [
+  const [background, setBackground] = useState<
+    SongBackground<"colors" | "images">
+  >({
+    type: defaults?.background.type || "images",
+    images: defaults?.background.images || [],
+    colors: defaults?.background.colors || [
       `#00aaff`,
       `#ffaa00`,
       `#0000ff`,
@@ -143,20 +133,16 @@ export const SongCreator = ({
     defaults?.background.colors
   ]);
 
-  /** @type {import("react").MutableRefObject<HTMLAudioElement>} */
-  const songPlayerRef = useRef();
-  /**
-   *
-   * @param {number} time
-   */
-  const seek = (time) => {
-    songPlayerRef.current.currentTime = time;
+  const songPlayerRef = useRef<HTMLAudioElement>();
+  const seek = (time: number) => {
+    if (songPlayerRef.current) {
+      songPlayerRef.current.currentTime = time;
+    }
   };
 
-  /** @type {React.FC<{ children: any }>} */
   const Background = useCallback(
-    ({ children }) => {
-      return {
+    ({ children }: { children: any }) => {
+      const dict = {
         images: (
           <ImageGallery
             cursor={Math.max(recordCursor, cursor)}
@@ -180,7 +166,9 @@ export const SongCreator = ({
             {children}
           </ColorGallery>
         )
-      }[background.type];
+      };
+
+      return dict[background.type];
     },
     [
       background.type,
@@ -222,10 +210,10 @@ export const SongCreator = ({
                   setRecordCursor(recordCursor + 1);
                 }}
                 onStart={() => {
-                  songPlayerRef.current.play();
+                  songPlayerRef.current?.play();
                 }}
                 onStop={(isRecording) => {
-                  songPlayerRef.current.pause();
+                  songPlayerRef.current?.pause();
                   if (!isRecording) {
                     seek(0);
                     setCursor(0);
@@ -251,8 +239,8 @@ export const SongCreator = ({
                 />
                 <audio
                   key={audioUrl}
-                  src={audioUrl.replace("~", apiRootURL)}
-                  ref={songPlayerRef}
+                  src={getAbsoluteAudioUrl(audioUrl)}
+                  ref={assertRef(songPlayerRef)}
                 ></audio>
                 <Background>
                   {lines?.length ? (
@@ -271,7 +259,7 @@ export const SongCreator = ({
           <LyricsTabView
             cursor={Math.max(recordCursor, cursor)}
             lines={lines}
-            onLinesChanged={(lines) => {
+            onLinesChanged={(lines: LyricLine[]) => {
               setLines(lines);
               if (lines.length !== lines.length) {
                 getImages(lines).then((images) =>
@@ -279,7 +267,7 @@ export const SongCreator = ({
                 );
               }
             }}
-            onLineClick={(line, i) => {
+            onLineClick={(line: LyricLine, i: number) => {
               const seconds = getLineTime(lines, lines[i]);
               setTimeReset(seconds);
               seek(seconds);
@@ -287,24 +275,23 @@ export const SongCreator = ({
               setCursor(getCurrentLineIndex(lines, seconds));
             }}
             onSave={() => {
-              /** @type {SongFileContent} */
-              const data = {
+              const data: SongFileContent = {
                 id,
-                title,
+                title: title || "karaoke",
                 lines,
                 background,
                 duration: lines.reduce((sum, line) => sum + line.duration, 0),
                 lyrics: lines.map((line) => line.text).join("\n"),
                 audioUrl
               };
-              onSave(data);
+              typeof onSave === "function" && onSave(data);
             }}
             onClear={() => {
               setLines([]);
               setCursor(0);
               setRecordCursor(0);
               setTimeReset(0);
-              onReset();
+              typeof onReset === "function" && onReset();
             }}
           ></LyricsTabView>
         </div>
@@ -313,7 +300,7 @@ export const SongCreator = ({
   );
 };
 
-SongCreator.defaultProps = {
+setDefaultProps(SongCreator, {
   title: "karaoke",
   getImages,
   LyricsTabView,
@@ -325,13 +312,20 @@ SongCreator.defaultProps = {
       colors: []
     },
     lines: []
-  }
-};
+  },
+  getAbsoluteAudioUrl: (audioUrl) =>
+    audioUrl.replace(
+      "~",
+      assert(
+        process.env.REACT_APP_API_ROOT,
+        "env [REACT_APP_API_ROOT] is not defined"
+      )
+    )
+});
 
-/** @param {Song} lines */
-async function getImages(lines, intervals = 5) {
+async function getImages(lines: LyricLine[], intervals = 5) {
   let cursor = intervals;
-  let texts = [];
+  let texts: string[] = [];
   const keywords = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];

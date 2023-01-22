@@ -5,18 +5,22 @@ import { YoutubeDownloader } from "./components";
 import { useQuery } from "react-query";
 import classNames from "classnames";
 import { getAudioUrl, getSystemCapabilities } from "../../common/services";
+import { assert, setDefaultProps } from "../../common";
 
-/**
- * @param {HTMLInputElement} input
- * @returns {Promise<string>}
- */
-const grabFileURL = async (input) => {
+const grabFileURL = async (input: HTMLInputElement): Promise<string> => {
   return new Promise((resolve, reject) => {
     try {
+      if (!input.files) {
+        throw new Error("No files found");
+      }
       const file = input.files[0];
       const reader = new FileReader();
       reader.addEventListener("load", (event) => {
-        const blob = new Blob([event.target.result]);
+        const result = event.target?.result;
+        if (!result) {
+          throw new Error("No audio found in uploaded file");
+        }
+        const blob = new Blob([result]);
         const url = URL.createObjectURL(blob);
         resolve(url);
       });
@@ -27,25 +31,29 @@ const grabFileURL = async (input) => {
   });
 };
 
-/**
- * @typedef {object} SongUploaderProps
- * @property {(blobUrl: string) => any} onAudioFileReceived
- * @property {any} [className]
- * @property {string} [title]
- * @property {() => Promise<{ nodeJS: string }>} [getCapabilities]
- * @property {React.FC<{ onDownload: (url: string) => any, [key: string]: any }>} [AudioDownloader]
- */
+type SongUploaderProps = {
+  onAudioFileReceived: (blobUrl: string) => any;
+  className?: any;
+  title?: string;
+  getCapabilities?: () => Promise<{
+    nodeJS: string;
+  }>;
+  AudioDownloader?: React.FC<{
+    [key: string]: any;
+    onDownload: (url: string) => any;
+  }>;
+};
 
-/**
- * @type {React.FC<SongUploaderProps & { [key: string]: any }>}
- */
 export const SongUploader = ({
   title,
   onAudioFileReceived,
   getCapabilities,
   AudioDownloader
-}) => {
-  const { data: capabilities } = useQuery(["capabilities"], getCapabilities);
+}: SongUploaderProps) => {
+  const { data: capabilities } = useQuery(
+    ["capabilities"],
+    assert(getCapabilities, "getCapabilities is required")
+  );
   return (
     <div className="block h-screen w-screen song-uploader px-16 py-8 relative">
       <div className="flex w-full h-full items-center justify-center py-4 px-8 bg-purple-100 opacity-75"></div>
@@ -56,10 +64,12 @@ export const SongUploader = ({
           </div>
           <div className="block p-8 text-xl">
             {capabilities?.nodeJS ? (
-              <AudioDownloader
-                className="inline-block w-full lg:w-1/2 lg:text-center"
-                onDownload={onAudioFileReceived}
-              />
+              typeof AudioDownloader === "function" ? (
+                <AudioDownloader
+                  className="inline-block w-full lg:w-1/2 lg:text-center"
+                  onDownload={onAudioFileReceived}
+                />
+              ) : null
             ) : null}
             <div
               className={classNames("inline-block w-full lg:text-center", {
@@ -90,7 +100,7 @@ export const SongUploader = ({
   );
 };
 
-SongUploader.defaultProps = {
+setDefaultProps(SongUploader, {
   onAudioFileReceived: () => {},
   getCapabilities: getSystemCapabilities,
   AudioDownloader: (props) => (
@@ -101,4 +111,4 @@ SongUploader.defaultProps = {
       }
     />
   )
-};
+});

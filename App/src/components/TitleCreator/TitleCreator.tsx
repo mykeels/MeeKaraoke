@@ -7,27 +7,27 @@ import { Spinner } from "../../common";
 import { ManualTitleCreator } from "./components";
 import { useDebounce } from "../../hooks";
 
-/**
- * 
- * @typedef {object} TitleCreatorProps
- * @property {(title: string) => Promise<{ url: string, title: string, id: string }[]>} props.getLyricsOptions
- * @property {(url: string) => Promise<string>} props.getLyrics
- * @property {(data: { title: string, lyrics: string }) => any} [props.onTitleChanged]
- */
+type TitleCreatorProps = {
+  getLyricsOptions: (title: string) => Promise<{
+      url: string;
+      title: string;
+      id: string;
+  }[]>;
+  getLyrics: (url: string) => Promise<string>;
+  onTitleChanged?: (data: {
+      title: string;
+      lyrics: string;
+  }) => any;
+};
 
-/**
- * @type {React.FC<TitleCreatorProps>}
- */
 export const TitleCreator = ({
   getLyricsOptions,
   getLyrics,
   onTitleChanged
-}) => {
+}: TitleCreatorProps) => {
   const [manual, setManual] = useState(false);
-  /** @type {ReactState<string>} */
   const [text, setText] = useState("");
-  /** @type {ReactState<{ url: string, title: string, id: string }>} */
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<{ url: string, title: string, id: string } | null>(null);
   const debouncedText = useDebounce(text, 500);
   const { data: lyricsOptions = [], isLoading } = useQuery(
     ["lyric-options", debouncedText],
@@ -35,8 +35,7 @@ export const TitleCreator = ({
   );
 
   const { mutate: _getLyrics, isLoading: isLyricsLoading } = useMutation(
-    /** @param {{ url: string, title: string, id: string }} props */
-    ({ url }) => getLyrics(url),
+    ({ url }: { url: string, title: string, id: string }) => getLyrics(url),
     {
       onSettled: (lyrics, error, props) => {
         if (!error && lyrics) {

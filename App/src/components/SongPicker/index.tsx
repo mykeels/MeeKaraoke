@@ -3,36 +3,32 @@ import "./SongPicker.css";
 import classNames from "classnames";
 import React, { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
-import { Spinner } from "../../common";
+import { assert, Spinner } from "../../common";
 import { DateTime } from "luxon";
 import { Link } from "react-router-dom";
 import { deleteSong, getSongRecords } from "../../common/services";
 
-/**
- * @typedef {object} SongPickerProps
- * @prop {() => Promise<SongRecord[]>} [getSongRecords]
- * @prop {(id: string) => Promise<any>} [deleteSong]
- * @prop {(song: SongRecord) => any} onSelectSong
- * @prop {(song: SongRecord) => any} [onPlaySong]
- * @prop {() => any} onNewSong
- */
+type SongPickerProps = {
+  getSongRecords?: () => Promise<SongRecord[]>;
+  deleteSong?: (id: string) => Promise<any>;
+  onSelectSong: (song: SongRecord) => any;
+  onPlaySong?: (song: SongRecord) => any;
+  onNewSong: () => any;
+};
 
-/**
- * @type {React.FC<SongPickerProps>}
- */
 export const SongPicker = ({
   getSongRecords,
   deleteSong,
   onNewSong,
   onPlaySong,
   onSelectSong
-}) => {
+}: SongPickerProps) => {
   const {
     data: songRecords = [],
     isLoading,
     isFetched,
     refetch
-  } = useQuery(["song-records"], () => getSongRecords());
+  } = useQuery(["song-records"], () => assert(getSongRecords)());
 
   useEffect(() => {
     if (isFetched && !songRecords.length) {
@@ -41,10 +37,9 @@ export const SongPicker = ({
   }, [isFetched, songRecords.length]);
 
   const { mutate: _deleteSong } = useMutation(
-    /** @param {string} id */
-    async (id) => {
+    async (id: string) => {
       if (confirm("Are you sure you want to delete this Song?")) {
-        return deleteSong(id);
+        return assert(deleteSong)(id);
       }
     },
     {

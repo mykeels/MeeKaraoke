@@ -1,11 +1,5 @@
-/**
- *
- * @param {number} seconds
- * @param {number} framesPerSecond
- * @returns {number}
- */
 export const frames = (
-  seconds,
+  seconds: number,
   framesPerSecond = Number(
     process.env.REACT_APP_FRAMES_PER_SECOND ||
       process.env.REMOTION_FRAMES_PER_SECOND ||
@@ -14,13 +8,10 @@ export const frames = (
 ) => Math.ceil(seconds * framesPerSecond);
 
 /**
- * converts frames to seconds
- * @param {number} frames
- * @param {number} framesPerSecond
- * @returns {number}
+ * Converts frames to seconds
  */
 export const f2s = (
-  frames,
+  frames: number,
   framesPerSecond = Number(
     process.env.REACT_APP_FRAMES_PER_SECOND ||
       process.env.REMOTION_FRAMES_PER_SECOND ||
@@ -28,12 +19,7 @@ export const f2s = (
   )
 ) => Math.ceil(frames / framesPerSecond);
 
-/**
- *
- * @param {number[]} durations
- * @returns {number[]}
- */
-export const starts = (durations) => {
+export const starts = (durations: number[]) => {
   let sum = 0;
   const arr = [];
   for (let i = 0; i < durations.length; i++) {

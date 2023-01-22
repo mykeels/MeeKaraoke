@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
 
-import { frames } from "../../common/utils";
+import { assert, assertRef, frames, setDefaultProps } from "../../common/utils";
 import { SongVideo } from "./components";
 
-/**
- * @typedef {object} SongPlayerProps
- * @property {Pick<SongFileContent, "audioUrl" | "background" | "lines">} song
- * @property {boolean} [controls]
- * @property {number} [width]
- * @property {number} [height]
- * @property {boolean} [isFullscreen]
- * @property {() => any} [onPlayEnd]
- * @property {React.FC<{ lines: LyricLine[] }>} [Subtitles]
- * @property {React.FC<{ images: string[] }>} [Background]
- */
+type SongPlayerProps = {
+  className?: any;
+  song: Pick<SongFileContent, "audioUrl" | "background" | "lines">;
+  controls?: boolean;
+  width?: number;
+  height?: number;
+  isFullscreen?: boolean;
+  onPlayEnd?: () => any;
+  Subtitles?: React.FC<{
+    lines: LyricLine[];
+  }>;
+  Background?: React.FC<{
+    images: string[];
+  }>;
+};
 
-/**
- * @type {React.FC<SongPlayerProps & { [key: string]: any } & React.RefAttributes<import("@remotion/player").PlayerRef>>}
- */
 export const SongPlayer = React.forwardRef(function SongPlayer(
   {
     song,
@@ -30,32 +31,33 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
     Background,
     Subtitles,
     className
-  },
-  ref
+  }: SongPlayerProps,
+  ref: React.RefObject<import("@remotion/player").PlayerRef>
 ) {
   if (!ref) {
-    ref = React.createRef();
+    ref = React.createRef() as any;
   }
   useEffect(() => {
     if (isFullscreen) {
       try {
-        ref.current?.requestFullscreen();
+        ref?.current?.requestFullscreen();
       } catch (err) {
         console.warn("Fullscreen mode unsupported", err);
       }
       ref.current?.play();
     }
-    const onFullScreenChange = (e) => {
+    const onFullScreenChange = (e: { detail: { isFullscreen: boolean } }) => {
       if (!e.detail.isFullscreen) {
         typeof onPlayEnd === "function" && onPlayEnd();
       }
     };
-    ref.current?.addEventListener("fullscreenchange", onFullScreenChange);
+    ref.current?.addEventListener("fullscreenchange", (e) => {});
     return () => {
       ref.current?.removeEventListener("fullscreenchange", onFullScreenChange);
     };
   }, []);
-  const duration = song.lines.reduce((sum, line) => sum + line.duration, 0);
+  const duration =
+    song.lines?.reduce((sum, line) => sum + line.duration, 0) || 0;
   return (
     <Player
       ref={ref}
@@ -63,8 +65,8 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
         <SongVideo song={song} Background={Background} Subtitles={Subtitles} />
       )}
       durationInFrames={frames(duration)}
-      compositionWidth={width}
-      compositionHeight={height}
+      compositionWidth={assert(width, "width must be defined")}
+      compositionHeight={assert(height, "height must be defined")}
       fps={frames(1)}
       controls={controls}
       className={className}
@@ -72,8 +74,8 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
   );
 });
 
-SongPlayer.defaultProps = {
+setDefaultProps(SongPlayer, {
   width: 1280,
   height: 720,
   controls: true
-};
+});

@@ -4,37 +4,31 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { Capabilities } from "./components";
-import { Spinner } from "../../common";
+import { assert, setDefaultProps, Spinner } from "../../common";
 import { SongExporter } from "./SongExporter";
 import { getExports, getSongRecords } from "../../common/services";
 
-/**
- * @typedef {object} SongExportsProps
- * @property {() => Promise<SongRecord[]>} [getSongRecords]
- * @property {() => Promise<SongExport[]>} [getExports]
- * @property {React.FC<Omit<import("./components/Capabilities").CapabilitiesProps, "getCapabilities">>} [Capabilities]
- * @property {React.FC<Omit<import("./SongExporter").SongExporterProps, "startExport" | "stopExport">>} [SongExporter]
- */
+type SongExportsProps = {
+  getSongRecords?: () => Promise<SongRecord[]>;
+  getExports?: () => Promise<SongExport[]>;
+  Capabilities?: React.FC<Pick<Parameters<typeof Capabilities>[0], "onCapabilitiesChanged">>;
+  SongExporter?: React.FC<Omit<Parameters<typeof SongExporter>[0], "startExport" | "stopExport">>;
+};
 
-/**
- * @type {React.FC<SongExportsProps & { [key: string]: any }>}
- */
 export const SongExports = ({
   getSongRecords,
   getExports,
   SongExporter,
   Capabilities
-}) => {
-  /** @type {ReactState<boolean>} */
-  const [hasCapabilities, setHasCapabilities] = useState(null);
+}: SongExportsProps) => {
+  const [hasCapabilities, setHasCapabilities] = useState<boolean | null>(null);
   const { data: songRecords = [], isLoading } = useQuery(["songs"], () =>
-    getSongRecords()
+    assert(getSongRecords, "[getSongRecords] is required")()
   );
   const { data: exports } = useQuery(
     ["exports"],
-    /** @returns {Promise<{ [id: string]: SongExport }>} */
-    () =>
-      getExports().then((exports) =>
+    (): Promise<Record<string, SongExport>> =>
+      assert(getExports, "[getExports] is required")().then((exports) =>
         exports.reduce((dict, e) => ({ ...dict, [e.id]: e }), {})
       )
   );
@@ -55,35 +49,37 @@ export const SongExports = ({
                 {isLoading ? (
                   <Spinner size={16} />
                 ) : songRecords.length ? (
-                  songRecords.map((record, i) => (
-                    <SongExporter
-                      duration={exports?.[record?.id]?.duration}
-                      key={`${record.id}-${i}`}
-                      record={record}
-                      isActive={!!exports?.[record.id]}
-                    />
-                  ))
+                  songRecords.map((record, i) =>
+                    typeof SongExporter === "function" ? (
+                      <SongExporter
+                        duration={exports?.[record?.id]?.duration}
+                        key={`${record.id}-${i}`}
+                        record={record}
+                        isActive={!!exports?.[record.id]}
+                      />
+                    ) : null
+                  )
                 ) : (
                   <div className="text-xl">No songs saved</div>
                 )}
               </div>
             </div>
-          ) : (
+          ) : typeof Capabilities === "function" ? (
             <Capabilities
-              onCapabilitiesChanged={(hasCapabilities) =>
+              onCapabilitiesChanged={(hasCapabilities: boolean) =>
                 setHasCapabilities(hasCapabilities)
               }
             />
-          )}
+          ) : null}
         </div>
       </div>
     </div>
   );
 };
 
-SongExports.defaultProps = {
+setDefaultProps(SongExports, {
   getSongRecords,
   getExports: getExports,
   Capabilities: (props) => <Capabilities {...props} />,
   SongExporter: (props) => <SongExporter {...props} />
-};
+});

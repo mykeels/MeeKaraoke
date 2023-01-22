@@ -3,23 +3,19 @@ import "./SongExporter.css";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
-import { frames, Spinner } from "../../common";
+import { assert, frames, setDefaultProps, Spinner } from "../../common";
 import { getSongById } from "../../common/services";
 
-/**
- * @typedef {object} SongExporterProps
- * @property {SongRecord} record
- * @property {number} [duration]
- * @property {(id: string) => Promise<SongFileContent>} [getSongById]
- * @property {(id: string) => EventSource} [startExport]
- * @property {(id: string) => EventSource} [listenToExport]
- * @property {(id: string) => Promise<void>} [stopExport]
- * @property {boolean} isActive
- */
+type SongExporterProps = {
+  record: SongRecord;
+  duration?: number;
+  getSongById?: (id: string) => Promise<SongFileContent>;
+  startExport?: (id: string) => EventSource;
+  listenToExport?: (id: string) => EventSource;
+  stopExport?: (id: string) => Promise<void>;
+  isActive: boolean;
+};
 
-/**
- * @type {React.FC<SongExporterProps & { [key: string]: any }>}
- */
 export const SongExporter = ({
   record,
   duration,
@@ -28,35 +24,47 @@ export const SongExporter = ({
   stopExport,
   getSongById,
   isActive
-}) => {
-  const [outputs, setOutputs] = useState([]);
-  /** @type {ReactState<string>} */
+}: SongExporterProps) => {
+  const [outputs, setOutputs] = useState<string[]>([]);
   const [filepath, setFilepath] = useState("");
-  /** @type {ReactState<{ encoded: number, rendered: number, frames: number, audio: boolean, complete: boolean }>} */
-  const [status, setStatus] = useState({
+  type ExportStatus = {
+    encoded: number;
+    rendered: number;
+    frames: number;
+    audio: boolean;
+    complete: boolean;
+  };
+  const [status, setStatus] = useState<ExportStatus>({
     encoded: 0,
     rendered: 0,
-    frames: frames(duration),
+    frames: frames(
+      assert(duration, "duration is required, and must be a non-zero number")
+    ),
     audio: false,
     complete: false
   });
   const [isExporting, setIsExporting] = useState(isActive);
-  /** @type {ReactState<EventSource>} */
-  const [eventSource, setEventSource] = useState(null);
+  const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
-  const start = async (fn = startExport) => {
+  const start = async (
+    fn = assert(startExport, "[startExport] is required")
+  ) => {
     setIsExporting(true);
-    const song = await getSongById(record.id);
+    const song = await assert(
+      getSongById,
+      "[getSongById] is required"
+    )(record.id);
     setStatus((status) => ({ ...status, frames: frames(song.duration + 3) }));
     const evtSource = fn(record.id);
     setEventSource(evtSource);
     evtSource.onmessage = function (event) {
-      /** @type {{ output: string }} */
-      var data = JSON.parse(event.data);
+      var data = JSON.parse(event.data) as { output: string };
       if (
         ["encoded", "rendered"].every((chunk) => data?.output.includes(chunk))
       ) {
-        const finds = data.output.match(/(\d+) rendered, (\d+) encoded/);
+        const finds = assert(
+          data.output.match(/(\d+) rendered, (\d+) encoded/)
+        );
         const rendered = Number(finds[1]);
         const encoded = Number(finds[2]);
         if (rendered && encoded) {
@@ -67,7 +75,7 @@ export const SongExporter = ({
       } else if (data?.output?.includes("Output Filepath:")) {
         setFilepath(data.output.replace("Output Filepath: ", ""));
       } else if (data?.output?.includes("Duration:")) {
-        const finds = data.output.match(/Duration: (\d+)s/);
+        const finds = assert(data.output.match(/Duration: (\d+)s/));
         const duration = Number(finds[1]);
         setStatus((status) => ({ ...status, frames: frames(duration + 3) }));
         setOutputs((outputs) => [data?.output, ...outputs]);
@@ -87,11 +95,11 @@ export const SongExporter = ({
     };
   };
   const { mutate: stop, isLoading: isStopLoading } = useMutation(
-    () => stopExport(record.id),
+    () => assert(stopExport, "[stopExport] is required")(record.id),
     {
       onSuccess: () => {
         setIsExporting(false);
-        eventSource.close();
+        eventSource?.close();
         setEventSource(null);
       }
     }
@@ -173,7 +181,7 @@ export const SongExporter = ({
   );
 };
 
-SongExporter.defaultProps = {
+setDefaultProps(SongExporter, {
   startExport: (id) => {
     const apiRootUrl = process.env.REACT_APP_API_ROOT;
     return new EventSource(`${apiRootUrl}/video-builds/${id}/start`);
@@ -191,4 +199,4 @@ SongExporter.defaultProps = {
   getSongById,
   isActive: false,
   duration: 1
-};
+});

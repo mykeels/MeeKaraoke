@@ -1,18 +1,19 @@
+import { assert } from "../utils";
+
 const apiRootUrl = process.env.REACT_APP_API_ROOT;
 
-/** @param {string} id */
-export async function getSongById(id) {
-  /** @type {SongFileContent} */
-  const song = await fetch(`${apiRootUrl}/songs/${id}`).then((res) =>
-    res.json()
-  );
+export async function getSongById(id: string) {
+  const song: SongFileContent & { song?: LyricLine[] } = await fetch(
+    `${apiRootUrl}/songs/${id}`
+  ).then((res) => res.json());
   song["song"] = song["lines"] || song["song"];
-  song.lyrics = song.lines.map((l) => l.text).join("\n");
+  song.lyrics = assert(song.lines)
+    .map((l) => l.text)
+    .join("\n");
   return song;
 }
 
-/** @param {SongFileContent} content */
-export async function saveSongFileContents(content) {
+export async function saveSongFileContents(content: SongFileContent): Promise<SongFileContent> {
   if (content.id) {
     // existing record
     /** @type {SongRecord} */
@@ -51,8 +52,7 @@ export async function saveSongFileContents(content) {
   return content;
 }
 
-/** @param {SongFileContent} content */
-export async function uploadSongFileContent(content) {
+export async function uploadSongFileContent(content: SongFileContent) {
   const str = JSON.stringify({
     ...content,
     audioUrl: `~/Static/${content?.id}/audio.mp3`
@@ -68,8 +68,7 @@ export async function uploadSongFileContent(content) {
   });
 }
 
-/** @param {SongFileContent} content */
-async function uploadAudioFile(content) {
+async function uploadAudioFile(content: SongFileContent) {
   const blob = await fetch(content.audioUrl).then((res) => res.blob());
   const formData = new FormData();
   formData.append("files", blob);
@@ -79,18 +78,12 @@ async function uploadAudioFile(content) {
   });
 }
 
-/** @returns {Promise<SongRecord[]>} */
-export async function getSongRecords() {
+export async function getSongRecords(): Promise<SongRecord[]> {
   const apiRoot = process.env.REACT_APP_API_ROOT;
   return fetch(`${apiRoot}/Songs`).then((res) => res.json());
 }
 
-/**
- *
- * @param {string} id
- * @returns {Promise<void>}
- */
-export async function deleteSong(id) {
+export async function deleteSong(id: string): Promise<void> {
   const apiRoot = process.env.REACT_APP_API_ROOT;
   return fetch(`${apiRoot}/Songs/${id}`, {
     method: "delete"

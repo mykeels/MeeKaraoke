@@ -5,20 +5,18 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Spinner } from "../../../../common";
 
-/**
- * @typedef {{ title: string, lyrics: string }} ManualTitleCreatorSubmission
- *
- * @typedef {object} ManualTitleCreatorProps
- * @property {(value: ManualTitleCreatorSubmission) => Promise<any>} onSubmit
- * @property {() => any} onCancel
- * @property {any} [className]
- */
+type ManualTitleCreatorSubmission = {
+  title: string;
+  lyrics: string;
+};
 
-/**
- * @type {React.FC<ManualTitleCreatorProps & { [key: string]: any }>}
- */
-export const ManualTitleCreator = ({ onSubmit, onCancel }) => {
-  /** @type {ReactState<boolean>} */
+type ManualTitleCreatorProps = {
+  onSubmit: (value: ManualTitleCreatorSubmission) => Promise<any>;
+  onCancel: () => any;
+  className?: any;
+};
+
+export const ManualTitleCreator = ({ onSubmit, onCancel }: ManualTitleCreatorProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const {
     handleSubmit,
@@ -32,15 +30,15 @@ export const ManualTitleCreator = ({ onSubmit, onCancel }) => {
       lyrics: ""
     }
   });
-  /** @param {ManualTitleCreatorSubmission} values */
-  const onFormSubmit = async (values) => {
+
+  const onFormSubmit = async (values: ManualTitleCreatorSubmission) => {
     setIsLoading(true);
     return onSubmit(values).finally(() => {
       setIsLoading(false);
       reset();
     });
   };
-  const formRef = useRef();
+  const formRef = useRef<HTMLFormElement>();
 
   return (
     <div className="block h-screen w-screen title-creator px-16 py-8">
@@ -52,7 +50,7 @@ export const ManualTitleCreator = ({ onSubmit, onCancel }) => {
           <form
             name="login"
             onSubmit={handleSubmit(onFormSubmit)}
-            ref={formRef}
+            ref={formRef as React.LegacyRef<HTMLFormElement>}
           >
             <div className="w-full py-4">
               <input

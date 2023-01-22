@@ -1,26 +1,25 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { setDefaultProps } from "../../common";
 
 import { getLyrics, getLyricsOptions } from "../../common/services";
 import { TitleCreator } from "./TitleCreator";
 
-/**
- * @typedef {object} TitleCreatorScreenProps
- * @property {any} [className]
- * @property {(data: { title: string, lyrics: string }) => any} [onTitleChanged]
- * @property {() => any} [onFileUploadIntent]
- * @property {React.FC<Pick<import("./TitleCreator").TitleCreatorProps, "onTitleChanged">>} [TitleCreator]
- */
+type TitleCreatorScreenProps = {
+  className?: any;
+  onTitleChanged?: (data: { title: string; lyrics: string }) => any;
+  onFileUploadIntent?: () => any;
+  TitleCreator?: React.FC<
+    Pick<Parameters<typeof TitleCreator>[0], "onTitleChanged">
+  >;
+};
 
-/**
- * @type {React.FC<TitleCreatorScreenProps & { [key: string]: any }>}
- */
 export const TitleCreatorScreen = ({
   onTitleChanged,
   TitleCreator
-}) => {
+}: TitleCreatorScreenProps) => {
   const navigate = useNavigate();
-  return (
+  return typeof TitleCreator === "function" ? (
     <TitleCreator
       onTitleChanged={(data) => {
         if (typeof onTitleChanged === "function") {
@@ -29,10 +28,10 @@ export const TitleCreatorScreen = ({
         }
       }}
     />
-  );
+  ) : null;
 };
 
-TitleCreatorScreen.defaultProps = {
+setDefaultProps(TitleCreatorScreen, {
   TitleCreator: (props) => (
     <TitleCreator
       {...props}
@@ -40,4 +39,4 @@ TitleCreatorScreen.defaultProps = {
       getLyricsOptions={getLyricsOptions}
     />
   )
-};
+});

@@ -1,27 +1,28 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
+import { assert } from "../../common";
 
 import { getSongById } from "../../common/services";
 import { SongPlayer } from "./SongPlayer";
 
-/**
- * @typedef {object} SongPlayerScreenProps
- * @property {any} [className]
- * @property {(id: string) => Promise<SongFileContent>} [getSongById]
- */
+type SongPlayerScreenProps = {
+  className?: any;
+  getSongById?: (id: string) => Promise<SongFileContent>;
+};
 
-/**
- * @type {React.FC<SongPlayerScreenProps & { [key: string]: any }>}
- */
-export const SongPlayerScreen = ({ getSongById }) => {
+export const SongPlayerScreen = ({ getSongById }: SongPlayerScreenProps) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: song } = useQuery(["songs", id], () => getSongById(id));
+  const { data: song } = useQuery(["songs", id], () =>
+    assert(
+      getSongById,
+      "[getSongById] is required"
+    )(assert(id, "[id] param is required"))
+  );
 
   useEffect(() => {
-    /** @param {KeyboardEvent} e */
-    const onEscapeKeyPressed = (e) => {
+    const onEscapeKeyPressed = (e: KeyboardEvent) => {
       e.key === "Escape" && navigate("/");
     };
     window.addEventListener("keypress", onEscapeKeyPressed);

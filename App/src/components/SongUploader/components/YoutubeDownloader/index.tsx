@@ -1,25 +1,29 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Spinner } from "../../../../common";
+import { assert, Spinner } from "../../../../common";
 
-/**
- * @typedef {{ url: string }} YoutubeDownloaderSubmission
- *
- * @typedef {object} YoutubeDownloaderProps
- * @property {any} [className]
- * @property {(youtubeUrl: string) => Promise<string>} [getAudioUrl]
- * @property {(audioUrl: string) => any} [onDownload]
- */
+type YoutubeDownloaderSubmission = {
+  url: string;
+};
 
-/**
- * @type {React.FC<YoutubeDownloaderProps & { [key: string]: any }>}
- */
-export const YoutubeDownloader = ({ className, getAudioUrl, onDownload }) => {
-  /** @type {ReactState<boolean>} */
+type YoutubeDownloaderProps = {
+  className?: any;
+  getAudioUrl?: (youtubeUrl: string) => Promise<string>;
+  onDownload?: (audioUrl: string) => any;
+};
+
+export const YoutubeDownloader = ({
+  className,
+  getAudioUrl,
+  onDownload
+}: YoutubeDownloaderProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const download = async (url) => {
+  const download = async (url: string) => {
     if (url) {
-      const audioUrl = await getAudioUrl(url);
+      const audioUrl = await assert(
+        getAudioUrl,
+        "[getAudioUrl] is required"
+      )(url);
       typeof onDownload === "function" && onDownload(audioUrl);
     }
   };
@@ -34,8 +38,8 @@ export const YoutubeDownloader = ({ className, getAudioUrl, onDownload }) => {
       url: ""
     }
   });
-  /** @param {YoutubeDownloaderSubmission} values */
-  const onFormSubmit = async (values) => {
+
+  const onFormSubmit = async (values: YoutubeDownloaderSubmission) => {
     setIsLoading(true);
     return download(values.url).finally(() => {
       setIsLoading(false);
