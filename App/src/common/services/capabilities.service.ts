@@ -1,4 +1,4 @@
-type SystemCapabilities = {
+export type SystemCapabilities = {
   nodeJS: string;
   ffmpeg: string;
 };

@@ -6,19 +6,22 @@ import { Link } from "react-router-dom";
 
 import { SongLine } from "../SongLine";
 import { SaveButton } from "./components";
+import { assert } from "../../../../common";
 
-/**
- * @param {object} props
- * @param {string} [props.title]
- * @param {{ text: string, active: string }} [props.defaults]
- * @param {number} [props.cursor]
- * @param {LyricLine[]} [props.lines]
- * @param {(lines: LyricLine[]) => any} [props.onLinesChanged]
- * @param {(line: LyricLine, index: number) => any} [props.onLineClick]
- * @param {() => any} [props.onSave]
- * @param {() => any} [props.onClear]
- * @returns {JSX.Element}
- */
+type LyricsTabViewProps = {
+  title?: string;
+  defaults?: {
+    text: string;
+    active: string;
+  };
+  cursor?: number;
+  lines?: LyricLine[];
+  onLinesChanged?: (lines: LyricLine[]) => any;
+  onLineClick?: (line: LyricLine, index: number) => any;
+  onSave?: () => any;
+  onClear?: () => any;
+};
+
 export const LyricsTabView = ({
   title,
   cursor,
@@ -28,10 +31,10 @@ export const LyricsTabView = ({
   onLineClick,
   onSave,
   onClear
-}) => {
+}: LyricsTabViewProps) => {
   const [active, setActive] = useState(defaults?.active || "text");
   const [text, setText] = useState(defaults?.text || "");
-  const starts = (durations) => {
+  const starts = (durations: number[]) => {
     let sum = 0;
     const arr = [];
     for (let i = 0; i < durations.length; i++) {
@@ -40,26 +43,26 @@ export const LyricsTabView = ({
     }
     return arr;
   };
-  /** @param {LyricLine[]} lines */
-  const updateSongLines = (lines) => {
+  const updateSongLines = (lines: LyricLine[]) => {
     const startTimes = starts(lines.map((l) => l.duration));
     const linesWithFrom = lines.map((line, i) => ({
       ...line,
       from: startTimes[i]
     }));
-    onLinesChanged(linesWithFrom);
+    assert(onLinesChanged)(linesWithFrom);
   };
-  /** @param {string} text */
-  const updateSongLyrics = (text) => {
-    updateSongLines(text
-      .replace(/\n\n+/g, "\n\n")
-      .split("\n")
-      .map((line) => line.trim())
-      .map((text, i) => ({
-        text,
-        duration: lines[i]?.duration || 1,
-        from: lines[i]?.duration || 0
-      })));
+  const updateSongLyrics = (text: string) => {
+    updateSongLines(
+      text
+        .replace(/\n\n+/g, "\n\n")
+        .split("\n")
+        .map((line) => line.trim())
+        .map((text, i) => ({
+          text,
+          duration: lines?.[i]?.duration || 1,
+          from: lines?.[i]?.duration || 0
+        }))
+    );
   };
 
   useEffect(() => {
@@ -129,7 +132,7 @@ export const LyricsTabView = ({
               role="tab"
               onClick={() => {
                 setText("");
-                onClear();
+                typeof onClear === "function" && onClear();
               }}
             >
               ❌
@@ -180,7 +183,7 @@ export const LyricsTabView = ({
         {active === "pretty" ? (
           <div>
             {text ? (
-              lines.map((line, i) => (
+              lines?.map((line, i) => (
                 <SongLine
                   key={`${line}-${i}`}
                   isActive={cursor === i}

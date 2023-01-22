@@ -1,13 +1,9 @@
 import React from "react";
 
-/**
- * @typedef {object} NodeJSInstructionsProps
- * @property {any} [className]
- */
+type NodeJSInstructionsProps = {
+  className?: any;
+};
 
-/**
- * @type {React.FC<NodeJSInstructionsProps & { [key: string]: any }>}
- */
 export const NodeJSInstructions = () => {
   return (
     <>

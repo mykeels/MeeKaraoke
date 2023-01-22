@@ -2,24 +2,22 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { useMedia } from "../../../../hooks";
 
-/**
- * @typedef {object} ColorGalleryProps
- * @property {any} [className]
- * @property {string[]} colors
- * @property {number} cursor
- * @property {(colors: string[]) => any} [onChange]
- */
+type ColorGalleryProps = {
+  children?: any;
+  className?: any;
+  colors: string[];
+  cursor: number;
+  onChange?: (colors: string[]) => any;
+  onClick?: (color: string, i: number) => void;
+};
 
-/**
- * @type {React.FC<ColorGalleryProps & { [key: string]: any }>}
- */
 export const ColorGallery = ({
   cursor,
   colors,
   children,
   onChange,
   onClick
-}) => {
+}: ColorGalleryProps) => {
   const [_colors, setColors] = useState(colors || []);
   const index = Math.min(
     _colors.length - 1,
@@ -33,14 +31,16 @@ export const ColorGallery = ({
   }, [_colors]);
 
   useEffect(() => {
-    /** @type {HTMLDivElement} */
-    const parentElem = document.querySelector(".image-slider-wrapper");
-    /** @type {HTMLDivElement} */
-    const elem = document.querySelector(`.gallery-color-${index}`);
-    if (elem) {
+    const parentElem = document.querySelector(
+      ".image-slider-wrapper"
+    ) as HTMLDivElement | null;
+    const elem = document.querySelector(
+      `.gallery-color-${index}`
+    ) as HTMLDivElement | null;
+    if (elem && parentElem) {
       const left =
         elem?.offsetLeft - parentElem?.clientWidth / 2 + elem?.clientWidth / 2;
-      parentElem.scrollTo({
+      parentElem?.scrollTo({
         left,
         behavior: "smooth"
       });
@@ -50,8 +50,7 @@ export const ColorGallery = ({
   const isLgScreen = useMedia(["(min-width: 1024px)"], [true], false);
   const Component = useCallback(() => children, []);
 
-  /** @param {string} color */
-  const removeImage = (color) => {
+  const removeImage = (color: string) => {
     if (typeof onChange === "function") {
       setColors(_colors.filter((i) => i !== color));
     }

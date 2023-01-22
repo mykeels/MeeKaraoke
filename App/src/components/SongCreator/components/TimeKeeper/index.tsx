@@ -3,28 +3,27 @@ import "./TimeKeeper.css";
 import classNames from "classnames";
 import { DateTime } from "luxon";
 import React, { useEffect, useRef, useState } from "react";
+import { assertRef } from "../../../../common";
 
-/**
- * @param {object} props
- * @param {number} [props.value]
- * @param {() => any} props.onStart
- * @param {(isRecording: boolean) => any} props.onStop
- * @param {(seconds: number) => any} props.onTick
- * @param {(interval: number) => any} props.onRecordTick
- * @returns {JSX.Element}
- */
+type TimeKeeperProps = {
+  value?: number;
+  onStart: () => any;
+  onStop: (isRecording: boolean) => any;
+  onTick: (seconds: number) => any;
+  onRecordTick: (interval: number) => any;
+};
+
 export const TimeKeeper = ({
   value,
   onStart,
   onStop,
   onTick,
   onRecordTick
-}) => {
+}: TimeKeeperProps) => {
   const [clock, setClock] = useState(false);
   const [ms, setMs] = useState(0);
-  const [recordMs, setRecordMs] = useState(null);
-  /** @type {import("react").MutableRefObject<NodeJS.Timer>} */
-  const intervalRef = useRef();
+  const [recordMs, setRecordMs] = useState<number | null>(null);
+  const intervalRef = useRef<NodeJS.Timer>();
   const isRecording = recordMs !== null;
   const isPlaying = !!clock;
   const start = () => {
@@ -49,7 +48,7 @@ export const TimeKeeper = ({
       setRecordMs(ms);
       start();
     } else {
-      onRecordTick((ms - recordMs) / 1000);
+      onRecordTick((ms - Number(recordMs)) / 1000);
       setRecordMs(ms);
     }
   };
@@ -59,7 +58,7 @@ export const TimeKeeper = ({
     }
   }, [ms]);
   useEffect(() => {
-    setMs(value * 1000);
+    setMs(Number(value) * 1000);
   }, [value]);
   return (
     <div className="block w-full px-2 py-2">

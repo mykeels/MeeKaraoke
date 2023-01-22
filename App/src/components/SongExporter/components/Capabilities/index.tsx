@@ -1,29 +1,25 @@
 import classNames from "classnames";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
-import { Spinner } from "../../../../common";
-import { getSystemCapabilities } from "../../../../common/services";
+import { assert, Spinner } from "../../../../common";
+import { getSystemCapabilities, SystemCapabilities } from "../../../../common/services";
 import { FfMpegInstructions, NodeJSInstructions } from "../Instructions";
 
-/**
- * @typedef {object} CapabilitiesProps
- * @property {any} [className]
- * @property {any} [children]
- * @property {(hasCapabilities: boolean, capabilities: import("../../../../common/services").SystemCapabilities) => any} onCapabilitiesChanged
- * @property {() => Promise<import("../../../../common/services").SystemCapabilities>} [getCapabilities]
- */
+type CapabilitiesProps = {
+  className?: any;
+  children?: any;
+  onCapabilitiesChanged: (hasCapabilities: boolean, capabilities?: SystemCapabilities) => any;
+  getCapabilities?: () => Promise<SystemCapabilities>;
+};
 
-/**
- * @type {React.FC<CapabilitiesProps & { [key: string]: any }>}
- */
 export const Capabilities = ({
   onCapabilitiesChanged,
   getCapabilities,
   children
-}) => {
+}: CapabilitiesProps) => {
   const { data: capabilities, isLoading } = useQuery(
     ["capabilities"],
-    getCapabilities
+    assert(getCapabilities, "[getCapabilities] is required")
   );
   useEffect(() => {
     onCapabilitiesChanged(

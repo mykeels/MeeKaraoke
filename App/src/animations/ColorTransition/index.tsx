@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { assert, setDefaultProps } from "../../common";
 
-/**
- *
- * @param {string} hex
- * @returns {{ r: number, g: number, b: number } | null}
- */
-function hexToRgb(hex) {
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
@@ -17,33 +13,31 @@ function hexToRgb(hex) {
     : null;
 }
 
-/**
- *
- * @param {number} n
- * @returns {string}
- */
-function numToHex(n) {
+function numToHex(n: number): string {
   var hex = n.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
 }
 
-/**
- * @typedef {object} ColorTransitionProps
- * @property {any} children
- * @property {JSX.Element | React.FC<{ style: React.CSSProperties }>} [children]
- * @property {string} from
- * @property {string} to
- */
+type ColorTransitionProps = {
+  children?:
+    | ((props: { style: { color: string } }) => (JSX.Element | null))
+    | JSX.Element;
+  from: string;
+  to: string;
+  onChange?: (props: { color: string }) => void;
+};
 
-/**
- * @type {React.FC<ColorTransitionProps & { [key: string]: any }>}
- */
-export const ColorTransition = ({ children, onChange, from, to }) => {
+export const ColorTransition = ({
+  children,
+  onChange,
+  from,
+  to
+}: ColorTransitionProps) => {
   const { durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
 
-  const fromRgb = hexToRgb(from);
-  const toRgb = hexToRgb(to);
+  const fromRgb = assert(hexToRgb(from));
+  const toRgb = assert(hexToRgb(to));
 
   const color = `#${[
     numToHex(
@@ -67,19 +61,19 @@ export const ColorTransition = ({ children, onChange, from, to }) => {
     typeof onChange === "function" && onChange({ color });
   }, [color]);
 
-  const Component = typeof children === "function" ? children : null;
+  const Component = typeof children === "function" ? assert(children) : null;
 
   return children ? (
-    typeof children === "function" ? (
+    typeof children === "function" && Component ? (
       <Component style={{ color }} />
     ) : (
       <div className="relative z-10" style={{ color }}>
-        {children}
+        {typeof children === "function" ? null : children}
       </div>
     )
   ) : null;
 };
 
-ColorTransition.defaultProps = {};
+setDefaultProps(ColorTransition, {});
 
 export * from "./components";

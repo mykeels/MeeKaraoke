@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-/**
- * @typedef {object} RedirectProps
- * @property {string} to
- */
+type RedirectProps = {
+  to: string
+}
 
-/**
- * @type {React.FC<RedirectProps & { [key: string]: any }>}
- */
-export const Redirect = ({ to }) => {
+export const Redirect = ({ to }: RedirectProps) => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate(to);

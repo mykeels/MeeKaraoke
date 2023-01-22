@@ -8,16 +8,12 @@ import {
   useVideoConfig
 } from "remotion";
 
-/**
- * @typedef {object} PhotoSlideProps
- * @property {any} [children]
- * @property {string} [imageURL]
- */
+type PhotoSlideProps = {
+  children?: any;
+  imageURL?: string;
+};
 
-/**
- * @type {React.FC<PhotoSlideProps & { [key: string]: any }>}
- */
-export const PhotoSlide = ({ children, imageURL }) => {
+export const PhotoSlide = ({ children, imageURL }: PhotoSlideProps) => {
   const frame = useCurrentFrame();
   const { height, fps } = useVideoConfig();
 

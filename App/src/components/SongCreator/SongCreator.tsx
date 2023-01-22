@@ -55,7 +55,7 @@ type SongCreatorProps = {
   id?: string;
   title?: string;
   audioUrl: string;
-  getImages: (lines: LyricLine[], interval?: number) => Promise<string[]>;
+  getImages?: (lines: LyricLine[], interval?: number) => Promise<string[]>;
   onSave?: (song: SongFileContent) => Promise<any>;
   LyricsTabView: React.FC<Omit<Parameters<typeof LyricsTabView>[0], "defaults">>;
   onReset?: () => any;
@@ -63,7 +63,7 @@ type SongCreatorProps = {
     lines: LyricLine[];
     background: SongBackground<"colors" | "images">;
   };
-  getAbsoluteAudioUrl: (relativeAudioUrl: string) => string;
+  getAbsoluteAudioUrl?: (relativeAudioUrl: string) => string;
 };
 
 export const SongCreator = ({
@@ -102,7 +102,7 @@ export const SongCreator = ({
 
   useEffect(() => {
     if (!defaults?.background.images?.length) {
-      getImages(lines).then((images) =>
+      assert(getImages)(lines).then((images) =>
         setBackground({
           ...background,
           images
@@ -239,7 +239,7 @@ export const SongCreator = ({
                 />
                 <audio
                   key={audioUrl}
-                  src={getAbsoluteAudioUrl(audioUrl)}
+                  src={assert(getAbsoluteAudioUrl)(audioUrl)}
                   ref={assertRef(songPlayerRef)}
                 ></audio>
                 <Background>
@@ -262,7 +262,7 @@ export const SongCreator = ({
             onLinesChanged={(lines: LyricLine[]) => {
               setLines(lines);
               if (lines.length !== lines.length) {
-                getImages(lines).then((images) =>
+                assert(getImages)(lines).then((images) =>
                   setBackground({ ...background, images })
                 );
               }

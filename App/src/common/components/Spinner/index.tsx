@@ -4,16 +4,13 @@ import classnames from "classnames/dedupe";
 import PropTypes from "prop-types";
 import React from "react";
 
-/**
- *
- * @param {object} props
- * @param {string | number} [props.size]
- * @param {string} [props.borderWidth]
- * @param {string} [props.borderColor]
- * @param {any} [props.className]
- * @returns {JSX.Element}
- */
-export const Spinner = ({ size, borderWidth, borderColor, className }) => {
+type SpinnerProps = {
+  size?: string | number;
+  borderWidth?: string;
+  borderColor?: string;
+  className?: any;
+};
+export const Spinner = ({ size, borderWidth, borderColor, className }: SpinnerProps) => {
   const spinnerClasses = classnames("spinner inline-block", className);
   return (
     <div

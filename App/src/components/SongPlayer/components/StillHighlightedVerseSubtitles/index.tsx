@@ -1,23 +1,27 @@
 import classNames from "classnames";
 import React from "react";
 import { AbsoluteFill } from "remotion";
+import { assert, setDefaultProps } from "../../../../common";
 
-/**
- * @typedef {object} StillHighlightedVerseSubtitlesProps
- * @property {any} [className]
- * @property {LyricLine[]} lines
- * @property {number} [count]
- * @property {number} cursor
- */
+type StillHighlightedVerseSubtitlesProps = {
+  className?: any;
+  lines: LyricLine[];
+  count?: number;
+  cursor: number;
+};
 
-/**
- * @param {LyricLine[]} lines
- * @param {number} count
- * @returns {{ lines: LyricLine[], from: number, duration: number, id: number }[]}
- */
-const mergeLinesIntoGroups = (lines, count) =>
+type LyricLineGroup = {
+  lines: LyricLine[];
+  from: number;
+  duration: number;
+  id: number;
+};
+
+const mergeLinesIntoGroups = (
+  lines: LyricLine[],
+  count: number
+): LyricLineGroup[] =>
   lines.reduce((arr, line, id) => {
-    /** @type {() => ({ lines: LyricLine[], from: number, duration: 0 })} */
     let last = () => arr[arr.length - 1];
     if (!last() || last().lines.length === count) {
       arr.push({
@@ -35,27 +39,24 @@ const mergeLinesIntoGroups = (lines, count) =>
       last().duration += line.duration;
     }
     return arr;
-  }, []);
+  }, [] as LyricLineGroup[]);
 
-/**
- * @type {React.FC<StillHighlightedVerseSubtitlesProps & { [key: string]: any }>}
- */
-export const StillHighlightedVerseSubtitles = ({ lines, count, cursor, className }) => {
-  const groups = mergeLinesIntoGroups(lines, count);
-  const group = groups.find(
-    (g) => cursor >= g.id && cursor < g.id + g.lines.length
-  ) || groups[0];
+export const StillHighlightedVerseSubtitles = ({
+  lines,
+  count,
+  cursor,
+  className
+}: StillHighlightedVerseSubtitlesProps) => {
+  const groups = mergeLinesIntoGroups(lines, assert(count));
+  const group =
+    groups.find((g) => cursor >= g.id && cursor < g.id + g.lines.length) ||
+    groups[0];
   return (
     <div>
       <AbsoluteFill className="items-center justify-center z-20">
         <div className="h-24 relative w-full text-center flex items-center justify-center">
           <div className="h-24 w-full z-0 opacity-75 rounded absolute top-0 left-0" />
-          <div
-            className={classNames(
-              "z-10 relative font-bold p-4",
-              className
-            )}
-          >
+          <div className={classNames("z-10 relative font-bold p-4", className)}>
             {group?.lines?.map((line, i) => {
               const isActive = cursor === group.id + i;
               return line.text ? (
@@ -81,6 +82,6 @@ export const StillHighlightedVerseSubtitles = ({ lines, count, cursor, className
   );
 };
 
-StillHighlightedVerseSubtitles.defaultProps = {
+setDefaultProps(StillHighlightedVerseSubtitles, {
   count: 4
-};
+});

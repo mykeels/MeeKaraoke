@@ -9,23 +9,26 @@ import {
 import * as transformParser from "transform-parser";
 
 import { Pulse } from "../../../../animations";
-import { frames, starts, isFrameWithin } from "../../../../common";
+import { frames, starts, isFrameWithin, assert } from "../../../../common";
 
-/**
- * @typedef {object} HighlightedVerseSubtitlesProps
- * @property {any} [className]
- * @property {LyricLine[]} lines
- * @property {number} [count]
- */
+type HighlightedVerseSubtitlesProps = {
+  className?: any;
+  lines: LyricLine[];
+  count?: number;
+};
 
-/**
- * @param {LyricLine[]} lines
- * @param {number} count
- * @returns {{ lines: LyricLine[], from: number, duration: number, id: number }[]}
- */
-const mergeLinesIntoGroups = (lines, count) =>
+type LyricLineGroup = {
+  lines: LyricLine[];
+  from: number;
+  duration: number;
+  id: number;
+};
+
+const mergeLinesIntoGroups = (
+  lines: LyricLine[],
+  count: number
+): LyricLineGroup[] =>
   lines.reduce((arr, line, id) => {
-    /** @type {() => ({ lines: LyricLine[], from: number, duration: 0 })} */
     let last = () => arr[arr.length - 1];
     if (!last() || last().lines.length === count) {
       arr.push({
@@ -43,13 +46,10 @@ const mergeLinesIntoGroups = (lines, count) =>
       last().duration += line.duration;
     }
     return arr;
-  }, []);
+  }, [] as LyricLineGroup[]);
 
-/**
- * @type {React.FC<HighlightedVerseSubtitlesProps & { [key: string]: any }>}
- */
-export const HighlightedVerseSubtitles = ({ lines, count }) => {
-  const groups = mergeLinesIntoGroups(lines, count);
+export const HighlightedVerseSubtitles = ({ lines, count }: HighlightedVerseSubtitlesProps) => {
+  const groups = mergeLinesIntoGroups(lines, assert(count));
   const startTimes = starts(groups.map((g) => frames(g.duration)));
   const frame = useCurrentFrame();
   const { width } = useVideoConfig();
@@ -59,9 +59,8 @@ export const HighlightedVerseSubtitles = ({ lines, count }) => {
     "text-xl": width > 640 && width <= 1024,
     "text-4xl": width > 1024
   });
-  /** @type {ReactState<React.CSSProperties>} */
-  const [style, setStyle] = useState({});
-  const updateStyle = useCallback((s) => {
+  const [style, setStyle] = useState<Pick<React.CSSProperties, "transform">>({});
+  const updateStyle = useCallback((s: Pick<React.CSSProperties, "transform">) => {
     setStyle({
       ...style,
       ...s,
@@ -112,7 +111,7 @@ export const HighlightedVerseSubtitles = ({ lines, count }) => {
                               "bg-black text-5xl": isActive
                             }
                           )}
-                          style={isActive ? style : null}
+                          style={(isActive ? style : null) as React.CSSProperties}
                         >
                           {line.text}
                         </span>

@@ -6,38 +6,35 @@ import { getSongById, saveSongFileContents } from "../../common/services";
 import { LyricsTabView } from "./components/LyricsTabView";
 import { SongCreator } from "./SongCreator";
 import { useCacheInvalidation } from "../../hooks";
+import { assert } from "../../common";
 
-/**
- * @typedef {object} SongCreatorScreenProps
- * @property {any} [className]
- * @property {React.FC<import("./SongCreator").SongCreatorProps>} [SongCreator]
- * @property {(id: string) => Promise<SongFileContent>} [getSongById]
- * @property {(content: SongFileContent) => Promise<SongFileContent>} [saveSongFileContents]
- */
+type SongCreatorScreenProps = {
+  className?: any;
+  SongCreator?: React.FC<Parameters<typeof SongCreator>[0]>;
+  getSongById?: (id: string) => Promise<SongFileContent>;
+  saveSongFileContents?: (content: SongFileContent) => Promise<SongFileContent>;
+};
 
-/**
- * @type {React.FC<SongCreatorScreenProps & { [key: string]: any }>}
- */
 export const SongCreatorScreen = ({
   SongCreator,
   getSongById,
   saveSongFileContents
-}) => {
+}: SongCreatorScreenProps) => {
   const { id } = useParams();
-  const { data: song } = useQuery(["songs", id], () => getSongById(id));
-  const { updateCache } = useCacheInvalidation(["songs", id]);
-  const { mutateAsync: saveSong } = useMutation(saveSongFileContents, {
+  const { data: song } = useQuery(["songs", id], () => assert(getSongById)(assert(id)));
+  const { updateCache } = useCacheInvalidation(["songs", assert(id)]);
+  const { mutateAsync: saveSong } = useMutation(assert(saveSongFileContents), {
     onMutate: (variables) => {
       updateCache((content) => ({ ...content, ...variables, id }));
     }
   });
-  return song ? (
+  return song && SongCreator ? (
     <SongCreator
       id={id}
       audioUrl={song.audioUrl}
       title={song.title}
       defaults={{
-        lines: song?.lines,
+        lines: song?.lines || [],
         background: song?.background
       }}
       onSave={async (content) => {

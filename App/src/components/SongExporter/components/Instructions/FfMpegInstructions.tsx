@@ -1,13 +1,10 @@
 import React from "react";
 
-/**
- * @typedef {object} FfMpegInstructionsProps
- * @property {any} [className]
- */
 
-/**
- * @type {React.FC<FfMpegInstructionsProps & { [key: string]: any }>}
- */
+type FfMpegInstructionsProps = {
+  className?: any;
+};
+
 export const FfMpegInstructions = () => {
   return (
     <>

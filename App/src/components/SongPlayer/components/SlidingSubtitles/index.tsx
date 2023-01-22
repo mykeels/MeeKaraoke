@@ -5,19 +5,15 @@ import { Lifecycle, Pulse, SlideIn, SlideOut } from "../../../../animations";
 import { frames, starts } from "../../../../common/utils";
 import classNames from "classnames";
 
-/**
- * @typedef {object} SlidingSubtitlesProps
- * @property {any} [className]
- * @property {LyricLine[]} lines
- */
+type SlidingSubtitlesProps = {
+  className?: any;
+  lines: LyricLine[];
+};
 
-/**
- * @type {React.FC<SlidingSubtitlesProps & { [key: string]: any }>}
- */
-export const SlidingSubtitles = ({ lines }) => {
+export const SlidingSubtitles = ({ lines }: SlidingSubtitlesProps) => {
   const startTimes = starts(lines.map((l) => frames(l.duration)));
   const { width } = useVideoConfig();
-  const bgColor = (i) => {
+  const bgColor = (i: number) => {
     const colors = ["bg-purple-200", "bg-lavender-200"];
     return colors[i % colors.length];
   };

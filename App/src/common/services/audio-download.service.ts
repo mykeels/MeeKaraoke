@@ -1,4 +1,4 @@
-type AudioDownload = {
+export type AudioDownload = {
   youtubeUrl: string;
   title: string;
   author: string;

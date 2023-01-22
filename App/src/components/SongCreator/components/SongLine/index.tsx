@@ -2,15 +2,14 @@ import classNames from "classnames";
 import { DateTime } from "luxon";
 import React, { useEffect, useRef } from "react";
 
-/**
- * @param {object} props
- * @param {boolean} props.isActive
- * @param {LyricLine} props.line
- * @returns {JSX.Element}
- */
-export const SongLine = ({ isActive, line, ...props }) => {
-  /** @type {import("react").MutableRefObject<HTMLDivElement>} */
-  const ref = useRef();
+type SongLineProps = {
+  isActive: boolean;
+  line: LyricLine;
+};
+
+
+export const SongLine = ({ isActive, line, ...props }: SongLineProps) => {
+  const ref = useRef<HTMLDivElement>();
   useEffect(() => {
     if (isActive) {
       ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -20,7 +19,7 @@ export const SongLine = ({ isActive, line, ...props }) => {
   return (
     <div
       {...props}
-      ref={ref}
+      ref={ref as React.RefObject<HTMLDivElement>}
       className={classNames(
         "p-2 block w-full border-b border-gray-100 text-xs lg:text-lg xl:text-xl cursor-pointer",
         {

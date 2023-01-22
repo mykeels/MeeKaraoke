@@ -4,19 +4,15 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { useMedia } from "../../../../hooks";
 
-/**
- * @typedef {object} ImageGalleryProps
- * @property {number} cursor
- * @property {string[]} images
- * @property {LyricLine} line
- * @property {JSX.Element} [children]
- * @property {(image: string, index: number) => any} [onClick]
- * @property {(images: string[]) => any} [onChange]
- */
+type ImageGalleryProps = {
+  cursor: number;
+  images: string[];
+  line: LyricLine;
+  children?: JSX.Element;
+  onClick?: (image: string, index: number) => any;
+  onChange?: (images: string[]) => any;
+};
 
-/**
- * @type {React.FC<ImageGalleryProps & { [key: string]: any }>}
- */
 export const ImageGallery = ({
   cursor,
   images,
@@ -24,7 +20,7 @@ export const ImageGallery = ({
   children,
   onClick,
   onChange
-}) => {
+}: ImageGalleryProps) => {
   const [photos, setPhotos] = useState(images || []);
   const index = Math.min(
     photos.length - 1,
@@ -39,11 +35,9 @@ export const ImageGallery = ({
   }, [photos.length]);
 
   useEffect(() => {
-    /** @type {HTMLDivElement} */
-    const parentElem = document.querySelector(".image-slider-wrapper");
-    /** @type {HTMLDivElement} */
-    const elem = document.querySelector(`.gallery-image-${index}`);
-    if (elem) {
+    const parentElem = document.querySelector(".image-slider-wrapper") as (HTMLDivElement | null);
+    const elem = document.querySelector(`.gallery-image-${index}`) as (HTMLDivElement | null);
+    if (elem && parentElem) {
       const left =
         elem?.offsetLeft - parentElem?.clientWidth / 2 + elem?.clientWidth / 2;
       parentElem.scrollTo({
@@ -54,10 +48,10 @@ export const ImageGallery = ({
   }, [cursor, index]);
 
   const isLgScreen = useMedia(["(min-width: 1024px)"], [true], false);
-  const Component = useCallback(() => children, []);
+  const Component = useCallback(() => children || <></>, []);
 
   /** @param {string} image */
-  const removeImage = (image) => {
+  const removeImage = (image: string) => {
     if (typeof onChange === "function") {
       setPhotos(photos.filter((i) => i !== image));
     }
