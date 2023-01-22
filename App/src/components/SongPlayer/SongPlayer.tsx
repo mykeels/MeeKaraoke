@@ -12,9 +12,7 @@ type SongPlayerProps = {
   height?: number;
   isFullscreen?: boolean;
   onPlayEnd?: () => any;
-  Subtitles?: React.FC<{
-    lines: LyricLine[];
-  }>;
+  Subtitles?: (props: { lines: LyricLine[] }) => JSX.Element;
   Background?: React.FC<{
     images: string[];
   }>;
