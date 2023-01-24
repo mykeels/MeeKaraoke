@@ -10,7 +10,7 @@ import { ImageGallery } from "./components/ImageGallery";
 import { BackgroundSelect } from "./components/BackgroundSelect";
 import { ColorGallery } from "./components/ColorGallery";
 import { StillHighlightedVerseSubtitles } from "../SongPlayer";
-import { assert, assertRef, setDefaultProps } from "../../common/utils";
+import { assert, setDefaultProps } from "../../common/utils";
 
 const getCurrentLineIndex = (song: LyricLine[], timeInSeconds: number) => {
   return song.findIndex(
@@ -240,7 +240,7 @@ export const SongCreator = ({
                 <audio
                   key={audioUrl}
                   src={assert(getAbsoluteAudioUrl)(audioUrl)}
-                  ref={assertRef(songPlayerRef)}
+                  ref={songPlayerRef as any}
                 ></audio>
                 <Background>
                   {lines?.length ? (
