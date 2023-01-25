@@ -20,4 +20,11 @@ export default defineConfig({
         .map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)])
     ),
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: {
+        '.js': 'jsx',
+      },
+    },
+  },
 });
