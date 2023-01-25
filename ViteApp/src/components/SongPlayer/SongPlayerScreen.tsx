@@ -29,6 +29,7 @@ export const SongPlayerScreen = ({ getSongById }: SongPlayerScreenProps) => {
     return () => {
       window.removeEventListener("keypress", onEscapeKeyPressed);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return song ? (
@@ -43,5 +44,5 @@ export const SongPlayerScreen = ({ getSongById }: SongPlayerScreenProps) => {
 };
 
 SongPlayerScreen.defaultProps = {
-  getSongById
+  getSongById,
 };

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Player } from "@remotion/player";
 
-import { assert, assertRef, frames, setDefaultProps } from "../../common/utils";
+import { assert, frames, setDefaultProps } from "../../common/utils";
 import { SongVideo } from "./components";
 
 type SongPlayerProps = {
@@ -28,7 +28,7 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
     onPlayEnd,
     Background,
     Subtitles,
-    className
+    className,
   }: SongPlayerProps,
   ref: React.RefObject<import("@remotion/player").PlayerRef>
 ) {
@@ -49,10 +49,12 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
         typeof onPlayEnd === "function" && onPlayEnd();
       }
     };
+    const elem = ref.current;
     ref.current?.addEventListener("fullscreenchange", (e) => {});
     return () => {
-      ref.current?.removeEventListener("fullscreenchange", onFullScreenChange);
+      elem?.removeEventListener("fullscreenchange", onFullScreenChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const duration =
     song.lines?.reduce((sum, line) => sum + line.duration, 0) || 0;
@@ -75,5 +77,5 @@ export const SongPlayer = React.forwardRef(function SongPlayer(
 setDefaultProps(SongPlayer, {
   width: 1280,
   height: 720,
-  controls: true
+  controls: true,
 });
