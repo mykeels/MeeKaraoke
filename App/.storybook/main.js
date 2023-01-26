@@ -35,14 +35,12 @@ module.exports = {
     });
     console.log(plugin.definitions);
 
-    config.resolve = {
-      fallback: {
-        browser: false,
-        https: false,
-        http: false,
-        zlib: false,
-        fs: false,
-      },
+    config.resolve.fallback = {
+      browser: false,
+      https: false,
+      http: false,
+      zlib: false,
+      fs: false,
     };
 
     return config;
