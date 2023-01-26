@@ -2,7 +2,7 @@
 
 As prerequisites, you need
 
-- [NodeJS >14.x](https://nodejs.org/en/)
+- [NodeJS >16.x](https://nodejs.org/en/)
 - [dotnet >6.x](https://dotnet.microsoft.com/en-us/download)
 
 ## Setup
