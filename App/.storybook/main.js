@@ -35,6 +35,13 @@ module.exports = {
     });
     console.log(plugin.definitions);
 
+    config.plugins = config.plugins.filter(plugin => {
+      if (plugin.constructor.name === 'ESLintWebpackPlugin') {
+        return false
+      }
+      return true
+    })
+
     config.resolve.fallback = {
       browser: false,
       https: false,
