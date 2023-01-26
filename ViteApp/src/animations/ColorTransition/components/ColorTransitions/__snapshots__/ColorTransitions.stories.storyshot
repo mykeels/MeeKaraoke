@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`@mykeels/mee-karaoke animations/ColorTransition/ColorTransitions Index 1`] = `
-<div>
-  Player
-</div>
-`;
