@@ -9,14 +9,14 @@ module.exports = function override(config, env) {
   config.output.publicPath = "auto";
 
   config.target = "web";
-  config.entry = ["./src/index.js"];
+  config.entry = ["./src/index.ts"];
 
   config.plugins.push(
     new ModuleFederationPlugin({
       name: "MeeKaraoke",
       filename: "remoteEntry.js",
       exposes: {
-        "./index.js": "./src/bootstrap.js"
+        "./index.js": "./src/bootstrap.tsx"
       },
       shared: {
         react: {
@@ -37,13 +37,11 @@ module.exports = function override(config, env) {
       }
     })
   );
-  config.resolve = {
-    fallback: {
-      https: false,
-      http: false,
-      zlib: false,
-      fs: false
-    }
-  };
+  config.resolve.fallback = {
+    https: false,
+    http: false,
+    zlib: false,
+    fs: false
+  }
   return config;
 };

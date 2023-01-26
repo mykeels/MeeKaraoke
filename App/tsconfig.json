@@ -1,20 +1,28 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
+    "noImplicitAny": true,
+    "strict": true,
+    "jsx": "preserve",
     "outDir": "./dist",
-    "lib": ["ES6", "ES2019", "ES2020", "DOM"],
+    "lib": ["ES6", "ES2019", "ES2020", "ESNext", "DOM", "DOM.Iterable"],
     "sourceMap": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
   "compileOnSave": false,
-  "include": ["typings/**/*.d.ts", "src/**/*.js", "src/**/*.tsx"],
+  "include": [
+    "typings/**/*.d.ts",
+    "src/**/*.js",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
   "exclude": [
     "node_modules/",
     "**/*.test.js",
